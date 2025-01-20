@@ -1,0 +1,15 @@
+/workspaces/Liv-In-Paris/bin/Debug/net8.0/Liv-In-Paris
+/workspaces/Liv-In-Paris/bin/Debug/net8.0/Liv-In-Paris.deps.json
+/workspaces/Liv-In-Paris/bin/Debug/net8.0/Liv-In-Paris.runtimeconfig.json
+/workspaces/Liv-In-Paris/bin/Debug/net8.0/Liv-In-Paris.dll
+/workspaces/Liv-In-Paris/bin/Debug/net8.0/Liv-In-Paris.pdb
+/workspaces/Liv-In-Paris/obj/Debug/net8.0/Liv-In-Paris.GeneratedMSBuildEditorConfig.editorconfig
+/workspaces/Liv-In-Paris/obj/Debug/net8.0/Liv-In-Paris.AssemblyInfoInputs.cache
+/workspaces/Liv-In-Paris/obj/Debug/net8.0/Liv-In-Paris.AssemblyInfo.cs
+/workspaces/Liv-In-Paris/obj/Debug/net8.0/Liv-In-Paris.csproj.CoreCompileInputs.cache
+/workspaces/Liv-In-Paris/obj/Debug/net8.0/Liv-In-Paris.sourcelink.json
+/workspaces/Liv-In-Paris/obj/Debug/net8.0/Liv-In-Paris.dll
+/workspaces/Liv-In-Paris/obj/Debug/net8.0/refint/Liv-In-Paris.dll
+/workspaces/Liv-In-Paris/obj/Debug/net8.0/Liv-In-Paris.pdb
+/workspaces/Liv-In-Paris/obj/Debug/net8.0/Liv-In-Paris.genruntimeconfig.cache
+/workspaces/Liv-In-Paris/obj/Debug/net8.0/ref/Liv-In-Paris.dll
