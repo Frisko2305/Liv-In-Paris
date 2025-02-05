@@ -1,0 +1,15 @@
+C:\Users\niamo\OneDrive\Bureau\Programme\S4\Projet Pb Scientifique & Info\Liv-In-Paris\bin\Debug\net8.0\Liv-In-Paris.exe
+C:\Users\niamo\OneDrive\Bureau\Programme\S4\Projet Pb Scientifique & Info\Liv-In-Paris\bin\Debug\net8.0\Liv-In-Paris.deps.json
+C:\Users\niamo\OneDrive\Bureau\Programme\S4\Projet Pb Scientifique & Info\Liv-In-Paris\bin\Debug\net8.0\Liv-In-Paris.runtimeconfig.json
+C:\Users\niamo\OneDrive\Bureau\Programme\S4\Projet Pb Scientifique & Info\Liv-In-Paris\bin\Debug\net8.0\Liv-In-Paris.dll
+C:\Users\niamo\OneDrive\Bureau\Programme\S4\Projet Pb Scientifique & Info\Liv-In-Paris\bin\Debug\net8.0\Liv-In-Paris.pdb
+C:\Users\niamo\OneDrive\Bureau\Programme\S4\Projet Pb Scientifique & Info\Liv-In-Paris\obj\Debug\net8.0\Liv-In-Paris.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\niamo\OneDrive\Bureau\Programme\S4\Projet Pb Scientifique & Info\Liv-In-Paris\obj\Debug\net8.0\Liv-In-Paris.AssemblyInfoInputs.cache
+C:\Users\niamo\OneDrive\Bureau\Programme\S4\Projet Pb Scientifique & Info\Liv-In-Paris\obj\Debug\net8.0\Liv-In-Paris.AssemblyInfo.cs
+C:\Users\niamo\OneDrive\Bureau\Programme\S4\Projet Pb Scientifique & Info\Liv-In-Paris\obj\Debug\net8.0\Liv-In-Paris.csproj.CoreCompileInputs.cache
+C:\Users\niamo\OneDrive\Bureau\Programme\S4\Projet Pb Scientifique & Info\Liv-In-Paris\obj\Debug\net8.0\Liv-In-Paris.sourcelink.json
+C:\Users\niamo\OneDrive\Bureau\Programme\S4\Projet Pb Scientifique & Info\Liv-In-Paris\obj\Debug\net8.0\Liv-In-Paris.dll
+C:\Users\niamo\OneDrive\Bureau\Programme\S4\Projet Pb Scientifique & Info\Liv-In-Paris\obj\Debug\net8.0\refint\Liv-In-Paris.dll
+C:\Users\niamo\OneDrive\Bureau\Programme\S4\Projet Pb Scientifique & Info\Liv-In-Paris\obj\Debug\net8.0\Liv-In-Paris.pdb
+C:\Users\niamo\OneDrive\Bureau\Programme\S4\Projet Pb Scientifique & Info\Liv-In-Paris\obj\Debug\net8.0\Liv-In-Paris.genruntimeconfig.cache
+C:\Users\niamo\OneDrive\Bureau\Programme\S4\Projet Pb Scientifique & Info\Liv-In-Paris\obj\Debug\net8.0\ref\Liv-In-Paris.dll

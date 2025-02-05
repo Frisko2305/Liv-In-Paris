@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/workspaces/Liv-In-Paris/Liv-In-Paris.csproj": {}
+    "C:\\Users\\niamo\\OneDrive\\Bureau\\Programme\\S4\\Projet Pb Scientifique & Info\\Liv-In-Paris\\Liv-In-Paris.csproj": {}
   },
   "projects": {
-    "/workspaces/Liv-In-Paris/Liv-In-Paris.csproj": {
+    "C:\\Users\\niamo\\OneDrive\\Bureau\\Programme\\S4\\Projet Pb Scientifique & Info\\Liv-In-Paris\\Liv-In-Paris.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/workspaces/Liv-In-Paris/Liv-In-Paris.csproj",
+        "projectUniqueName": "C:\\Users\\niamo\\OneDrive\\Bureau\\Programme\\S4\\Projet Pb Scientifique & Info\\Liv-In-Paris\\Liv-In-Paris.csproj",
         "projectName": "Liv-In-Paris",
-        "projectPath": "/workspaces/Liv-In-Paris/Liv-In-Paris.csproj",
-        "packagesPath": "/home/codespace/.nuget/packages/",
-        "outputPath": "/workspaces/Liv-In-Paris/obj/",
+        "projectPath": "C:\\Users\\niamo\\OneDrive\\Bureau\\Programme\\S4\\Projet Pb Scientifique & Info\\Liv-In-Paris\\Liv-In-Paris.csproj",
+        "packagesPath": "C:\\Users\\niamo\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\niamo\\OneDrive\\Bureau\\Programme\\S4\\Projet Pb Scientifique & Info\\Liv-In-Paris\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/codespace/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\niamo\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -58,7 +58,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.404/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.404/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
