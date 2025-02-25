@@ -1,0 +1,14 @@
+C:\Users\noahl\Documents\ESILV\A2\Graphe_maVersion\Graphe_maVersion\bin\Debug\net8.0-windows\Graphe_maVersion.exe
+C:\Users\noahl\Documents\ESILV\A2\Graphe_maVersion\Graphe_maVersion\bin\Debug\net8.0-windows\Graphe_maVersion.deps.json
+C:\Users\noahl\Documents\ESILV\A2\Graphe_maVersion\Graphe_maVersion\bin\Debug\net8.0-windows\Graphe_maVersion.runtimeconfig.json
+C:\Users\noahl\Documents\ESILV\A2\Graphe_maVersion\Graphe_maVersion\bin\Debug\net8.0-windows\Graphe_maVersion.dll
+C:\Users\noahl\Documents\ESILV\A2\Graphe_maVersion\Graphe_maVersion\bin\Debug\net8.0-windows\Graphe_maVersion.pdb
+C:\Users\noahl\Documents\ESILV\A2\Graphe_maVersion\Graphe_maVersion\obj\Debug\net8.0-windows\Graphe_maVersion.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\noahl\Documents\ESILV\A2\Graphe_maVersion\Graphe_maVersion\obj\Debug\net8.0-windows\Graphe_maVersion.AssemblyInfoInputs.cache
+C:\Users\noahl\Documents\ESILV\A2\Graphe_maVersion\Graphe_maVersion\obj\Debug\net8.0-windows\Graphe_maVersion.AssemblyInfo.cs
+C:\Users\noahl\Documents\ESILV\A2\Graphe_maVersion\Graphe_maVersion\obj\Debug\net8.0-windows\Graphe_maVersion.csproj.CoreCompileInputs.cache
+C:\Users\noahl\Documents\ESILV\A2\Graphe_maVersion\Graphe_maVersion\obj\Debug\net8.0-windows\Graphe_maVersion.dll
+C:\Users\noahl\Documents\ESILV\A2\Graphe_maVersion\Graphe_maVersion\obj\Debug\net8.0-windows\refint\Graphe_maVersion.dll
+C:\Users\noahl\Documents\ESILV\A2\Graphe_maVersion\Graphe_maVersion\obj\Debug\net8.0-windows\Graphe_maVersion.pdb
+C:\Users\noahl\Documents\ESILV\A2\Graphe_maVersion\Graphe_maVersion\obj\Debug\net8.0-windows\Graphe_maVersion.genruntimeconfig.cache
+C:\Users\noahl\Documents\ESILV\A2\Graphe_maVersion\Graphe_maVersion\obj\Debug\net8.0-windows\ref\Graphe_maVersion.dll
