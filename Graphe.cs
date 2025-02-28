@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.IO;
 
 
-namespace Graphe_maVersion
+namespace Liv_In_Paris
 {
     internal class Graphe
     {

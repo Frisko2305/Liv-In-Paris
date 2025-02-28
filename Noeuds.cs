@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Graphe_maVersion
+namespace Liv_In_Paris
 {
     internal class Noeuds
     {

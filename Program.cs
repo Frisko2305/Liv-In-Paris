@@ -1,7 +1,7 @@
 ﻿using System.Windows.Forms;
 
 
-namespace Graphe_maVersion
+namespace Liv_In_Paris
 {
     internal class Program
     {
