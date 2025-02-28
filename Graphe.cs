@@ -119,10 +119,11 @@ namespace Liv_In_Paris
             return matrice;
         }
 
-        public void ParcoursBFS(Noeuds depart)
+        public int ParcoursBFS(Noeuds depart)
         {
             var visite = new HashSet<Noeuds>();
             var queue = new Queue<Noeuds>();
+            int check_connexité = 0;
             queue.Enqueue(depart);
             visite.Add(depart);
 
@@ -133,6 +134,7 @@ namespace Liv_In_Paris
             {
                 var noeud = queue.Dequeue();
                 Console.Write(noeud.Numero + " ");
+                check_connexité ++;
 
                 int indexNoeud = noeuds.IndexOf(noeud);
                 for (int i = 0; i < matriceAdjacence.GetLength(0); i++)
@@ -145,6 +147,7 @@ namespace Liv_In_Paris
                 }
             }
             Console.WriteLine();
+            return check_connexité;
         }
 
         public void ParcoursDFS(Noeuds depart)

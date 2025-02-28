@@ -34,17 +34,20 @@ namespace Liv_In_Paris
             
             Noeuds noeudDepart = graphe.Noeuds_Pte[33];
 
+            /// Pour vérifier la connexité du graphe, on a qu'a vérifié si la liste des noeuds visités (en DFS ou BFS) et de la même longueur que la liste des noeuds du graphe
+
             // Effectuer un parcours en largeur (BFS)
             Console.WriteLine("\nParcours en largeur (BFS) à partir du nœud " + noeudDepart.Numero + ":");
-            graphe.ParcoursBFS(noeudDepart);
+            int connexite = graphe.ParcoursBFS(noeudDepart);
 
             // Effectuer un parcours en profondeur (DFS)
             Console.WriteLine("\nParcours en profondeur (DFS) à partir du nœud " + noeudDepart.Numero + ":");
             graphe.ParcoursDFS(noeudDepart);
 
-            // Attendre que l'utilisateur appuie sur une touche avant de fermer
-            Console.WriteLine("Appuyez sur une touche pour quitter...");
-            Console.ReadKey();
+            if(connexite == graphe.Noeuds_Pte.Count)
+            {
+                Console.WriteLine("Ce graphe est connexe !");
+            }
         }
     }
 }
