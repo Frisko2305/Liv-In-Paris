@@ -80,6 +80,7 @@ namespace Liv_In_Paris
 
             // Ajouter les nœuds à la liste
             noeuds.AddRange(noeudsDict.Values);
+            noeuds.Sort((n1, n2) => n1.Numero.CompareTo(n2.Numero));
         }
 
         public void PlacerNoeudsEnCercle(int largeur, int hauteur)
@@ -96,6 +97,86 @@ namespace Liv_In_Paris
                 noeuds[i].Y = centreY + rayon * Math.Sin(angle);
             }
         }
+
+        public int[,] CreerMatriceAdjacence()
+        {
+            int n = noeuds.Count;int[,] matrice = new int[n, n];
+            var indexNoeud = new Dictionary<Noeuds, int>();
+            
+            for (int i = 0; i < n; i++)
+            {
+                indexNoeud[noeuds[i]] = i;
+            }
+
+            foreach (var lien in liens)
+            {
+                int i = indexNoeud[lien.Membre];
+                int j = indexNoeud[lien.MembreAutre];
+                matrice[i, j] = 1;
+                matrice[j, i] = 1;
+            }
+
+            return matrice;
+        }
+
+        public void ParcoursBFS(Noeuds depart)
+        {
+            var visite = new HashSet<Noeuds>();
+            var queue = new Queue<Noeuds>();
+            queue.Enqueue(depart);
+            visite.Add(depart);
+
+            int[,] matriceAdjacence = CreerMatriceAdjacence();
+            int indexDepart = noeuds.IndexOf(depart);
+
+            while (queue.Count > 0)
+            {
+                var noeud = queue.Dequeue();
+                Console.Write(noeud.Numero + " ");
+
+                int indexNoeud = noeuds.IndexOf(noeud);
+                for (int i = 0; i < matriceAdjacence.GetLength(0); i++)
+                {
+                    if (matriceAdjacence[indexNoeud, i] == 1 && !visite.Contains(noeuds[i]))
+                    {
+                        visite.Add(noeuds[i]);
+                        queue.Enqueue(noeuds[i]);
+                    }
+                }
+            }
+            Console.WriteLine();
+        }
+
+        public void ParcoursDFS(Noeuds depart)
+        {
+            var visite = new HashSet<Noeuds>();
+            var stack = new Stack<Noeuds>();
+            stack.Push(depart);
+
+            int[,] matriceAdjacence = CreerMatriceAdjacence();
+            int indexDepart = noeuds.IndexOf(depart);
+
+            while (stack.Count > 0)
+            {
+                var noeud = stack.Pop();
+                if (!visite.Contains(noeud))
+                {
+                    visite.Add(noeud);
+                    Console.Write(noeud.Numero + " ");
+
+                    int indexNoeud = noeuds.IndexOf(noeud);
+                    for (int i = 0; i < matriceAdjacence.GetLength(0); i++)
+                    {
+                        if (matriceAdjacence[indexNoeud, i] == 1 && !visite.Contains(noeuds[i]))
+                        {
+                            stack.Push(noeuds[i]);
+                        }
+                    }
+                }
+            }
+            Console.WriteLine();
+        }
+
 
         #region /Premiere version
 
