@@ -1,0 +1,2 @@
+INSERT INTO Cuisinier (Id, mdp, nom, prenom, num_rue, rue, CP, ville, num_Tel, email) VALUES ('7505', 'afghre58', 'Dupont', 'Clement', '5', 'Pigalle', '75045', 'Paris', '674856325', 'zfergef]aefre@zef.com');
+INSERT INTO Cuisinier (Id, mdp, nom, prenom, num_rue, rue, CP, ville, num_Tel, email) VALUES ('1687', 'zehjfhrt08$', 'Minot', 'Marc', '25', 'De lamaire', '75068', 'Montrueil', '48992962', 'fgjynbr@sdv.vbh');

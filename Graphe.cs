@@ -10,8 +10,8 @@ namespace Liv_In_Paris
 {
     internal class Graphe
     {
-        //private string[,] Graph_association;
-        //private int taille;
+        /// private string[,] Graph_association;
+        /// private int taille;
 
         private List<Noeuds> noeuds;
         private List<Liens> liens;
@@ -39,7 +39,7 @@ namespace Liv_In_Paris
         {
             string nomfichier = "soc-karate.mtx";
 
-            // Vérifier que le fichier existe
+            /// Vérifier que le fichier existe
             if (!File.Exists(nomfichier))
             {
                 Console.WriteLine("Erreur : Le fichier " + nomfichier + " est introuvable.");
@@ -51,34 +51,34 @@ namespace Liv_In_Paris
 
             foreach (var ligne in lignes)
             {
-                // Ignorer les lignes vides ou qui commencent par '%'
+                /// Ignorer les lignes vides ou qui commencent par '%'
                 if (string.IsNullOrWhiteSpace(ligne) || ligne.StartsWith("%"))
                     continue;
 
                 var parts = ligne.Split(' ', StringSplitOptions.RemoveEmptyEntries);
 
-                // Vérifier que la ligne contient bien deux éléments
+                /// Vérifier que la ligne contient bien deux éléments
                 if (parts.Length < 2)
                     continue;
 
                 int n1, n2;
 
-                // Vérifier que les éléments sont bien des nombres
+                /// Vérifier que les éléments sont bien des nombres
                 if (!int.TryParse(parts[0], out n1) || !int.TryParse(parts[1], out n2))
-                    continue;  // Ignorer la ligne si ce n'est pas le cas
+                    continue;  /// Ignorer la ligne si ce n'est pas le cas
 
-                // Ajouter les nœuds s'ils ne sont pas déjà présents
+                /// Ajouter les nœuds s'ils ne sont pas déjà présents
                 if (!noeudsDict.ContainsKey(n1))
                     noeudsDict[n1] = new Noeuds(n1);
 
                 if (!noeudsDict.ContainsKey(n2))
                     noeudsDict[n2] = new Noeuds(n2);
 
-                // Ajouter le lien
+                /// Ajouter le lien
                 liens.Add(new Liens(noeudsDict[n1], noeudsDict[n2]));
             }
 
-            // Ajouter les nœuds à la liste
+            /// Ajouter les nœuds à la liste
             noeuds.AddRange(noeudsDict.Values);
             noeuds.Sort((n1, n2) => n1.Numero.CompareTo(n2.Numero));
         }
@@ -221,11 +221,11 @@ namespace Liv_In_Paris
                  int x2 = n2.Localisation[0];
                  int y2 = n2.Localisation[1];
 
-                 if (x1 == x2) // Lien horizontal
+                 if (x1 == x2) /// Lien horizontal
                  {
                      Graph_association[x1, Math.Min(y1, y2) + 1] = "-";
                  }
-                 else if (y1 == y2) // Lien vertical
+                 else if (y1 == y2)  Lien vertical
                  {
                      Graph_association[Math.Min(x1, x2) + 1, y1] = "|";
                  }

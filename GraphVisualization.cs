@@ -12,9 +12,9 @@ namespace Liv_In_Paris
     internal class GraphVisualizer : Form
     {
         private Graphe graphe;
-        private const int Largeur = 800;  // Taille de la fenêtre
+        private const int Largeur = 800;  /// Taille de la fenêtre
         private const int Hauteur = 800;
-        private const int RayonNoeud = 20; // Taille des nœuds
+        private const int RayonNoeud = 20; /// Taille des nœuds
 
         public GraphVisualizer(Graphe graphe)
         {
@@ -31,7 +31,7 @@ namespace Liv_In_Paris
             System.Drawing.Font font = new System.Drawing.Font("Arial", 12);
             Brush brush = Brushes.Black;
 
-            // Dessiner les liens
+            /// Dessiner les liens
             Pen penLien = new Pen(Color.Gray, 2);
             foreach (var lien in graphe.Liens_Pte)
             {
@@ -40,7 +40,7 @@ namespace Liv_In_Paris
                     (float)lien.MembreAutre.X, (float)lien.MembreAutre.Y);
             }
 
-            // Dessiner les noeuds
+            /// Dessiner les noeuds
             Brush brushNoeud = Brushes.Blue;
             foreach (var noeud in graphe.Noeuds_Pte)
             {
