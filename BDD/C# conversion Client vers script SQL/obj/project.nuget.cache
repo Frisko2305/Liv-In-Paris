@@ -1,0 +1,22 @@
+{
+  "version": 2,
+  "dgSpecHash": "9u8UvTPtXD0=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\niamo\\OneDrive\\Bureau\\Programme\\S4\\Projet Pb Scientifique & Info\\Test SQL\\C# conversion Client vers script SQL\\C# conversion Client vers script SQL.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\niamo\\.nuget\\packages\\epplus\\4.0.1.1\\epplus.4.0.1.1.nupkg.sha512",
+    "C:\\Users\\niamo\\.nuget\\packages\\system.io.packaging\\9.0.2\\system.io.packaging.9.0.2.nupkg.sha512"
+  ],
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'EPPlus 4.0.1.1' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net8.0'. This package may not be fully compatible with your project.",
+      "libraryId": "EPPlus",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    }
+  ]
+}

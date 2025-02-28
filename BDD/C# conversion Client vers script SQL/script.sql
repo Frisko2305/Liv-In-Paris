@@ -1,0 +1,1 @@
+INSERT INTO client_paris (numC, nom, prenom, rue, numRue, CP, ville, noTel, email, Metro_proche) VALUES ('1', 'Durand', 'Medhy', 'Rue Cardinet', '15', '75017', 'Paris', '1234567890', 'Mdurand@gmail.com', 'Cardinet');
