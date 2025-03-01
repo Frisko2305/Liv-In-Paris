@@ -14,7 +14,7 @@ namespace Liv_In_Paris
         /// private int taille;
 
         private List<Noeuds> noeuds;
-        private List<Liens> liens
+        private List<Liens> liens;
 
         public List<Liens> Liens_Pte 
         {
