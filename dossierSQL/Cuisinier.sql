@@ -1,2 +1,15 @@
-INSERT INTO Cuisinier (Id, mdp, nom, prenom, num_rue, rue, CP, ville, num_Tel, email) VALUES ('7505', 'afghre58', 'Dupont', 'Clement', '5', 'Pigalle', '75045', 'Paris', '674856325', 'zfergef]aefre@zef.com');
-INSERT INTO Cuisinier (Id, mdp, nom, prenom, num_rue, rue, CP, ville, num_Tel, email) VALUES ('1687', 'zehjfhrt08$', 'Minot', 'Marc', '25', 'De lamaire', '75068', 'Montrueil', '48992962', 'fgjynbr@sdv.vbh');
+INSERT INTO Cuisinier (Id_cuisinier, Mdp, Nom_cuisinier, Prenom_cuisinier) VALUES ('8193', '}''<q9?0n', 'Dupont', 'Jean');
+INSERT INTO Cuisinier (Id_cuisinier, Mdp, Nom_cuisinier, Prenom_cuisinier) VALUES ('2412', 'V&s%Pu-$', 'Martin', 'Sophie');
+INSERT INTO Cuisinier (Id_cuisinier, Mdp, Nom_cuisinier, Prenom_cuisinier) VALUES ('1494', 'xx{_QsTe', 'Bernard', 'Michel');
+INSERT INTO Cuisinier (Id_cuisinier, Mdp, Nom_cuisinier, Prenom_cuisinier) VALUES ('8091', '^r*VS\zi', 'Petit', 'Claire');
+INSERT INTO Cuisinier (Id_cuisinier, Mdp, Nom_cuisinier, Prenom_cuisinier) VALUES ('3594', 'J#Iwof2e', 'Moreau', 'Paul');
+INSERT INTO Cuisinier (Id_cuisinier, Mdp, Nom_cuisinier, Prenom_cuisinier) VALUES ('1015', 'N$0I0qhP', 'Lefebvre', 'Isabelle');
+INSERT INTO Cuisinier (Id_cuisinier, Mdp, Nom_cuisinier, Prenom_cuisinier) VALUES ('6695', ',^OUje;M', 'Garcia', 'Luc');
+INSERT INTO Cuisinier (Id_cuisinier, Mdp, Nom_cuisinier, Prenom_cuisinier) VALUES ('1887', 'txOS$-0f', 'Lopez', 'Marie');
+INSERT INTO Cuisinier (Id_cuisinier, Mdp, Nom_cuisinier, Prenom_cuisinier) VALUES ('1495', '&X+WDlP-', 'Gonzalez', 'Nicolas');
+INSERT INTO Cuisinier (Id_cuisinier, Mdp, Nom_cuisinier, Prenom_cuisinier) VALUES ('3170', 'M6f@\Y^k', 'Rodriguez', 'Camille');
+INSERT INTO Cuisinier (Id_cuisinier, Mdp, Nom_cuisinier, Prenom_cuisinier) VALUES ('1195', '%ek`"<t4', 'Hernandez', 'Antoine');
+INSERT INTO Cuisinier (Id_cuisinier, Mdp, Nom_cuisinier, Prenom_cuisinier) VALUES ('2999', 'vGP8REl[', 'Schneider', 'Julien');
+INSERT INTO Cuisinier (Id_cuisinier, Mdp, Nom_cuisinier, Prenom_cuisinier) VALUES ('4358', 'n=H"}4T[', 'Fischer', 'Elise');
+INSERT INTO Cuisinier (Id_cuisinier, Mdp, Nom_cuisinier, Prenom_cuisinier) VALUES ('3430', '8%.+\Z?d', 'Weber', 'Thomas');
+INSERT INTO Cuisinier (Id_cuisinier, Mdp, Nom_cuisinier, Prenom_cuisinier) VALUES ('4987', '.T^rl^r{', 'Muller', 'Laurence');

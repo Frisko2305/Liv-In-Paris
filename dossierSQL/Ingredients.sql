@@ -1,0 +1,15 @@
+INSERT INTO Ingredients (Id_ingredient, Nom, Quantite) VALUES ('371', 'Farine', '487');
+INSERT INTO Ingredients (Id_ingredient, Nom, Quantite) VALUES ('721', 'Sucre', '123');
+INSERT INTO Ingredients (Id_ingredient, Nom, Quantite) VALUES ('872', 'Beurre', '58');
+INSERT INTO Ingredients (Id_ingredient, Nom, Quantite) VALUES ('154', 'Lait', '381');
+INSERT INTO Ingredients (Id_ingredient, Nom, Quantite) VALUES ('951', 'Œufs', '226');
+INSERT INTO Ingredients (Id_ingredient, Nom, Quantite) VALUES ('707', 'Sel', '386');
+INSERT INTO Ingredients (Id_ingredient, Nom, Quantite) VALUES ('435', 'Poivre', '93');
+INSERT INTO Ingredients (Id_ingredient, Nom, Quantite) VALUES ('312', 'Tomates', '281');
+INSERT INTO Ingredients (Id_ingredient, Nom, Quantite) VALUES ('648', 'Poulet', '304');
+INSERT INTO Ingredients (Id_ingredient, Nom, Quantite) VALUES ('143', 'Pâtes', '136');
+INSERT INTO Ingredients (Id_ingredient, Nom, Quantite) VALUES ('578', 'Riz', '435');
+INSERT INTO Ingredients (Id_ingredient, Nom, Quantite) VALUES ('577', 'Fromage', '185');
+INSERT INTO Ingredients (Id_ingredient, Nom, Quantite) VALUES ('353', 'Oignons', '261');
+INSERT INTO Ingredients (Id_ingredient, Nom, Quantite) VALUES ('732', 'Ail', '64');
+INSERT INTO Ingredients (Id_ingredient, Nom, Quantite) VALUES ('348', 'Persil', '109');

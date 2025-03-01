@@ -1,0 +1,15 @@
+INSERT INTO Livraison (Num_Rue, Rue, CP, Ville, Id_commande) VALUES ('12', 'Rue de Rivoli', '75001', 'Paris', '7008');
+INSERT INTO Livraison (Num_Rue, Rue, CP, Ville, Id_commande) VALUES ('45', 'Avenue des Champs-Élysées', '75008', 'Paris', '6287');
+INSERT INTO Livraison (Num_Rue, Rue, CP, Ville, Id_commande) VALUES ('78', 'Boulevard Haussmann', '75009', 'Paris', '7364');
+INSERT INTO Livraison (Num_Rue, Rue, CP, Ville, Id_commande) VALUES ('23', 'Rue Saint-Honoré', '75001', 'Paris', '4213');
+INSERT INTO Livraison (Num_Rue, Rue, CP, Ville, Id_commande) VALUES ('56', 'Avenue Foch', '75116', 'Paris', '5210');
+INSERT INTO Livraison (Num_Rue, Rue, CP, Ville, Id_commande) VALUES ('34', 'Rue Lafayette', '75009', 'Paris', '7593');
+INSERT INTO Livraison (Num_Rue, Rue, CP, Ville, Id_commande) VALUES ('89', 'Boulevard Saint-Michel', '75005', 'Paris', '1074');
+INSERT INTO Livraison (Num_Rue, Rue, CP, Ville, Id_commande) VALUES ('67', 'Rue de la Paix', '75002', 'Paris', '8626');
+INSERT INTO Livraison (Num_Rue, Rue, CP, Ville, Id_commande) VALUES ('11', 'Avenue de l''Opéra', '75001', 'Paris', '2480');
+INSERT INTO Livraison (Num_Rue, Rue, CP, Ville, Id_commande) VALUES ('90', 'Rue du Faubourg Saint-Honoré', '75008', 'Paris', '2404');
+INSERT INTO Livraison (Num_Rue, Rue, CP, Ville, Id_commande) VALUES ('55', 'Boulevard Malesherbes', '75008', 'Paris', '2315');
+INSERT INTO Livraison (Num_Rue, Rue, CP, Ville, Id_commande) VALUES ('42', 'Rue de Turenne', '75003', 'Paris', '4528');
+INSERT INTO Livraison (Num_Rue, Rue, CP, Ville, Id_commande) VALUES ('31', 'Boulevard de Sébastopol', '75002', 'Paris', '1385');
+INSERT INTO Livraison (Num_Rue, Rue, CP, Ville, Id_commande) VALUES ('77', 'Avenue Victor Hugo', '75116', 'Paris', '1696');
+INSERT INTO Livraison (Num_Rue, Rue, CP, Ville, Id_commande) VALUES ('25', 'Rue Réaumur', '75002', 'Paris', '7899');

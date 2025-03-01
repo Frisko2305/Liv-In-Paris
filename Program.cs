@@ -47,7 +47,7 @@ namespace Liv_In_Paris
 
             if(connexite == graphe.Noeuds_Pte.Count)
             {
-                Console.WriteLine("Ce graphe est connexe !");
+                Console.WriteLine("\nCe graphe est connexe !");
             }
 
             Console.WriteLine("\n\nMaintenant nous allons créer les scripts SQL des tables à peupler dans la BDD");
@@ -152,7 +152,7 @@ namespace Liv_In_Paris
                     }
                 }
 
-                Console.WriteLine("Tous les fichiers ont été traités avec succès !");
+                Console.WriteLine("\n\nTous les fichiers ont été traités avec succès !");
             }
     }
 }
