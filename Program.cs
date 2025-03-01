@@ -20,6 +20,8 @@ namespace Liv_In_Paris
             Application.SetCompatibleTextRenderingDefault(false);
             GraphVisualizer.AfficherGraphe(graphe);
 
+            graphe.AfficherProprietes();
+
             Console.WriteLine("Nœuds du graphe :");
             foreach (var noeud in graphe.Noeuds_Pte)
             {
