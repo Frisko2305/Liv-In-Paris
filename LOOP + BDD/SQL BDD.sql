@@ -43,9 +43,13 @@ CREATE TABLE Plat(
 );
 
 CREATE TABLE Livraison(
-   Adresse_de_livraison VARCHAR(50),
-   PRIMARY KEY(Adresse_de_livraison)
+   Num_Rue INT,
+   Rue VARCHAR(50),
+   CP INT,
+   Ville VARCHAR(50),
+   PRIMARY KEY(Num_Rue, Rue, CP, Ville)
 );
+
 
 CREATE TABLE Ingredients(
    Id_ingredient VARCHAR(50),
