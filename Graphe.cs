@@ -150,14 +150,21 @@ namespace Liv_In_Paris
             return check_connexité;
         }
 
-        public void ParcoursDFS(Noeuds depart)
+              public void ParcoursDFS(Noeuds depart)
         {
             var visite = new HashSet<Noeuds>();
             var stack = new Stack<Noeuds>();
-            stack.Push(depart);
+            var indexNoeud = new Dictionary<Noeuds, int>();
+
+            /// Préparer l'indexation pour un accès rapide aux indices des nœuds
+            for (int i = 0; i < noeuds.Count; i++)
+            {
+                indexNoeud[noeuds[i]] = i;
+            }
 
             int[,] matriceAdjacence = CreerMatriceAdjacence();
-            int indexDepart = noeuds.IndexOf(depart);
+
+            stack.Push(depart);
 
             while (stack.Count > 0)
             {
@@ -167,10 +174,12 @@ namespace Liv_In_Paris
                     visite.Add(noeud);
                     Console.Write(noeud.Numero + " ");
 
-                    int indexNoeud = noeuds.IndexOf(noeud);
-                    for (int i = 0; i < matriceAdjacence.GetLength(0); i++)
+                    int indexNoeudCourant = indexNoeud[noeud];
+
+                    /// Ajouter les voisins en ordre inverse pour un meilleur comportement avec la pile
+                    for (int i = matriceAdjacence.GetLength(0) - 1; i >= 0; i--)
                     {
-                        if (matriceAdjacence[indexNoeud, i] == 1 && !visite.Contains(noeuds[i]))
+                        if (matriceAdjacence[indexNoeudCourant, i] == 1 && !visite.Contains(noeuds[i]))
                         {
                             stack.Push(noeuds[i]);
                         }
@@ -178,6 +187,34 @@ namespace Liv_In_Paris
                 }
             }
             Console.WriteLine();
+        }
+
+        ///BONUS
+
+        /// Méthode pour obtenir l'ordre du graphe
+        public int ObtenirOrdre()
+        {
+            return noeuds.Count;
+        }
+
+
+        /// Méthode pour obtenir la taille du graphe
+        public int ObtenirTaille()
+        {
+            return liens.Count;
+        }
+
+        public bool EstOriente()
+        {
+            /// non orienté
+            return false;
+        }
+
+        public void AfficherProprietes()
+        {
+            Console.WriteLine($"Ordre du graphe : {ObtenirOrdre()}");
+            Console.WriteLine($"Taille du graphe : {ObtenirTaille()}");
+            Console.WriteLine($"Le graphe est {(EstOriente() ? "orienté" : "non orienté")}");
         }
 
 
