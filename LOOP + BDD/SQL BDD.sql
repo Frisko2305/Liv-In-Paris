@@ -152,9 +152,10 @@ CREATE TABLE Contient_(
 
 			-- Requetes simples
             
-SELECT *
+SELECT COUNT(*)
 FROM Client
-WHERE Ville = 'Paris';
+JOIN Particulier ON Client.Nom_particulier = Particulier.Nom
+WHERE Particulier.Ville = 'Paris';
 
 SELECT *
 FROM Ingredients
