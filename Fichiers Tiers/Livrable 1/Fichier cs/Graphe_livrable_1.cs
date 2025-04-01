@@ -8,7 +8,7 @@ using System.IO;
 
 namespace Liv_In_Paris
 {
-    internal class Graphe
+    internal class GrapheLivrable1
     {
         /// private string[,] Graph_association;
         /// private int taille;
