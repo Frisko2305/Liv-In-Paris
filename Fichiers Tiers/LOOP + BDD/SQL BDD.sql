@@ -18,7 +18,7 @@ CREATE TABLE Entreprise(
    SIRET BIGINT,
    Nom_entreprise VARCHAR(50),
    Nom_referent VARCHAR(50),
-   Num_tel_referent CHAR(10),
+   Num_tel_referent CHAR(14),
    Num_Rue INT,
    Rue VARCHAR(50),
    CP INT,
