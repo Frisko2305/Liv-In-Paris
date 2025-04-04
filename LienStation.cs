@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace Liv_In_Paris
 {
-    class LienStation
+    class LienStation<T>
     {
 
         private int id;
         private string nom;
-        private NoeudsStation id_precedent;
-        private NoeudsStation id_suivant;
+        private NoeudsStation<T> id_precedent;
+        private NoeudsStation<T>? id_suivant;
         private int poids;
 
 
@@ -29,20 +29,17 @@ namespace Liv_In_Paris
             set { nom = value ; }
         }
 
-        public NoeudsStation Id_precedent
+        public NoeudsStation<T> Id_precedent
         {
-            get { return Id_precedent; }
+            get { return id_precedent; }
             set { id_precedent = value; }
         }
 
-        public NoeudsStation Id_suivant
+        public NoeudsStation<T>? Id_suivant
         {
-            get { return Id_suivant; }
+            get { return id_suivant; }
             set { id_suivant = value; }
         }
-
-
-
         public int Poids
         {
             get { return poids; }
@@ -50,7 +47,7 @@ namespace Liv_In_Paris
         }
 
 
-        public LienStation(int id, string nom, NoeudsStation id_precedent,NoeudsStation id_suivant, int poids = 1)
+        public LienStation(int id, string nom, NoeudsStation<T> id_precedent,NoeudsStation<T> id_suivant, int poids = 1)
         {
             this.id = id;
             this.nom = nom;
@@ -58,7 +55,5 @@ namespace Liv_In_Paris
             this.id_suivant = id_suivant;
             this.poids = poids;
         }
-
-
     }
 }

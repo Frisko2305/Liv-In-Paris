@@ -7,108 +7,52 @@ namespace Liv_In_Paris
         static void Main(string[] args)
         {
             /// Création du graphe
-            Graphe graphe = new Graphe();
+            Graphe<double> graphe = new Graphe<double>();
+            List<NoeudsStation<double>> noeuds = graphe.Noeuds_Pte;
+            List<LienStation<double>> liens = graphe.Liens_Pte;
 
-
-
-            /// Positionner les nœuds en cercle
- 
+            PeuplementTable(graphe);
 
             /// Démarrer l'affichage du graphe
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            GraphVisualizer.AfficherGraphe(graphe);
+            GraphVisualizer<double>.AfficherGraphe(graphe);
 
-            graphe.AfficherProprietes();
+            NoeudsStation<double> noeudDepart = graphe.RechercherNoeud(2); // Exemple de nœud de départ
+            NoeudsStation<double> noeudDestination = graphe.RechercherNoeud(10); // Exemple de nœud de destination
 
-            Console.WriteLine("Nœuds du graphe :");
-            foreach (var noeud in graphe.Noeuds_Pte)
-            {
-                Console.Write(noeud.Id + " ");
-            }
-            
-            Console.WriteLine();
-            
-            /// Choisir un nœud de départ pour les parcours
-            /// Supposons que nous voulons commencer par le premier nœud
-            
-            NoeudsStation noeudDepart = graphe.Noeuds_Pte[33];
 
-            /// Pour vérifier la connexité du graphe, on a qu'a vérifié si la liste des noeuds visités (en DFS ou BFS) et de la même longueur que la liste des noeuds du graphe
-
-            /// Effectuer un parcours en largeur (BFS)
-            Console.WriteLine("\nParcours en largeur (BFS) à partir du nœud " + noeudDepart.Id + ":");
-            int connexite = graphe.ParcoursBFS(noeudDepart);
-
-            /// Effectuer un parcours en profondeur (DFS)
-            Console.WriteLine("\nParcours en profondeur (DFS) à partir du nœud " + noeudDepart.Id + ":");
-            graphe.ParcoursDFS(noeudDepart);
-
-            if(connexite == graphe.Noeuds_Pte.Count)
-            {
-                Console.WriteLine("\nCe graphe est connexe !");
-            }
-
-            Console.WriteLine("\n\nMaintenant nous allons créer les scripts SQL des tables à peupler dans la BDD");
-            PeuplementTable(graphe);
+            DijkstraTest(graphe, noeudDepart, noeudDestination, noeuds);
+            BellmanFordTest(graphe, noeudDepart, noeudDestination, noeuds, liens);
+            FloydWarshallTest(graphe, noeudDepart, noeudDestination, noeuds);
         }
 
 
 
-            static void PeuplementTable(Graphe graphe)
+            static void PeuplementTable(Graphe<double> graphe)
             {
                 // Enregistrer le fournisseur d'encodage pour éviter l'erreur IBM437
                 System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
 
-                // Dossier contenant les fichiers Excel
-                string dossierExcel = @"dossierEXCEL";
+                // Récupérer le fichier .xlsx à la racine du projet
+                string fichiersExcel = Path.Combine(Directory.GetCurrentDirectory(), "MetroParis.xlsx");
 
-
-                // Vérifier si le dossier existe
-                if (!Directory.Exists(dossierExcel))
-                {
-                    Console.WriteLine("Le dossier Excel spécifié n'existe pas.");
-                    return;
-                }
-
-
-
-                // Récupérer tous les fichiers .xlsx dans le dossier
-                var fichiersExcel = Directory.GetFiles(dossierExcel, "*.xlsx");
-
-                if (fichiersExcel.Length == 0)
-                {
-                    Console.WriteLine("Aucun fichier Excel trouvé dans le dossier.");
-                    return; // Sortir de la méthode si aucun fichier n'est trouvé
-                }
-
-                // Récupérer le premier fichier Excel
-                string fichierExcel = fichiersExcel[0];
-
-                // Vérifier si le chemin du fichier est valide
-                if (string.IsNullOrEmpty(fichierExcel))
-                {
-                    Console.WriteLine("Le chemin du fichier est vide ou nul.");
-                    return; // Sortir de la méthode ou gérer l'erreur comme nécessaire
-                }
 
                 // Vérifier si le fichier existe
-                if (!File.Exists(fichierExcel))
+                if (!File.Exists(fichiersExcel))
                 {
-                    Console.WriteLine($"Le fichier spécifié n'existe pas : {fichierExcel}");
+                    Console.WriteLine($"Le fichier spécifié n'existe pas : {fichiersExcel}");
                     return; // Sortir de la méthode ou gérer l'erreur comme nécessaire
                 }
 
                 // Créer un objet FileInfo
-                FileInfo fileInfo = new FileInfo(fichierExcel);
-                Console.WriteLine($"Traitement du fichier : {fileInfo.Name}");
+                FileInfo fileInfo = new FileInfo(fichiersExcel);
 
                 using (var package = new ExcelPackage(fileInfo))
                 {
                     // Parcourir toutes les feuilles
                     foreach (var feuille in package.Workbook.Worksheets)
                     {
-
                         int ligCount = feuille.Dimension.End.Row;
                         int colCount = feuille.Dimension.End.Column;
 
@@ -119,74 +63,154 @@ namespace Liv_In_Paris
                         }
 
                         string[,] donnees = new string[ligCount - 1, colCount];
-                        for(int i=0; i<donnees.GetLength(0); i++)
+                        for (int i = 0; i < donnees.GetLength(0); i++)
                         {
-                        
-                            for(int j=0; j<donnees.GetLength(1); j++)
+                            for (int j = 0; j < donnees.GetLength(1); j++)
                             {
-                                donnees[i, j] = feuille.Cells[i + 1, j].Text.Trim();
+                                // Vérifier si la cellule existe avant d'y accéder
+                                if (feuille.Cells[i + 2, j + 1] != null) // i + 2 pour ignorer l'en-tête
+                                {
+                                    donnees[i, j] = feuille.Cells[i + 2, j + 1].Text.Trim();
+                                }
+                                else
+                                {
+                                    donnees[i, j] = string.Empty; // Valeur par défaut si la cellule est vide
+                                }
                             }
                         }
-
-                    RemplirGraphe(donnees, graphe);
+                        RemplirGraphe(donnees, graphe );
                     }
                 }
-
-
             }
 
-            static void RemplirGraphe(string[,] mat, Graphe graphe)
+            static void RemplirGraphe(string[,] mat, Graphe<double> graphe)
             {
-                if(mat.GetLength(1)>5)
+                if(mat.GetLength(1)> 6)
                 {
                     for (int i = 0; i < mat.GetLength(0); i++)
                     {
-                        if (mat[i, 1] == null || mat[i, 2] == null || mat[i, 3] == null || mat[i, 4] == null || mat[i, 5] == null || mat[i, 6] == null || mat[i, 7] == null)
+                        if (mat[i, 0] == null || mat[i, 1] == null || mat[i, 2] == null || mat[i, 3] == null || mat[i, 4] == null || mat[i, 5] == null || mat[i, 6] == null)
                         {
                             continue;
                         }
                         else
                         {
 
-                            graphe.AjouterNoeud(new NoeudsStation(Convert.ToInt32(mat[i, 1]), Convert.ToInt32(mat[i, 2]), mat[i, 3], Convert.ToDouble(mat[i, 4]), Convert.ToDouble(mat[i, 5]), mat[i, 6], Convert.ToInt32(mat[i, 7]), ExistenceStation(mat[i, 3], graphe)));
+                            graphe.AjouterNoeud(new NoeudsStation<double>(Convert.ToInt32(mat[i, 0]), mat[i, 1], mat[i, 2], Convert.ToDouble(mat[i, 3]), Convert.ToDouble(mat[i, 4]), mat[i, 5], Convert.ToInt32(mat[i, 6])));
                         }
 
                     }
                 }
                 else
                 {
-                for (int i = 0; i < mat.GetLength(0); i++)
-                {
-                    if (mat[i, 1] == null || mat[i, 2] == null || mat[i, 3] == null || mat[i, 4] == null || mat[i, 5] == null )
+                    for (int i = 0; i < mat.GetLength(0); i++)
                     {
-                        continue;
-                    }
-                    else
-                    {
-                        
-                        graphe.AjouterLien(new LienStation(Convert.ToInt32(mat[i, 1]), mat[i, 2], graphe.RechercherNoeud(Convert.ToInt32(mat[i, 3])), graphe.RechercherNoeud(Convert.ToInt32(mat[i, 4])), Convert.ToInt32(mat[i, 5])));
-                    }
 
+                        if (mat[i, 2] == "")    //quand l'id_precedant est vide
+                        {
+                            continue;
+                        }
+                        else if(mat[i, 0] == "" && mat[i, 1] == "" && mat[i,2] == "" && mat[i,3] == "" && mat[i, 4] == "" && mat[i, 5] == "")   //quand on est à la dernière ligne, que du vide
+                        {
+                            continue;
+                        }
+                        else if(mat[i,3] == "") //quand l'id_suivant est vide
+                        {
+                            graphe.AjouterLien(new LienStation<double>(Convert.ToInt32(mat[i, 0]), mat[i, 1], graphe.RechercherNoeud(Convert.ToInt32(mat[i, 2])), null, Convert.ToInt32(mat[i, 4])));
+                        }
+                        else
+                        {
+                            graphe.AjouterLien(new LienStation<double>(Convert.ToInt32(mat[i, 0]), mat[i, 1], graphe.RechercherNoeud(Convert.ToInt32(mat[i, 2])), graphe.RechercherNoeud(Convert.ToInt32(mat[i, 3])), Convert.ToInt32(mat[i, 4])));
+                        }
+                    }
                 }
+                LienParCorrespondance(graphe);
             }
-                
-            }
 
 
 
-        static int ExistenceStation(string nom, Graphe graphe)
+        static void LienParCorrespondance(Graphe<double> graphe)
         {
-            int compteur = 0;
-            if(graphe.Noeuds_Pte!=null)
-            foreach(NoeudsStation noeud in graphe.Noeuds_Pte)
+            Random random = new Random();
+            for(int i = 0 ; i < graphe.Noeuds_Pte.Count ; i++)
             {
-                if(noeud.Nom==nom)
+                for(int j = i+1 ; j < graphe.Noeuds_Pte.Count ; j++)
                 {
-                    compteur++;
+                    if(graphe.Noeuds_Pte[i].Nom == graphe.Noeuds_Pte[j].Nom)
+                    {
+                        int corres = random.Next(1,7);
+                        graphe.AjouterLien(new LienStation<double>(graphe.Noeuds_Pte[i].Id, graphe.Noeuds_Pte[i].Nom, graphe.Noeuds_Pte[j], null, corres ));
+                        graphe.AjouterLien(new LienStation<double>(graphe.Noeuds_Pte[j].Id, graphe.Noeuds_Pte[j].Nom, graphe.Noeuds_Pte[i], null, corres ));
+                    }
                 }
             }
-            return compteur;
         }
+
+        ///Methode de test des programmes de plus courts chemins
+        static void DijkstraTest(Graphe<double> graphe, NoeudsStation<double> noeudDepart, NoeudsStation<double> noeudDestination, List<NoeudsStation<double>> noeuds)
+
+             {
+
+            var distances = graphe.Dijkstra(noeudDepart, noeuds, graphe);
+
+                 if (distances.ContainsKey(noeudDestination))
+                 {
+                     Console.WriteLine($"La distance minimale entre le nœud {noeudDepart.Id} et le nœud {noeudDestination.Id} est : {distances[noeudDestination]}");
+                 }
+                 else
+                 {
+                     Console.WriteLine("Il n'y a pas de chemin entre le nœud de départ et le nœud de destination.");
+                 }
+             }
         
+        static void BellmanFordTest(Graphe<double> graphe, NoeudsStation<double> noeudDepart, NoeudsStation<double> noeudDestination, List<NoeudsStation<double>> noeuds, List<LienStation<double>> liens)
+        {
+            try
+            {
+                // Exécuter l'algorithme de Bellman-Ford
+                var distances = graphe.BellmanFord(noeudDepart, noeuds, liens);
+
+                // Afficher la distance minimale entre le nœud de départ et le nœud de destination
+                if (distances.ContainsKey(noeudDestination))
+                {
+                    Console.WriteLine($"La distance minimale entre le nœud {noeudDepart.Id} et le nœud {noeudDestination.Id} est : {distances[noeudDestination]}");
+                }
+                else
+                {
+                    Console.WriteLine("Il n'y a pas de chemin entre le nœud de départ et le nœud de destination.");
+                }
+            }
+            catch (InvalidOperationException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }  
+
+        static void FloydWarshallTest(Graphe<double> graphe, NoeudsStation<double> noeudDepart, NoeudsStation<double> noeudDestination, List<NoeudsStation<double>> noeuds)
+        {
+            try
+            {
+                // Exécuter l'algorithme de Floyd-Warshall
+                int[,] distances = graphe.FloydWarshall(noeuds, graphe);
+
+                // Obtenir les indices des nœuds de départ et de destination
+                int indexDepart = graphe.Noeuds_Pte.IndexOf(noeudDepart);
+                int indexDestination = graphe.Noeuds_Pte.IndexOf(noeudDestination);
+
+                // Afficher la distance minimale entre le nœud de départ et le nœud de destination
+                if (distances[indexDepart, indexDestination] != int.MaxValue)
+                {
+                    Console.WriteLine($"La distance minimale entre le nœud {noeudDepart.Id} et le nœud {noeudDestination.Id} est : {distances[indexDepart, indexDestination]}");
+                }
+                else
+                {
+                    Console.WriteLine("Il n'y a pas de chemin entre le nœud de départ et le nœud de destination.");
+                }
+            }
+            catch (InvalidOperationException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
     }
 }

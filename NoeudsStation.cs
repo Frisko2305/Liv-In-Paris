@@ -6,16 +6,15 @@ using System.Threading.Tasks;
 
 namespace Liv_In_Paris
 {
-    class NoeudsStation
+    class NoeudsStation<T>
     {
         private int id;
-        private int libelle;
+        private string libelle;
         private string nom;
-        private double longitude;
-        private double latitude;
+        private T longitude;
+        private T latitude;
         private string communenom;
         private int codeInsee;
-        private int z;
 
 
         public int Id
@@ -24,7 +23,7 @@ namespace Liv_In_Paris
             set { id = value; }
         }
 
-        public int Libelle
+        public string Libelle
         {
             get { return libelle; }
             set { libelle = value; }
@@ -36,7 +35,7 @@ namespace Liv_In_Paris
             set { nom = value; }
         }
 
-        public double Longitude
+        public T Longitude
         {
             get { return longitude; }
             set { longitude = value; }
@@ -44,7 +43,7 @@ namespace Liv_In_Paris
         }
 
 
-        public double Latitude
+        public T Latitude
         {
             get { return latitude; }
             set { latitude = value; }
@@ -63,20 +62,13 @@ namespace Liv_In_Paris
             set { codeInsee = value; }
         }
 
-        public int Z
-        {
-            get { return z; }
-            set { z = value; }
-        }
-
-        public NoeudsStation(int son_id, int libelle, string nom, double longitude, double latitude,   string communenom, int codeInsee, int z)
+        public NoeudsStation(int son_id, string libelle, string nom, T longitude, T latitude,   string communenom, int codeInsee)
         {
             this.id = son_id;
             this.libelle = libelle;
             this.nom = nom;
             this.longitude = longitude;
             this.latitude = latitude;
-            this.z = z;
             this.communenom = communenom;
             this.codeInsee = codeInsee;
         }
