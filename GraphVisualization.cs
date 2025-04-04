@@ -115,31 +115,11 @@ namespace Liv_In_Paris
             double longitude = Convert.ToDouble(noeud.Longitude);
             double latitude = Convert.ToDouble(noeud.Latitude);
 
-            float x = (float)((longitude - minLongitude) / (maxLongitude - minLongitude) * (Largeur - 2 * RayonNoeud) + RayonNoeud);
-            float y = (float)((latitude - minLatitude) / (maxLatitude - minLatitude) * (Hauteur - 2 * RayonNoeud) + RayonNoeud);
+            float x = (float)((longitude - minLongitude) / (maxLongitude - minLongitude) * Largeur);
+            float y = (float)((latitude - minLatitude) / (maxLatitude - minLatitude) * Hauteur);
 
             y = Hauteur - y;
             return new PointF(x, y);
         }
-
-        private double ConvertLongitue(NoeudsStation<T> noeud)
-        {
-            dynamic longitude = noeud.Longitude; 
-            return (longitude + 73.0) * 10;
-        }
-
-
-        private double ConvertLatitude(NoeudsStation<T> noeud)
-        {
-            dynamic latitude = noeud.Latitude;
-            return (90.0 - latitude) * 10;
-        }
-
-        static double ConvertParametre(T value)
-        {
-            dynamic convert = value;
-            return convert;
-        }
-
     }
 }

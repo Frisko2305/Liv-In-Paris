@@ -25,6 +25,10 @@ namespace Liv_In_Paris
             DijkstraTest(graphe, noeudDepart, noeudDestination, noeuds);
             BellmanFordTest(graphe, noeudDepart, noeudDestination, noeuds, liens);
             FloydWarshallTest(graphe, noeudDepart, noeudDestination, noeuds);
+
+            //Partie Interface 
+            PrésentationForm mainForm = new PrésentationForm();
+            Application.Run(mainForm);
         }
 
 
