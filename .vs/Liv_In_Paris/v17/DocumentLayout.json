@@ -1,0 +1,125 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\maxia\\Documents\\Ecole\\projet info\\Liv-In-Paris\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{CB5F3A79-2AFE-BEE2-A5DB-A3D986B3A845}|Liv_In_Paris.csproj|c:\\users\\maxia\\documents\\ecole\\projet info\\liv-in-paris\\graphe.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CB5F3A79-2AFE-BEE2-A5DB-A3D986B3A845}|Liv_In_Paris.csproj|solutionrelative:graphe.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CB5F3A79-2AFE-BEE2-A5DB-A3D986B3A845}|Liv_In_Paris.csproj|c:\\users\\maxia\\documents\\ecole\\projet info\\liv-in-paris\\noeudsstation.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CB5F3A79-2AFE-BEE2-A5DB-A3D986B3A845}|Liv_In_Paris.csproj|solutionrelative:noeudsstation.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CB5F3A79-2AFE-BEE2-A5DB-A3D986B3A845}|Liv_In_Paris.csproj|c:\\users\\maxia\\documents\\ecole\\projet info\\liv-in-paris\\lienstation.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CB5F3A79-2AFE-BEE2-A5DB-A3D986B3A845}|Liv_In_Paris.csproj|solutionrelative:lienstation.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CB5F3A79-2AFE-BEE2-A5DB-A3D986B3A845}|Liv_In_Paris.csproj|c:\\users\\maxia\\documents\\ecole\\projet info\\liv-in-paris\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CB5F3A79-2AFE-BEE2-A5DB-A3D986B3A845}|Liv_In_Paris.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CB5F3A79-2AFE-BEE2-A5DB-A3D986B3A845}|Liv_In_Paris.csproj|c:\\users\\maxia\\documents\\ecole\\projet info\\liv-in-paris\\graphvisualization.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CB5F3A79-2AFE-BEE2-A5DB-A3D986B3A845}|Liv_In_Paris.csproj|solutionrelative:graphvisualization.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 9,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "GraphVisualization.cs",
+              "DocumentMoniker": "C:\\Users\\maxia\\Documents\\Ecole\\projet info\\Liv-In-Paris\\GraphVisualization.cs",
+              "RelativeDocumentMoniker": "GraphVisualization.cs",
+              "ToolTip": "C:\\Users\\maxia\\Documents\\Ecole\\projet info\\Liv-In-Paris\\GraphVisualization.cs",
+              "RelativeToolTip": "GraphVisualization.cs",
+              "ViewState": "AgIAABMAAAAAAAAAAAAgwDYAAABOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-04T07:34:39.813Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c64b9c2-e352-428e-a56d-0ace190b99a6}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\maxia\\Documents\\Ecole\\projet info\\Liv-In-Paris\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "C:\\Users\\maxia\\Documents\\Ecole\\projet info\\Liv-In-Paris\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAABMAAAAAAAAAAAAgwCgAAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-04T07:36:53.268Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "NoeudsStation.cs",
+              "DocumentMoniker": "C:\\Users\\maxia\\Documents\\Ecole\\projet info\\Liv-In-Paris\\NoeudsStation.cs",
+              "RelativeDocumentMoniker": "NoeudsStation.cs",
+              "ToolTip": "C:\\Users\\maxia\\Documents\\Ecole\\projet info\\Liv-In-Paris\\NoeudsStation.cs",
+              "RelativeToolTip": "NoeudsStation.cs",
+              "ViewState": "AgIAADsAAAAAAAAAAAA8wA4AAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-04T07:36:51.324Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "LienStation.cs",
+              "DocumentMoniker": "C:\\Users\\maxia\\Documents\\Ecole\\projet info\\Liv-In-Paris\\LienStation.cs",
+              "RelativeDocumentMoniker": "LienStation.cs",
+              "ToolTip": "C:\\Users\\maxia\\Documents\\Ecole\\projet info\\Liv-In-Paris\\LienStation.cs",
+              "RelativeToolTip": "LienStation.cs",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAxwAgAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-04T07:34:58.543Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Graphe.cs",
+              "DocumentMoniker": "C:\\Users\\maxia\\Documents\\Ecole\\projet info\\Liv-In-Paris\\Graphe.cs",
+              "RelativeDocumentMoniker": "Graphe.cs",
+              "ToolTip": "C:\\Users\\maxia\\Documents\\Ecole\\projet info\\Liv-In-Paris\\Graphe.cs",
+              "RelativeToolTip": "Graphe.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAKYAAAAXAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-04T07:34:52.272Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
