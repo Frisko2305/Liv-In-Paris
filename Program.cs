@@ -9,11 +9,10 @@ namespace Liv_In_Paris
             /// Création du graphe
             Graphe graphe = new Graphe();
 
-            /// Chargement des données depuis le fichier
-            graphe.ChargerDepuisFichier();
+
 
             /// Positionner les nœuds en cercle
-            graphe.PlacerNoeudsEnCercle(800, 800);
+ 
 
             /// Démarrer l'affichage du graphe
             Application.EnableVisualStyles();
@@ -25,7 +24,7 @@ namespace Liv_In_Paris
             Console.WriteLine("Nœuds du graphe :");
             foreach (var noeud in graphe.Noeuds_Pte)
             {
-                Console.Write(noeud.Numero + " ");
+                Console.Write(noeud.Id + " ");
             }
             
             Console.WriteLine();
@@ -33,16 +32,16 @@ namespace Liv_In_Paris
             /// Choisir un nœud de départ pour les parcours
             /// Supposons que nous voulons commencer par le premier nœud
             
-            Noeuds noeudDepart = graphe.Noeuds_Pte[33];
+            NoeudsStation noeudDepart = graphe.Noeuds_Pte[33];
 
             /// Pour vérifier la connexité du graphe, on a qu'a vérifié si la liste des noeuds visités (en DFS ou BFS) et de la même longueur que la liste des noeuds du graphe
 
             /// Effectuer un parcours en largeur (BFS)
-            Console.WriteLine("\nParcours en largeur (BFS) à partir du nœud " + noeudDepart.Numero + ":");
+            Console.WriteLine("\nParcours en largeur (BFS) à partir du nœud " + noeudDepart.Id + ":");
             int connexite = graphe.ParcoursBFS(noeudDepart);
 
             /// Effectuer un parcours en profondeur (DFS)
-            Console.WriteLine("\nParcours en profondeur (DFS) à partir du nœud " + noeudDepart.Numero + ":");
+            Console.WriteLine("\nParcours en profondeur (DFS) à partir du nœud " + noeudDepart.Id + ":");
             graphe.ParcoursDFS(noeudDepart);
 
             if(connexite == graphe.Noeuds_Pte.Count)
@@ -51,17 +50,19 @@ namespace Liv_In_Paris
             }
 
             Console.WriteLine("\n\nMaintenant nous allons créer les scripts SQL des tables à peupler dans la BDD");
-            PeuplementTable();
+            PeuplementTable(graphe);
         }
 
-            static void PeuplementTable()
+
+
+            static void PeuplementTable(Graphe graphe)
             {
                 // Enregistrer le fournisseur d'encodage pour éviter l'erreur IBM437
                 System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
 
                 // Dossier contenant les fichiers Excel
                 string dossierExcel = @"dossierEXCEL";
-                string dossierSQL = @"dossierSQL";
+
 
                 // Vérifier si le dossier existe
                 if (!Directory.Exists(dossierExcel))
@@ -70,89 +71,122 @@ namespace Liv_In_Paris
                     return;
                 }
 
-                // Créer le dossier SQL s'il n'existe pas
-                if (!Directory.Exists(dossierSQL))
-                {
-                    Directory.CreateDirectory(dossierSQL);
-                }
+
 
                 // Récupérer tous les fichiers .xlsx dans le dossier
-                string[] fichiersExcel = Directory.GetFiles(dossierExcel, "*.xlsx");
+                var fichiersExcel = Directory.GetFiles(dossierExcel, "*.xlsx");
 
                 if (fichiersExcel.Length == 0)
                 {
                     Console.WriteLine("Aucun fichier Excel trouvé dans le dossier.");
-                    return;
+                    return; // Sortir de la méthode si aucun fichier n'est trouvé
                 }
 
-                // Traiter chaque fichier Excel
-                foreach (var fichierExcel in fichiersExcel)
+                // Récupérer le premier fichier Excel
+                string fichierExcel = fichiersExcel[0];
+
+                // Vérifier si le chemin du fichier est valide
+                if (string.IsNullOrEmpty(fichierExcel))
                 {
-                    FileInfo fileInfo = new FileInfo(fichierExcel);
-                    string nomFichierSansExtension = Path.GetFileNameWithoutExtension(fileInfo.Name);
-                    string cheminFichierSQL = Path.Combine(dossierSQL, $"{nomFichierSansExtension}.sql");
+                    Console.WriteLine("Le chemin du fichier est vide ou nul.");
+                    return; // Sortir de la méthode ou gérer l'erreur comme nécessaire
+                }
 
-                    using (var package = new ExcelPackage(fileInfo))
+                // Vérifier si le fichier existe
+                if (!File.Exists(fichierExcel))
+                {
+                    Console.WriteLine($"Le fichier spécifié n'existe pas : {fichierExcel}");
+                    return; // Sortir de la méthode ou gérer l'erreur comme nécessaire
+                }
+
+                // Créer un objet FileInfo
+                FileInfo fileInfo = new FileInfo(fichierExcel);
+                Console.WriteLine($"Traitement du fichier : {fileInfo.Name}");
+
+                using (var package = new ExcelPackage(fileInfo))
+                {
+                    // Parcourir toutes les feuilles
+                    foreach (var feuille in package.Workbook.Worksheets)
                     {
-                        // Vérifier la présence d'au moins une feuille
-                        if (package.Workbook.Worksheets.Count == 0)
+
+                        int ligCount = feuille.Dimension.End.Row;
+                        int colCount = feuille.Dimension.End.Column;
+
+                        if (ligCount < 2)
                         {
-                            Console.WriteLine($"Le fichier {fileInfo.Name} ne contient aucune feuille.");
+                            Console.WriteLine($"La feuille {feuille.Name} ne contient pas de données.");
                             continue;
                         }
 
-                        // Sélectionner la première feuille
-                        var worksheet = package.Workbook.Worksheets[1];
-                        int rowCount = worksheet.Dimension.End.Row;
-                        int colCount = worksheet.Dimension.End.Column;
-
-                        if (rowCount < 2)
+                        string[,] donnees = new string[ligCount - 1, colCount];
+                        for(int i=0; i<donnees.GetLength(0); i++)
                         {
-                            Console.WriteLine($"Le fichier {fileInfo.Name} ne contient pas de données.");
-                            continue;
-                        }
-
-                        // Lire les noms des colonnes (ligne 1)
-                        string[] attributes = new string[colCount];
-                        for (int col = 1; col <= colCount; col++)
-                        {
-                            attributes[col - 1] = worksheet.Cells[1, col].Text.Trim();
-                        }
-
-                        // Ouvrir un fichier pour écrire le script SQL
-                        using (StreamWriter writer = new StreamWriter(cheminFichierSQL))
-                        {
-                            for (int row = 2; row <= rowCount; row++) // Commence à la ligne 2 pour ignorer les en-têtes
+                        
+                            for(int j=0; j<donnees.GetLength(1); j++)
                             {
-                                string values = "";
-
-                                for (int col = 1; col <= colCount; col++)
-                                {
-                                    var cellValue = worksheet.Cells[row, col].Text.Trim(); // Récupérer la valeur et enlever les espaces inutiles
-
-                                    // Vérifier si la cellule est vide pour mettre NULL
-                                    if (string.IsNullOrEmpty(cellValue))
-                                    {
-                                        values += "NULL, ";
-                                    }
-                                    else
-                                    {
-                                        cellValue = cellValue.Replace("'", "''"); // Gérer les apostrophes
-                                        values += $"'{cellValue}', ";
-                                    }
-                                }
-
-                                values = values.TrimEnd(',', ' ');
-                                string sql = $"INSERT INTO {nomFichierSansExtension} ({string.Join(", ", attributes)}) VALUES ({values});";
-                                writer.WriteLine(sql);
+                                donnees[i, j] = feuille.Cells[i + 1, j].Text.Trim();
                             }
                         }
 
-                        Console.WriteLine($"Script SQL généré pour {fileInfo.Name} → {cheminFichierSQL}");
+                    RemplirGraphe(donnees, graphe);
                     }
                 }
 
-                Console.WriteLine("\n\nTous les fichiers ont été traités avec succès !");
+
             }
+
+            static void RemplirGraphe(string[,] mat, Graphe graphe)
+            {
+                if(mat.GetLength(1)>5)
+                {
+                    for (int i = 0; i < mat.GetLength(0); i++)
+                    {
+                        if (mat[i, 1] == null || mat[i, 2] == null || mat[i, 3] == null || mat[i, 4] == null || mat[i, 5] == null || mat[i, 6] == null || mat[i, 7] == null)
+                        {
+                            continue;
+                        }
+                        else
+                        {
+
+                            graphe.AjouterNoeud(new NoeudsStation(Convert.ToInt32(mat[i, 1]), Convert.ToInt32(mat[i, 2]), mat[i, 3], Convert.ToDouble(mat[i, 4]), Convert.ToDouble(mat[i, 5]), mat[i, 6], Convert.ToInt32(mat[i, 7]), ExistenceStation(mat[i, 3], graphe)));
+                        }
+
+                    }
+                }
+                else
+                {
+                for (int i = 0; i < mat.GetLength(0); i++)
+                {
+                    if (mat[i, 1] == null || mat[i, 2] == null || mat[i, 3] == null || mat[i, 4] == null || mat[i, 5] == null )
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        
+                        graphe.AjouterLien(new LienStation(Convert.ToInt32(mat[i, 1]), mat[i, 2], graphe.RechercherNoeud(Convert.ToInt32(mat[i, 3])), graphe.RechercherNoeud(Convert.ToInt32(mat[i, 4])), Convert.ToInt32(mat[i, 5])));
+                    }
+
+                }
+            }
+                
+            }
+
+
+
+        static int ExistenceStation(string nom, Graphe graphe)
+        {
+            int compteur = 0;
+            if(graphe.Noeuds_Pte!=null)
+            foreach(NoeudsStation noeud in graphe.Noeuds_Pte)
+            {
+                if(noeud.Nom==nom)
+                {
+                    compteur++;
+                }
+            }
+            return compteur;
+        }
+        
     }
 }

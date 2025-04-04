@@ -13,116 +13,42 @@ namespace Liv_In_Paris
         /// private string[,] Graph_association;
         /// private int taille;
 
-        private List<Noeuds> noeuds;
-        private List<Liens> liens;
+        private List<NoeudsStation> noeuds;
+        private List<LienStation> liens;
 
-        public List<Liens> Liens_Pte 
+
+            
+
+        public List<LienStation> Liens_Pte 
         {
             get { return liens; }
             set { this.liens = value; }
         }
 
-        public List<Noeuds> Noeuds_Pte
+        public List<NoeudsStation> Noeuds_Pte
         {
             get { return noeuds; }
-            set { this.noeuds = value; }
+            set { this.noeuds =  value; }
         }
 
         public Graphe()
         {
-            this.noeuds = new List<Noeuds>();
-            this.liens = new List<Liens>();
+            this.noeuds = new List<NoeudsStation>();
+            this.liens = new List<LienStation>();
         }
 
 
-        public void ChargerDepuisFichier()
+        
+
+
+
+
+        
+
+        public int ParcoursBFS(NoeudsStation depart)
         {
-            string nomfichier = "soc-karate.mtx";
-
-            /// Vérifier que le fichier existe
-            if (!File.Exists(nomfichier))
-            {
-                Console.WriteLine("Erreur : Le fichier " + nomfichier + " est introuvable.");
-                return;
-            }
-
-            string[] lignes = File.ReadAllLines(nomfichier);
-            var noeudsDict = new Dictionary<int, Noeuds>();
-
-            foreach (var ligne in lignes)
-            {
-                /// Ignorer les lignes vides ou qui commencent par '%'
-                if (string.IsNullOrWhiteSpace(ligne) || ligne.StartsWith("%"))
-                    continue;
-
-                var parts = ligne.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-
-                /// Vérifier que la ligne contient bien deux éléments
-                if (parts.Length < 2)
-                    continue;
-
-                int n1, n2;
-
-                /// Vérifier que les éléments sont bien des nombres
-                if (!int.TryParse(parts[0], out n1) || !int.TryParse(parts[1], out n2))
-                    continue;  /// Ignorer la ligne si ce n'est pas le cas
-
-                /// Ajouter les nœuds s'ils ne sont pas déjà présents
-                if (!noeudsDict.ContainsKey(n1))
-                    noeudsDict[n1] = new Noeuds(n1);
-
-                if (!noeudsDict.ContainsKey(n2))
-                    noeudsDict[n2] = new Noeuds(n2);
-
-                /// Ajouter le lien
-                liens.Add(new Liens(noeudsDict[n1], noeudsDict[n2]));
-            }
-
-            /// Ajouter les nœuds à la liste
-            noeuds.AddRange(noeudsDict.Values);
-            noeuds.Sort((n1, n2) => n1.Numero.CompareTo(n2.Numero));
-        }
-
-        public void PlacerNoeudsEnCercle(int largeur, int hauteur)
-        {
-            int rayon = Math.Min(largeur, hauteur) / 3;
-            int centreX = largeur / 2;
-            int centreY = hauteur / 2;
-            int totalNoeuds = noeuds.Count;
-
-            for (int i = 0; i < totalNoeuds; i++)
-            {
-                double angle = 2 * Math.PI * i / totalNoeuds;
-                noeuds[i].X = centreX + rayon * Math.Cos(angle);
-                noeuds[i].Y = centreY + rayon * Math.Sin(angle);
-            }
-        }
-
-        public int[,] CreerMatriceAdjacence()
-        {
-            int n = noeuds.Count;int[,] matrice = new int[n, n];
-            var indexNoeud = new Dictionary<Noeuds, int>();
-            
-            for (int i = 0; i < n; i++)
-            {
-                indexNoeud[noeuds[i]] = i;
-            }
-
-            foreach (var lien in liens)
-            {
-                int i = indexNoeud[lien.Membre];
-                int j = indexNoeud[lien.MembreAutre];
-                matrice[i, j] = 1;
-                matrice[j, i] = 1;
-            }
-
-            return matrice;
-        }
-
-        public int ParcoursBFS(Noeuds depart)
-        {
-            var visite = new HashSet<Noeuds>();
-            var queue = new Queue<Noeuds>();
+            var visite = new HashSet<NoeudsStation>();
+            var queue = new Queue<NoeudsStation>();
             int check_connexité = 0;
             queue.Enqueue(depart);
             visite.Add(depart);
@@ -133,7 +59,7 @@ namespace Liv_In_Paris
             while (queue.Count > 0)
             {
                 var noeud = queue.Dequeue();
-                Console.Write(noeud.Numero + " ");
+                Console.Write(noeud.Id + " ");
                 check_connexité ++;
 
                 int indexNoeud = noeuds.IndexOf(noeud);
@@ -150,11 +76,11 @@ namespace Liv_In_Paris
             return check_connexité;
         }
 
-              public void ParcoursDFS(Noeuds depart)
+              public void ParcoursDFS(NoeudsStation depart)
         {
-            var visite = new HashSet<Noeuds>();
-            var stack = new Stack<Noeuds>();
-            var indexNoeud = new Dictionary<Noeuds, int>();
+            var visite = new HashSet<NoeudsStation>();
+            var stack = new Stack<NoeudsStation>();
+            var indexNoeud = new Dictionary<NoeudsStation, int>();
 
             /// Préparer l'indexation pour un accès rapide aux indices des nœuds
             for (int i = 0; i < noeuds.Count; i++)
@@ -172,7 +98,7 @@ namespace Liv_In_Paris
                 if (!visite.Contains(noeud))
                 {
                     visite.Add(noeud);
-                    Console.Write(noeud.Numero + " ");
+                    Console.Write(noeud.Id + " ");
 
                     int indexNoeudCourant = indexNoeud[noeud];
 
@@ -217,6 +143,29 @@ namespace Liv_In_Paris
             Console.WriteLine($"Le graphe est {(EstOriente() ? "orienté" : "non orienté")}");
         }
 
+
+        public void AjouterNoeud( NoeudsStation noeud)
+        {
+            this.noeuds.Add(noeud);
+        }
+
+        public void AjouterLien (LienStation lien)
+        {
+            this.liens.Add(lien);
+        }
+
+        public NoeudsStation RechercherNoeud(int id)
+        {
+            foreach(var noeud in this.noeuds)
+            {
+                if(noeud.Id ==id)
+                {
+                    return noeud;
+                }
+
+            }
+            return null;
+        }
 
         #region /Premiere version
 
