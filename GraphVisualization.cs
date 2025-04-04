@@ -13,7 +13,7 @@ namespace Liv_In_Paris
     {
         private Graphe graphe;
         private const int Largeur = 800;  /// Taille de la fenêtre
-        private const int Hauteur = 800;
+        private const int Hauteur =600;
         private const int RayonNoeud = 20; /// Taille des nœuds
 
         public GraphVisualizer(Graphe graphe)
@@ -33,22 +33,27 @@ namespace Liv_In_Paris
 
             /// Dessiner les liens
             Pen penLien = new Pen(Color.Gray, 2);
+
+            double longitude = 0;
+            double latitude = 0;
             foreach (var lien in graphe.Liens_Pte)
             {
+               
                 g.DrawLine(penLien,
-                    (float)lien.Membre.X, (float)lien.Membre.Y,
-                    (float)lien.MembreAutre.X, (float)lien.MembreAutre.Y);
+                    (float)RecupereCoordonnee(lien, "longitude"), (float)RecupereCoordonnee(lien, "latitude"),
+                    (float)lien.Id_precedent.Longitude, (float)lien.Id_precedent.Latitude);
             }
 
             /// Dessiner les noeuds
             Brush brushNoeud = Brushes.Blue;
             foreach (var noeud in graphe.Noeuds_Pte)
             {
-                float x = (float)noeud.X - RayonNoeud / 2;
-                float y = (float)noeud.Y - RayonNoeud / 2;
+                float x = (float)ConvertLongitue( noeud);
+                float y = (float)ConvertLatitude(noeud);
 
-                g.FillEllipse(brushNoeud, x, y, RayonNoeud, RayonNoeud);
-                g.DrawString(noeud.Numero.ToString(), font, brush, x + 5, y + 5);
+                g.FillEllipse(brush, x - 5, y - 5, 10, 10);
+                g.DrawString(noeud.Nom.ToString(), font, brush, x + 5, y + 5);
+                
             }
         }
 
@@ -56,6 +61,34 @@ namespace Liv_In_Paris
         {
             System.Windows.Forms.Application.Run(new GraphVisualizer(graphe));
         }
+
+        public double RecupereCoordonnee(LienStation lien, string type)
+        {
+            NoeudsStation noeud = this.graphe.RechercherNoeud(lien.Id);
+            if (type=="longitude")
+            {
+                return (double)noeud.Longitude;
+            }
+            else if(type=="latitude")
+            {
+                return (double)noeud.Latitude;
+            }
+            else
+            {
+                throw new ArgumentException("Ceci est une erreur d'argument.");
+            }
+        }
+
+        private float ConvertLongitue(NoeudsStation noeud)
+        {
+            return (float)((noeud.Longitude + 73.0) * 10);
+        }
+
+        private float ConvertLatitude(NoeudsStation noeud)
+        {
+            return (float)((90.0 - noeud.Latitude) * 10);
+        }
+
 
     }
 }
