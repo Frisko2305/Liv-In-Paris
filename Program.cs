@@ -7,6 +7,7 @@ namespace Liv_In_Paris
         static void Main(string[] args)
         {
             /// Création du graphe
+            /*
             Graphe<double> graphe = new Graphe<double>();
             List<NoeudsStation<double>> noeuds = graphe.Noeuds_Pte;
             List<LienStation<double>> liens = graphe.Liens_Pte;
@@ -25,7 +26,7 @@ namespace Liv_In_Paris
             DijkstraTest(graphe, noeudDepart, noeudDestination, noeuds);
             BellmanFordTest(graphe, noeudDepart, noeudDestination, noeuds, liens);
             FloydWarshallTest(graphe, noeudDepart, noeudDestination, noeuds);
-
+            */
             //Partie Interface 
             PrésentationForm mainForm = new PrésentationForm();
             Application.Run(mainForm);

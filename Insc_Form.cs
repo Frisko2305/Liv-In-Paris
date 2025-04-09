@@ -15,6 +15,10 @@ namespace Liv_In_Paris
         private Button Insc_Part;
         private Button Insc_Ent;
         private TableLayoutPanel MainLayout;    //Permet de placer à gauche et droite de la page les Layout Part & Ent
+        private Button Choisir_Image_Part;
+        private string Image_path_Part;
+        private Button Choisir_Image_Ent;
+        private string Image_path_Ent;
         private Button Retour;
         private Label Hypertxt_Part;
         private Label Hypertxt_Ent;     //Créer des 'liens' pour permettre de lire les conditions d'utilisations
@@ -87,6 +91,18 @@ namespace Liv_In_Paris
             Hypertxt_Ent.AutoSize = true;
             Hypertxt_Ent.Cursor = Cursors.Hand;
             Hypertxt_Ent.Click += Hypertxt_Ent_Click;
+
+            Choisir_Image_Part = new Button();
+            Choisir_Image_Part.Text = "Choisir une photo de profil";
+            Choisir_Image_Part.AutoSize = true;
+            Choisir_Image_Part.Anchor = AnchorStyles.Right;
+            Choisir_Image_Part.Click += Choisir_Image_Click_Part;
+
+            Choisir_Image_Ent = new Button();
+            Choisir_Image_Ent.Text = "Choisir une photo de profil";
+            Choisir_Image_Ent.AutoSize = true;
+            Choisir_Image_Ent.Anchor = AnchorStyles.Right;
+            Choisir_Image_Ent.Click += Choisir_Image_Click_Ent;
 
             //Creation of every TextBox/Labels
             //Label Particulier
@@ -231,6 +247,7 @@ namespace Liv_In_Paris
             ParticulierFlow.Controls.Add(ConditionsPart);
             ParticulierFlow.Controls.Add(Hypertxt_Part);
             ParticulierFlow.Controls.Add(Insc_Part);
+            ParticulierFlow.Controls.Add(Choisir_Image_Part);
 
             //Ajout du FlowPanel au TablPanel en configurant son étendu
             ParticulierPanel.Controls.Add(ParticulierFlow, 0, 9);
@@ -295,6 +312,7 @@ namespace Liv_In_Paris
             EntrepriseFlow.Controls.Add(ConditionsEnt);
             EntrepriseFlow.Controls.Add(Hypertxt_Ent);
             EntrepriseFlow.Controls.Add(Insc_Ent);
+            EntrepriseFlow.Controls.Add(Choisir_Image_Ent);
         
             //Ajout du FlowPanel au TablPanel en configurant son étendu
             EntreprisePanel.Controls.Add(EntrepriseFlow, 0, 9);
@@ -407,7 +425,7 @@ namespace Liv_In_Paris
             }
             string MDP_PartString = MDP_Part_Box.Text;
 
-            int[]? Retour_Inscription_Particulier = InscValide_Part(Nom_PartString, Prenom_PartString, Tel_PartString, Email_PartString, NumRue_PartInt, Rue_PartString, CP_PartInt, Ville_PartString, MDP_PartString);
+            int[]? Retour_Inscription_Particulier = InscValide_Part(Nom_PartString, Prenom_PartString, Tel_PartString, Email_PartString, NumRue_PartInt, Rue_PartString, CP_PartInt, Ville_PartString, MDP_PartString, Image_path_Part);
             //SQL
             if(Retour_Inscription_Particulier != null && Part_Client.Checked && !Part_Cuisinier.Checked)
             {
@@ -436,9 +454,9 @@ namespace Liv_In_Paris
             }
 
             //Check des types des inputs saisis pour requete SQL + association à variables
-            if(!long.TryParse(SIRET_Ent_Box.Text, out _) || SIRET_Ent_Box.Text == "")
+            if(!long.TryParse(SIRET_Ent_Box.Text, out _) || SIRET_Ent_Box.Text == "" || SIRET_Ent_Box.Text.Length != 14)
             {
-                MessageBox.Show("Le numéro de SIRET doit être un entier valide sous format XXXXXXXXX, ni être vide.");
+                MessageBox.Show("Le numéro de SIRET doit être un entier valide de 14 chiffres, ni être vide.");
             }
             long SIRET_EntLong = Convert.ToInt64(SIRET_Ent_Box.Text);
 
@@ -490,7 +508,7 @@ namespace Liv_In_Paris
             }
             string MDP_EntString = MDP_Ent_Box.Text;
 
-            int[]? Retour_Inscription_Ent = InscValide_Ent(SIRET_EntLong, Nom_EntString, NomRef_EntString, TelRef_EntString, NumRue_EntInt, Rue_EntString, CP_EntInt, Ville_EntString, MDP_EntString);
+            int[]? Retour_Inscription_Ent = InscValide_Ent(SIRET_EntLong, Nom_EntString, NomRef_EntString, TelRef_EntString, NumRue_EntInt, Rue_EntString, CP_EntInt, Ville_EntString, MDP_EntString, Image_path_Ent);
 
             //SQL
             if(Retour_Inscription_Ent != null)
@@ -503,7 +521,37 @@ namespace Liv_In_Paris
             }
         }
 
-        private int[]? InscValide_Part(string nom, string prenom, string tel, string email, int Nrue, string rue, int CP, string ville, string mdp)     //Type int[]? pour qu'on puisse afficher les ID à l'utilisateur lors d'un futur login
+        private void Choisir_Image_Click_Part(object? sender, EventArgs e)
+        {
+            using(OpenFileDialog fileDialog = new OpenFileDialog())
+            {
+                fileDialog.Filter = "Images (*.jpg;*.jpeg;*.png;*.bmp)|*.jpg;*.jpeg;*.png;*.bmp";
+                fileDialog.Title = "Sélectionnez une image";
+
+                if (fileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    Image_path_Part = fileDialog.FileName;
+                    MessageBox.Show("Image sélectionnée : "+ Image_path_Part);
+                }
+            }
+        }
+
+        private void Choisir_Image_Click_Ent(object? sender, EventArgs e)
+        {
+            using(OpenFileDialog fileDialog = new OpenFileDialog())
+            {
+                fileDialog.Filter = "Images (*.jpg;*.jpeg;*.png;*.bmp)|*.jpg;*.jpeg;*.png;*.bmp";
+                fileDialog.Title = "Sélectionnez une image";
+
+                if (fileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    Image_path_Ent = fileDialog.FileName;
+                    MessageBox.Show("Image sélectionnée : "+ Image_path_Ent);
+                }
+            }
+        }
+        
+        private int[]? InscValide_Part(string nom, string prenom, string tel, string email, int Nrue, string rue, int CP, string ville, string mdp, string image)     //Type int[]? pour qu'on puisse afficher les ID à l'utilisateur lors d'un futur login
         {
             //On génère d'abord un ID qui n'existe pas déjà dans Client et/ou Cuisiniers selon le choix avec GenIDSQL pour ne pas encombrer le réel but de la méthode Inscription
             int ID_Client = GenIDSQL(0); //ID de 4 chiffres de long uniques et conformes à ce que SQL attend
@@ -535,7 +583,7 @@ namespace Liv_In_Paris
                     // Dinstinguons le cas Cuisiner et/ou Client
                     if(Part_Client.Checked && !Part_Cuisinier.Checked) //On veut être uniquement Client
                     {
-                        string InsertClient = @"INSERT INTO Client (Id_client, Mdp, Nom_particulier, Prenom_particulier, SIRET_entreprise) VALUES (@id, @mdp, @nomClient, @prenomClient, @SIRET);";
+                        string InsertClient = @"INSERT INTO Client (Id_client, Mdp, Nom_particulier, Prenom_particulier, SIRET_entreprise) VALUES (@id, @mdp, @nomClient, @prenomClient, @SIRET, @photo);";
                         using(MySqlCommand cmdPart = new MySqlCommand(InsertClient, connection))
                         {
                             cmdPart.Parameters.AddWithValue("@id", ID_Client);
@@ -543,37 +591,67 @@ namespace Liv_In_Paris
                             cmdPart.Parameters.AddWithValue("@nomClient", nom);
                             cmdPart.Parameters.AddWithValue("@prenomClient", prenom);
                             cmdPart.Parameters.AddWithValue("@SIRET", null);            //Arbitraire car dans les contraintes d'ajout dans la BDD, si Client est un particulier, alors le paramètre SIRET est nul
+                            // Paramètre photo
 
+                            if(!string.IsNullOrEmpty(image))
+                            {
+                                byte[] imageBytes = ConvertImageToBytes(image);
+                                cmdPart.Parameters.AddWithValue("@photo", imageBytes);
+                            }
+                            else
+                            {
+                                cmdPart.Parameters.AddWithValue("@photo", null);
+                            }
                             cmdPart.ExecuteNonQuery();
                         }
                     }
                     else if(Part_Cuisinier.Checked && !Part_Client.Checked) //On veut être uniquement Cuisinier
                     {
-                        string InsertCuisinier = @"INSERT INTO Cuisinier (Id_cuisinier, Mdp, Nom_cuisinier, Prenom_cuisinier) VALUES (@id, @mdp, @nom, @prenom);";
+                        string InsertCuisinier = @"INSERT INTO Cuisinier (Id_cuisinier, Mdp, Nom_cuisinier, Prenom_cuisinier) VALUES (@id, @mdp, @nom, @prenom, @photo);";
                         using(MySqlCommand cmdPart = new MySqlCommand(InsertCuisinier, connection))
                         {
                             cmdPart.Parameters.AddWithValue("@id", ID_Cuisinier);
                             cmdPart.Parameters.AddWithValue("@mdp", mdp);
                             cmdPart.Parameters.AddWithValue("@nom", nom);
                             cmdPart.Parameters.AddWithValue("@prenom", prenom);
+                            // Paramètre photo
 
+                            if(!string.IsNullOrEmpty(image))
+                            {
+                                byte[] imageBytes = ConvertImageToBytes(image);
+                                cmdPart.Parameters.AddWithValue("@photo", imageBytes);
+                            }
+                            else
+                            {
+                                cmdPart.Parameters.AddWithValue("@photo", null);
+                            }
                             cmdPart.ExecuteNonQuery();
                         }
                     }
                     else    //Cas Cuisinier ET Client car les deux = faux est impossible car vérifié dans Insc_Part_Click
                     {
-                        string InsertCuisinier = @"INSERT INTO Cuisinier (Id_cuisinier, Mdp, Nom_cuisinier, Prenom_cuisinier) VALUES (@id, @mdp, @nom, @prenom);";
+                        string InsertCuisinier = @"INSERT INTO Cuisinier (Id_cuisinier, Mdp, Nom_cuisinier, Prenom_cuisinier) VALUES (@id, @mdp, @nom, @prenom, @photo);";
                         using(MySqlCommand cmdPart = new MySqlCommand(InsertCuisinier, connection))
                         {
                             cmdPart.Parameters.AddWithValue("@id", ID_Cuisinier);
                             cmdPart.Parameters.AddWithValue("@mdp", mdp);
                             cmdPart.Parameters.AddWithValue("@nom", nom);
                             cmdPart.Parameters.AddWithValue("@prenom", prenom);
+                            // Paramètre photo
 
+                            if(!string.IsNullOrEmpty(image))
+                            {
+                                byte[] imageBytes = ConvertImageToBytes(image);
+                                cmdPart.Parameters.AddWithValue("@photo", imageBytes);
+                            }
+                            else
+                            {
+                                cmdPart.Parameters.AddWithValue("@photo", null);
+                            }
                             cmdPart.ExecuteNonQuery();
                         }
 
-                        string InsertClient = @"INSERT INTO Client (Id_client, Mdp, Nom_particulier, Prenom_particulier, SIRET_entreprise) VALUES (@id, @mdp, @nomClient, @prenomClient, @SIRET);";
+                        string InsertClient = @"INSERT INTO Client (Id_client, Mdp, Nom_particulier, Prenom_particulier, SIRET_entreprise) VALUES (@id, @mdp, @nomClient, @prenomClient, @SIRET, @photo);";
                         using(MySqlCommand cmdPart = new MySqlCommand(InsertClient, connection))
                         {
                             cmdPart.Parameters.AddWithValue("@id", ID_Client);
@@ -581,7 +659,17 @@ namespace Liv_In_Paris
                             cmdPart.Parameters.AddWithValue("@nomClient", nom);
                             cmdPart.Parameters.AddWithValue("@prenomClient", prenom);
                             cmdPart.Parameters.AddWithValue("@SIRET", null);
+                            // Paramètre photo
 
+                            if(!string.IsNullOrEmpty(image))
+                            {
+                                byte[] imageBytes = ConvertImageToBytes(image);
+                                cmdPart.Parameters.AddWithValue("@photo", imageBytes);
+                            }
+                            else
+                            {
+                                cmdPart.Parameters.AddWithValue("@photo", null);
+                            }
                             cmdPart.ExecuteNonQuery();
                         }
                     }
@@ -595,7 +683,7 @@ namespace Liv_In_Paris
             }
         }
 
-        private int[]? InscValide_Ent(long siret, string nom_Ent, string nomRef, string telRef, int Nrue, string rue, int CP, string ville, string mdp)
+        private int[]? InscValide_Ent(long siret, string nom_Ent, string nomRef, string telRef, int Nrue, string rue, int CP, string ville, string mdp, string image)
         {
             int ID_Ent = GenIDSQL(0);   //obligé 0 car ne peut être qu'un Client
             int[]? list_ID = {ID_Ent};
@@ -623,15 +711,26 @@ namespace Liv_In_Paris
 
                     //Et maintenant dans Client
                     string InsertClient = @"INSERT INTO Client (Id_client, Mdp, Nom_particulier, Prenom_particulier, SIRET_entreprise) VALUES (@id, @mdp, @nomClient, @prenomClient, @SIRET);";
-                    using(MySqlCommand cmdPart = new MySqlCommand(InsertClient, connection))
+                    using(MySqlCommand cmdEnt = new MySqlCommand(InsertClient, connection))
                     {
-                        cmdPart.Parameters.AddWithValue("@id", ID_Ent);
-                        cmdPart.Parameters.AddWithValue("@mdp", mdp);
-                        cmdPart.Parameters.AddWithValue("@nomClient", null);
-                        cmdPart.Parameters.AddWithValue("@prenomClient", null);     //Même argument que pour les Particulier devenant Client
-                        cmdPart.Parameters.AddWithValue("@SIRET", siret);
+                        cmdEnt.Parameters.AddWithValue("@id", ID_Ent);
+                        cmdEnt.Parameters.AddWithValue("@mdp", mdp);
+                        cmdEnt.Parameters.AddWithValue("@nomClient", null);
+                        cmdEnt.Parameters.AddWithValue("@prenomClient", null);     //Même argument que pour les Particulier devenant Client
+                        cmdEnt.Parameters.AddWithValue("@SIRET", siret);
+                        // Paramètre photo
+                    
+                        if(!string.IsNullOrEmpty(image))
+                        {
+                            byte[] imageBytes = ConvertImageToBytes(image);
+                            cmdEnt.Parameters.AddWithValue("@photo", imageBytes);
+                        }
+                        else
+                        {
+                            cmdEnt.Parameters.AddWithValue("@photo", null);
+                        }
 
-                        cmdPart.ExecuteNonQuery();
+                        cmdEnt.ExecuteNonQuery();
                     }
                     return list_ID;    //Inscription réussi
                 }
@@ -689,6 +788,11 @@ namespace Liv_In_Paris
                 //est si l'intitulé de la connection est fausse, et même la on retombera sur nos pieds
                 ///car quand l'inscription poursuivra, l'ID étant négatif il va être refusé
             }
+        }
+
+        private byte[] ConvertImageToBytes(string imagePath)
+        {
+            return File.ReadAllBytes(imagePath);
         }
     }
 }

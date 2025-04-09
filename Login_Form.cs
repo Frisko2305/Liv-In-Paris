@@ -19,7 +19,7 @@ namespace Liv_In_Paris
             this.Height = 175;
             this.StartPosition = FormStartPosition.CenterScreen;    //Centre la fenêtre centre écran
 
-            TableLayoutPanel layout = new TableLayoutPanel();           //avec un layout
+            layout = new TableLayoutPanel();           //avec un layout
             layout.RowCount = 2; //ID then PWD with 1 for space in-between
             layout.ColumnCount = 2;  //Label then Field
             layout.Dock = DockStyle.Fill;       //Remplis les cases pour pouvoir y mettre les choses
@@ -71,9 +71,31 @@ namespace Liv_In_Paris
             string userId = Id_box.Text;
             string userpwd = Pwd_box.Text;
 
-            if(LoginValide(userId,userpwd))
+            if(LoginValide(userId,userpwd) == 0)    //<-- Client Particulier
             {
                 MessageBox.Show("Login réussi");
+                Profil_Client_Part Profil_Client = new Profil_Client_Part(userId);        //On prend en paramètre de création du Form l'Id saisi pour prélever les informations nécessaires
+                Profil_Client.Show();
+
+                this.Hide();
+                Profil_Client.FormClosed += (s,args) => this.Close();
+            }
+            else if(LoginValide(userId,userpwd) == 1)   //<-- Client Entreprise
+            {
+                MessageBox.Show("Login réussi");
+                Profil_Client_Ent Profil_Client = new Profil_Client_Ent(userId);        //On prend en paramètre de création du Form l'Id saisi pour prélever les informations nécessaires
+                Profil_Client.Show();
+
+                this.Hide();
+                Profil_Client.FormClosed += (s,args) => this.Close();
+            }
+            else if(LoginValide(userId,userpwd) == 2)   //<-- Cuisinier
+            {
+                Profil_Cuisinier Profil_Cuisinier = new Profil_Cuisinier(userId);
+                Profil_Cuisinier.Show();
+
+                this.Hide();
+                Profil_Cuisinier.FormClosed += (s,args) => this.Close();
             }
             else
             {
@@ -90,45 +112,77 @@ namespace Liv_In_Paris
             Form.FormClosed += (s,args) => this.Close();
         }
 
-        private bool LoginValide(string userId, string userpwd)
+        private int LoginValide(string userId, string userpwd)
         {
             string connectionString = "SERVER=localhost;PORT=3306;" + "DATABASE= psi;" + "UID=root;PASSWORD=root";
-            string queryClient = $"SELECT COUNT(*) FROM client WHERE Id_client = @Id AND Mdp = @pwd;";
+            string queryClient = $"SELECT Nom_particulier, Prenom_particulier, NULL AS SIRET_entreprise FROM client WHERE Id_client = @Id AND Mdp = @pwd;";
             string queryCuisinier = $"SELECT COUNT(*) FROM cuisinier WHERE Id_cuisinier = @Id AND Mdp = @pwd;";
+            string queryEntreprise = $"SELECT NULL AS Nom_particulier, NULL AS Prenom_particulier, SIRET_entreprise FROM entreprise WHERE Id_client = @Id AND Mdp = @pwd;";
+            string nom = "";    //Nom du Particulier trouvé dans la BDD
+            string prenom = "";    //Preom du Particulier trouvé dans la BDD
+            string siret = "";    //SIRET de l'Entreprise trouvé dans la BDD
 
             try
             {
                 using(MySqlConnection connection = new MySqlConnection(connectionString))
                 {
                     connection.Open();
-                    MySqlCommand commandClient = new MySqlCommand(queryClient, connection);     //Va regarder dans la table Client et stocker le résultat dans resultClient
-                    commandClient.Parameters.AddWithValue("@Id", userId);
-                    commandClient.Parameters.AddWithValue("@pwd", userpwd);
-                    int resultClient = Convert.ToInt32(commandClient.ExecuteScalar());
-                    commandClient.Dispose();
+                    MySqlCommand commandClientPart = new MySqlCommand(queryClient, connection);     //Si c'est un Client Particulier
+                    commandClientPart.Parameters.AddWithValue("@Id", userId);
+                    commandClientPart.Parameters.AddWithValue("@pwd", userpwd);
+                    
+                    using(MySqlDataReader reader = commandClientPart.ExecuteReader())
+                    {
+                        if(reader.Read())
+                        {
+                            nom = reader["Nom_particulier"] as string ?? "";
+                            prenom = reader["Prenom_particulier"] as string ?? "";
+                        }
+                    }
+                    commandClientPart.Dispose();
+
+                    MySqlCommand commandClientEnt = new MySqlCommand(queryClient, connection);     //Si c'est un Client Entreprise
+                    commandClientEnt.Parameters.AddWithValue("@Id", userId);
+                    commandClientEnt.Parameters.AddWithValue("@pwd", userpwd);
+                    
+                    using(MySqlDataReader reader = commandClientPart.ExecuteReader())
+                    {
+                        if(reader.Read())
+                        {
+                            siret = reader["SIRET_entreprise"] as string ?? "";
+                        }
+                    }
+                    commandClientPart.Dispose();
 
                     MySqlCommand commandCuisinier = new MySqlCommand(queryCuisinier, connection);     //Va regarder dans la table Client et stocker le résultat dans resultClient
                     commandCuisinier.Parameters.AddWithValue("@Id", userId);
                     commandCuisinier.Parameters.AddWithValue("@pwd", userpwd);
                     int resultCuisinier = Convert.ToInt32(commandCuisinier.ExecuteScalar());
-                    commandClient.Dispose();
+                    commandCuisinier.Dispose();
 
-                    if(resultClient > 0 || resultCuisinier > 0)     //S'il le trouve dans une des deux tables, alors le Login est réussi
+                    if (!string.IsNullOrEmpty(nom) && !string.IsNullOrEmpty(prenom)) // C'est un Client Particulier
                     {
-                        return true;
+                        return 0;
+                    }
+                    else if (!string.IsNullOrEmpty(siret)) // C'est un Client Entreprise
+                    {
+                        return 1;
+                    }
+                    else if (resultCuisinier > 0) // C'est un Cuisinier
+                    {
+                        return 2;
                     }
                     else
                     {
-                        return false;
+                        return -1; // Identifiant erroné
                     }
                     connection.Close();
                 }
             }
             catch(Exception e)
             {
-                MessageBox.Show("Erreur de Connexion à la base de donnée"+e.Message);
-            
-                return false;
+                MessageBox.Show("Erreur de connexion à la base de donnée"+e.Message);
+                return -1;
             }
         }
     }

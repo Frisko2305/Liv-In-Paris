@@ -34,7 +34,7 @@ namespace Liv_In_Paris
             Carte.Text = "Carte des stations de Paris";
             Carte.Font = new Font("Times New Roman", 12, FontStyle.Regular);
             Carte.AutoSize = true;
-            Carte.Location = new Point(Connection.Location.X ,400);
+            Carte.Location = new Point((this.ClientSize.Width/2) - Carte.Width, 400);
             Carte.Click += Carte_Click;
 
 
@@ -55,6 +55,7 @@ namespace Liv_In_Paris
             Controls.Add(Inscription);
             Controls.Add(Service);
             Controls.Add(Picture);
+            Controls.Add(Carte);
         }
 
         private void Connection_Click(object sender, EventArgs e)
@@ -79,7 +80,7 @@ namespace Liv_In_Paris
         {
             // Carte_Form Form = new Carte_Form();
             // Form.Show();
-            MessageBox.Show("En cours de développement. Avoir à la prochaine mise à jour !!");
+            MessageBox.Show("En cours de développement. A voir à la prochaine mise à jour !!");
             // this.Hide();
             // Form.FormClosed += (s,args) => this.Close();
         }
