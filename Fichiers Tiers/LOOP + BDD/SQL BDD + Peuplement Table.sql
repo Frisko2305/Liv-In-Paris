@@ -34,6 +34,7 @@ CREATE TABLE Client(
    Nom_particulier VARCHAR(50),
    Prenom_particulier VARCHAR(50),
    SIRET_entreprise BIGINT,
+   Photo_profil BLOB,
    PRIMARY KEY(Id_client),
    UNIQUE(SIRET_entreprise),
    FOREIGN KEY(Nom_particulier, Prenom_particulier) REFERENCES Particulier(Nom, Prenom) ON DELETE CASCADE,
@@ -50,6 +51,7 @@ CREATE TABLE Cuisinier(
    Mdp VARCHAR(20),
    Nom_cuisinier VARCHAR(50) NOT NULL,
    Prenom_cuisinier VARCHAR(50) NOT NULL,
+   Photo_profil BLOB,
    PRIMARY KEY(Id_cuisinier),
    UNIQUE(Nom_cuisinier, Prenom_cuisinier),
    FOREIGN KEY(Nom_cuisinier, Prenom_cuisinier) REFERENCES Particulier(Nom, Prenom) ON DELETE CASCADE
@@ -66,7 +68,7 @@ CREATE TABLE Plat(
    Date_peremption DATE,
    Type_de_cuisine VARCHAR(50),
    Regime_alimentaire VARCHAR(50),
-   Photo BINARY,
+   Photo BLOB,
    PRIMARY KEY(Id_plat)
 );
 -- DELETE FROM Plat;
