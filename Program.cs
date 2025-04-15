@@ -28,6 +28,7 @@ namespace Liv_In_Paris
             FloydWarshallTest(graphe, noeudDepart, noeudDestination, noeuds);
             */
             //Partie Interface 
+            ApplicationConfiguration.Initialize();
             PrésentationForm mainForm = new PrésentationForm();
             Application.Run(mainForm);
         }

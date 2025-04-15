@@ -80,14 +80,14 @@ namespace Liv_In_Paris
 
             Hypertxt_Part = new Label();
             Hypertxt_Part.Text = "Lire les conditions d'utilisations.";
-            Hypertxt_Part.ForeColor = Color.Cyan;
+            Hypertxt_Part.ForeColor = Color.Blue;
             Hypertxt_Part.AutoSize = true;
             Hypertxt_Part.Cursor = Cursors.Hand;
             Hypertxt_Part.Click += Hypertxt_Part_Click;
 
             Hypertxt_Ent = new Label();
             Hypertxt_Ent.Text = "Lire les conditions d'utilisations.";
-            Hypertxt_Ent.ForeColor = Color.Cyan;
+            Hypertxt_Ent.ForeColor = Color.Blue;
             Hypertxt_Ent.AutoSize = true;
             Hypertxt_Ent.Cursor = Cursors.Hand;
             Hypertxt_Ent.Click += Hypertxt_Ent_Click;
@@ -521,18 +521,36 @@ namespace Liv_In_Paris
             }
         }
 
-        private void Choisir_Image_Click_Part(object? sender, EventArgs e)
+        private async void Choisir_Image_Click_Part(object? sender, EventArgs e)
         {
-            using(OpenFileDialog fileDialog = new OpenFileDialog())
+            try
             {
-                fileDialog.Filter = "Images (*.jpg;*.jpeg;*.png;*.bmp)|*.jpg;*.jpeg;*.png;*.bmp";
-                fileDialog.Title = "Sélectionnez une image";
-
-                if (fileDialog.ShowDialog() == DialogResult.OK)
+                using(OpenFileDialog fileDialog = new OpenFileDialog())
                 {
-                    Image_path_Part = fileDialog.FileName;
-                    MessageBox.Show("Image sélectionnée : "+ Image_path_Part);
+                    MessageBox.Show("Attein");
+                    fileDialog.Filter = "Images (*.jpg;*.jpeg;*.png;*.bmp)|*.jpg;*.jpeg;*.png;*.bmp";
+                    fileDialog.Title = "Sélectionnez une image";
+                    MessageBox.Show("Attein11");
+
+                    if (fileDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        MessageBox.Show("AtteinTT");
+                        Image_path_Part = fileDialog.FileName;
+                        // Utiliser une tâche pour lire le fichier sans bloquer le thread principal
+                        Image_path_Ent = fileDialog.FileName;
+                        await Task.Run(() =>
+                        {
+                            // Simuler une opération lourde (lecture du fichier)
+                            byte[] imageBytes = File.ReadAllBytes(Image_path_Ent);
+                        });
+                        
+                        MessageBox.Show("Image sélectionnée : "+ Image_path_Part);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erreur lors de l'ouverture du sélecteur de fichiers : {ex.Message}");
             }
         }
 

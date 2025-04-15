@@ -70,32 +70,17 @@ namespace Liv_In_Paris
         {
             string userId = Id_box.Text;
             string userpwd = Pwd_box.Text;
+            
+            var(userType, userInfo) = LoginValide(userId, userpwd);
 
-            if(LoginValide(userId,userpwd) == 0)    //<-- Client Particulier
+            if(userType != "Invalide" && userInfo != null)  //Qu'importe qui que ce soit tant que que c'est pas null
             {
                 MessageBox.Show("Login réussi");
-                Profil_Client_Part Profil_Client = new Profil_Client_Part(userId);        //On prend en paramètre de création du Form l'Id saisi pour prélever les informations nécessaires
-                Profil_Client.Show();
+                Profil Profil_User = new Profil(userType, userInfo);    //On transmet les informations au Form Profil
+                Profil_User.Show();
 
                 this.Hide();
-                Profil_Client.FormClosed += (s,args) => this.Close();
-            }
-            else if(LoginValide(userId,userpwd) == 1)   //<-- Client Entreprise
-            {
-                MessageBox.Show("Login réussi");
-                Profil_Client_Ent Profil_Client = new Profil_Client_Ent(userId);        //On prend en paramètre de création du Form l'Id saisi pour prélever les informations nécessaires
-                Profil_Client.Show();
-
-                this.Hide();
-                Profil_Client.FormClosed += (s,args) => this.Close();
-            }
-            else if(LoginValide(userId,userpwd) == 2)   //<-- Cuisinier
-            {
-                Profil_Cuisinier Profil_Cuisinier = new Profil_Cuisinier(userId);
-                Profil_Cuisinier.Show();
-
-                this.Hide();
-                Profil_Cuisinier.FormClosed += (s,args) => this.Close();
+                Profil_User.FormClosed += (s,args) => this.Close();
             }
             else
             {
@@ -112,69 +97,70 @@ namespace Liv_In_Paris
             Form.FormClosed += (s,args) => this.Close();
         }
 
-        private int LoginValide(string userId, string userpwd)
+        private (string userType, Dictionary<string, string>? UserInfo) LoginValide(string userId, string userpwd)
         {
             string connectionString = "SERVER=localhost;PORT=3306;" + "DATABASE= psi;" + "UID=root;PASSWORD=root";
-            string queryClient = $"SELECT Nom_particulier, Prenom_particulier, NULL AS SIRET_entreprise FROM client WHERE Id_client = @Id AND Mdp = @pwd;";
-            string queryCuisinier = $"SELECT COUNT(*) FROM cuisinier WHERE Id_cuisinier = @Id AND Mdp = @pwd;";
-            string queryEntreprise = $"SELECT NULL AS Nom_particulier, NULL AS Prenom_particulier, SIRET_entreprise FROM entreprise WHERE Id_client = @Id AND Mdp = @pwd;";
-            string nom = "";    //Nom du Particulier trouvé dans la BDD
-            string prenom = "";    //Preom du Particulier trouvé dans la BDD
-            string siret = "";    //SIRET de l'Entreprise trouvé dans la BDD
+            string query =
+                @"
+                SELECT c.Id_client, c.Mdp, c.Nom_particulier, c.Prenom_particulier, c.SIRET_entreprise,
+                p.Num_tel AS Particulier_Num_tel, p.email AS Particulier_Email,
+                e.Nom_entreprise AS Entreprise_Nom, e.Nom_referent AS Entreprise_Referent,
+                cu.Id_cuisinier AS Cuisinier_Id,
+                CASE
+                    WHEN cu.Id_cuisinier IS NOT NULL THEN cu.Photo_profil
+                    ELSE c.Photo_profil
+                END AS Photo_profil
+                FROM client c
+                LEFT JOIN particulier p ON c.Nom_particulier = p.Nom AND c.Prenom_particulier = p.Prenom
+                LEFT JOIN entreprise e ON c.SIRET_entreprise = e.SIRET
+                LEFT JOIN cuisinier cu ON c.Id_client = cu.Id_cuisinier
+                WHERE c.Id_client = @Id AND c.MDP = @pwd;";
 
             try
             {
                 using(MySqlConnection connection = new MySqlConnection(connectionString))
                 {
                     connection.Open();
-                    MySqlCommand commandClientPart = new MySqlCommand(queryClient, connection);     //Si c'est un Client Particulier
-                    commandClientPart.Parameters.AddWithValue("@Id", userId);
-                    commandClientPart.Parameters.AddWithValue("@pwd", userpwd);
-                    
-                    using(MySqlDataReader reader = commandClientPart.ExecuteReader())
+                    MySqlCommand cmd = new MySqlCommand(query, connection);
+                    cmd.Parameters.AddWithValue("@Id", userId);
+                    cmd.Parameters.AddWithValue("@pwd", userpwd);
+
+                    using(MySqlDataReader reader = cmd.ExecuteReader())
                     {
                         if(reader.Read())
                         {
-                            nom = reader["Nom_particulier"] as string ?? "";
-                            prenom = reader["Prenom_particulier"] as string ?? "";
+                            var userInfo = new Dictionary<string, string>
+                            {
+                                { "Id", reader["Id_client"]?.ToString() ?? "" },
+                                { "Nom", reader["Nom_particulier"]?.ToString() ?? "" },
+                                { "Prenom", reader["Prenom_particulier"]?.ToString() ?? "" },
+                                { "SIRET", reader["SIRET_entreprise"]?.ToString() ?? "" },
+                                { "Particulier_Num_tel", reader["Particulier_Num_tel"]?.ToString() ?? "" },
+                                { "Particulier_Email", reader["Particulier_Email"]?.ToString() ?? "" },
+                                { "Entreprise_Nom", reader["Entreprise_Nom"]?.ToString() ?? "" },
+                                { "Entreprise_Referent", reader["Entreprise_Referent"]?.ToString() ?? "" }
+                            };
+
+                            // On récupère l'image du profil s'il existe
+                            if(!reader.IsDBNull(reader.GetOrdinal("Photo_profil")))
+                            {
+                                byte[] Photo = (byte[])reader["Photo_profil"];
+                                userInfo.Add("Photo_profil", Convert.ToBase64String(Photo));
+                            }
+
+                            if(!string.IsNullOrEmpty(userInfo["Nom"]) && !string.IsNullOrEmpty(userInfo["Prenom"]))     //Si les colonnes de string du nom et prenom ne sont pas vides
+                            {
+                                return ("Particulier", userInfo);
+                            }
+                            else if (!string.IsNullOrEmpty(userInfo["SIRET"]))
+                            {
+                                return ("Entreprise", userInfo);
+                            }
+                            else
+                            {
+                                return ("Cuisinier", userInfo);
+                            }
                         }
-                    }
-                    commandClientPart.Dispose();
-
-                    MySqlCommand commandClientEnt = new MySqlCommand(queryClient, connection);     //Si c'est un Client Entreprise
-                    commandClientEnt.Parameters.AddWithValue("@Id", userId);
-                    commandClientEnt.Parameters.AddWithValue("@pwd", userpwd);
-                    
-                    using(MySqlDataReader reader = commandClientPart.ExecuteReader())
-                    {
-                        if(reader.Read())
-                        {
-                            siret = reader["SIRET_entreprise"] as string ?? "";
-                        }
-                    }
-                    commandClientPart.Dispose();
-
-                    MySqlCommand commandCuisinier = new MySqlCommand(queryCuisinier, connection);     //Va regarder dans la table Client et stocker le résultat dans resultClient
-                    commandCuisinier.Parameters.AddWithValue("@Id", userId);
-                    commandCuisinier.Parameters.AddWithValue("@pwd", userpwd);
-                    int resultCuisinier = Convert.ToInt32(commandCuisinier.ExecuteScalar());
-                    commandCuisinier.Dispose();
-
-                    if (!string.IsNullOrEmpty(nom) && !string.IsNullOrEmpty(prenom)) // C'est un Client Particulier
-                    {
-                        return 0;
-                    }
-                    else if (!string.IsNullOrEmpty(siret)) // C'est un Client Entreprise
-                    {
-                        return 1;
-                    }
-                    else if (resultCuisinier > 0) // C'est un Cuisinier
-                    {
-                        return 2;
-                    }
-                    else
-                    {
-                        return -1; // Identifiant erroné
                     }
                     connection.Close();
                 }
@@ -182,8 +168,8 @@ namespace Liv_In_Paris
             catch(Exception e)
             {
                 MessageBox.Show("Erreur de connexion à la base de donnée"+e.Message);
-                return -1;
             }
+            return ("Invalide", null);
         }
     }
 }
