@@ -4,9 +4,12 @@ namespace Liv_In_Paris
 {
     public class Profil : Form
     {
+        #region Attributs
         private Dictionary<string, string> infos;
         private string userType;
         PictureBox Photo_profil;
+
+        #endregion
 
         public Profil(string userType, Dictionary<string,string> infos)
         {

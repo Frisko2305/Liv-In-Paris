@@ -496,5 +496,3 @@ INSERT INTO Avis (Id_avis, Note, Commentaire, Nom, Prenom, SIRET, Id_plat, Id_cl
 INSERT INTO Avis (Id_avis, Note, Commentaire, Nom, Prenom, SIRET, Id_plat, Id_client, Id_cuisinier) VALUES (3620, '1', 'Très déçu, ne vaut pas le prix.', 'Muller', 'Laurence', '56317477012275', 8543, 2789, 4987);
 INSERT INTO Avis (Id_avis, Note, Commentaire, Nom, Prenom, SIRET, Id_plat, Id_client, Id_cuisinier) VALUES ('3202', 1.4, 'Le plat était froid à l\'arrivée.', 'Roche', 'Frédéric', '00194627579614', '6183', '6183', '8474');
 INSERT INTO Avis (Id_avis, Note, Commentaire, Nom, Prenom, SIRET, Id_plat, Id_client, Id_cuisinier) VALUES ('1751', 4.7, 'Excellent service, plat délicieux!', 'Lefèvre', 'Philippe', '50410902066985', '6225', '6455', '9392');
-
-

@@ -4,6 +4,7 @@ namespace Liv_In_Paris
 {
     internal class Program
     {
+        [STAThread]
         static void Main(string[] args)
         {
             /// Création du graphe

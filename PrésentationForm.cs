@@ -3,14 +3,18 @@ namespace Liv_In_Paris
 {
     public class PrésentationForm : Form
     {
+        #region Attributs
         private Button Connection;
         private Button Inscription;
         private Button Carte;
         private Label Service;
         private PictureBox Picture;
 
+        #endregion
         public PrésentationForm()
         {
+            #region Initialisation Attributs
+
             this.Text = "Liv-In Paris";
             this.Width = 500;
             this.Height = 500;
@@ -51,13 +55,20 @@ namespace Liv_In_Paris
             Picture.Size = new Size(240, 270);
             Picture.Location = new Point(20,115); 
 
+            #endregion
+
+            #region Ajout et Création
+
             Controls.Add(Connection);
             Controls.Add(Inscription);
             Controls.Add(Service);
             Controls.Add(Picture);
             Controls.Add(Carte);
+
+            #endregion
         }
 
+        #region Méthode Bouton
         private void Connection_Click(object sender, EventArgs e)
         {
             Login_Form Form = new Login_Form();
@@ -84,6 +95,8 @@ namespace Liv_In_Paris
             // this.Hide();
             // Form.FormClosed += (s,args) => this.Close();
         }
+
+        #endregion
     }
 }
 

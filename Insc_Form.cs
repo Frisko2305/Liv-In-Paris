@@ -4,6 +4,7 @@ namespace Liv_In_Paris
 {
     public class Insc_Form : Form
     {
+        #region Attributs
         private GroupBox ParticulierGroup;
         private GroupBox EntrepriseGroup;
         private TableLayoutPanel ParticulierPanel;
@@ -65,8 +66,11 @@ namespace Liv_In_Paris
         private Label Ville_Ent_Label;
         private Label MDP_Ent_Label;
 
+        #endregion
+
         public Insc_Form()
         {
+            #region Initialisation Attributs
             this.Text = "Inscription to Liv In Paris !";
             this.Width = 750;
             this.Height = 650;
@@ -186,31 +190,25 @@ namespace Liv_In_Paris
             ParticulierPanel.AutoSize = true;
             ParticulierPanel.Visible = false; // Initially hidden
 
-            // Add fields to "Particulier" 
-            ParticulierPanel.Controls.Add(Nom_Part_Label, 0, 0);
-            ParticulierPanel.Controls.Add(Nom_Part_Box, 1, 0);
-            ParticulierPanel.Controls.Add(Prenom_Part_Label, 0, 1);
-            ParticulierPanel.Controls.Add(Prenom_Part_Box, 1, 1);
-            ParticulierPanel.Controls.Add(Tel_Part_Label, 0, 2);
-            ParticulierPanel.Controls.Add(Tel_Part_Box, 1, 2);
-            ParticulierPanel.Controls.Add(Email_Part_Label, 0, 3);
-            ParticulierPanel.Controls.Add(Email_Part_Box, 1, 3);
-            ParticulierPanel.Controls.Add(NumRue_Part_Label, 0, 4);
-            ParticulierPanel.Controls.Add(NumRue_Part_Box, 1, 4);
-            ParticulierPanel.Controls.Add(Rue_Part_Label, 0, 5);
-            ParticulierPanel.Controls.Add(Rue_Part_Box, 1, 5);
-            ParticulierPanel.Controls.Add(CP_Part_Label, 0, 6);
-            ParticulierPanel.Controls.Add(CP_Part_Box, 1, 6);
-            ParticulierPanel.Controls.Add(Ville_Part_Label, 0, 7);
-            ParticulierPanel.Controls.Add(Ville_Part_Box, 1, 7);
-            ParticulierPanel.Controls.Add(MDP_Part_Label, 0, 8);
-            ParticulierPanel.Controls.Add(MDP_Part_Box, 1, 8);
+            // Create the TableLayoutPanel for "Entreprise"
+            EntreprisePanel = new TableLayoutPanel();
+            EntreprisePanel.Dock = DockStyle.Fill;
+            EntreprisePanel.RowCount = 11;
+            EntreprisePanel.ColumnCount = 2;
+            EntreprisePanel.AutoSize = true;
+            EntreprisePanel.Visible = false; // Initially hidden
 
             // The last row with all checkboxes is added separately
             ParticulierFlow = new FlowLayoutPanel();
             ParticulierFlow.Dock = DockStyle.Fill;
             ParticulierFlow.FlowDirection = FlowDirection.LeftToRight;
             ParticulierFlow.AutoSize = true;
+
+            // The last row with the checkbox is added separately
+            EntrepriseFlow = new FlowLayoutPanel();
+            EntrepriseFlow.Dock = DockStyle.Fill;
+            EntrepriseFlow.FlowDirection = FlowDirection.LeftToRight;
+            EntrepriseFlow.AutoSize = true;
 
             ConditionsPart = new CheckBox()
             {
@@ -242,12 +240,55 @@ namespace Liv_In_Paris
                 Text = "Vendre des plats.",
                 Anchor = AnchorStyles.Right,
                 AutoSize = true
-            };        
+            };
+
+            ConditionsEnt = new CheckBox()
+            {
+                Text = "J'accepte les termes et conditions d'utilisation.",
+                Anchor = AnchorStyles.Right,
+                AutoSize = true
+            };
+
+            Insc_Ent = new Button();
+            Insc_Ent.Text = "Validé ?";
+            Insc_Ent.AutoSize = true;
+            Insc_Ent.Width = 100;
+            Insc_Ent.Click += Insc_Ent_Click;
+
+            #endregion
+
+            #region Ajout et Création
             //ajout du checkbox au flowPanel
             ParticulierFlow.Controls.Add(ConditionsPart);
             ParticulierFlow.Controls.Add(Hypertxt_Part);
             ParticulierFlow.Controls.Add(Insc_Part);
             ParticulierFlow.Controls.Add(Choisir_Image_Part);
+
+            //ajout du checkbox au flowPanel
+            EntrepriseFlow.Controls.Add(ConditionsEnt);
+            EntrepriseFlow.Controls.Add(Hypertxt_Ent);
+            EntrepriseFlow.Controls.Add(Insc_Ent);
+            EntrepriseFlow.Controls.Add(Choisir_Image_Ent);
+
+            // Add fields to "Particulier" 
+            ParticulierPanel.Controls.Add(Nom_Part_Label, 0, 0);
+            ParticulierPanel.Controls.Add(Nom_Part_Box, 1, 0);
+            ParticulierPanel.Controls.Add(Prenom_Part_Label, 0, 1);
+            ParticulierPanel.Controls.Add(Prenom_Part_Box, 1, 1);
+            ParticulierPanel.Controls.Add(Tel_Part_Label, 0, 2);
+            ParticulierPanel.Controls.Add(Tel_Part_Box, 1, 2);
+            ParticulierPanel.Controls.Add(Email_Part_Label, 0, 3);
+            ParticulierPanel.Controls.Add(Email_Part_Box, 1, 3);
+            ParticulierPanel.Controls.Add(NumRue_Part_Label, 0, 4);
+            ParticulierPanel.Controls.Add(NumRue_Part_Box, 1, 4);
+            ParticulierPanel.Controls.Add(Rue_Part_Label, 0, 5);
+            ParticulierPanel.Controls.Add(Rue_Part_Box, 1, 5);
+            ParticulierPanel.Controls.Add(CP_Part_Label, 0, 6);
+            ParticulierPanel.Controls.Add(CP_Part_Box, 1, 6);
+            ParticulierPanel.Controls.Add(Ville_Part_Label, 0, 7);
+            ParticulierPanel.Controls.Add(Ville_Part_Box, 1, 7);
+            ParticulierPanel.Controls.Add(MDP_Part_Label, 0, 8);
+            ParticulierPanel.Controls.Add(MDP_Part_Box, 1, 8);
 
             //Ajout du FlowPanel au TablPanel en configurant son étendu
             ParticulierPanel.Controls.Add(ParticulierFlow, 0, 9);
@@ -259,15 +300,6 @@ namespace Liv_In_Paris
 
             // Add the TableLayoutPanel to the "Particulier" GroupBox
             ParticulierGroup.Controls.Add(ParticulierPanel);
-
-
-            // Create the TableLayoutPanel for "Entreprise"
-            EntreprisePanel = new TableLayoutPanel();
-            EntreprisePanel.Dock = DockStyle.Fill;
-            EntreprisePanel.RowCount = 11;
-            EntreprisePanel.ColumnCount = 2;
-            EntreprisePanel.AutoSize = true;
-            EntreprisePanel.Visible = false; // Initially hidden
 
             // Add fields to "Entreprise"
             EntreprisePanel.Controls.Add(SIRET_Ent_Label, 0, 0);
@@ -289,31 +321,6 @@ namespace Liv_In_Paris
             EntreprisePanel.Controls.Add(MDP_Ent_Label, 0, 8);
             EntreprisePanel.Controls.Add(MDP_Ent_Box, 1, 8);
 
-            // The last row with the checkbox is added separately
-            EntrepriseFlow = new FlowLayoutPanel();
-            EntrepriseFlow.Dock = DockStyle.Fill;
-            EntrepriseFlow.FlowDirection = FlowDirection.LeftToRight;
-            EntrepriseFlow.AutoSize = true;
-
-            ConditionsEnt = new CheckBox()
-            {
-                Text = "J'accepte les termes et conditions d'utilisation.",
-                Anchor = AnchorStyles.Right,
-                AutoSize = true
-            };
-
-            Insc_Ent = new Button();
-            Insc_Ent.Text = "Validé ?";
-            Insc_Ent.AutoSize = true;
-            Insc_Ent.Width = 100;
-            Insc_Ent.Click += Insc_Ent_Click;
-
-            //ajout du checkbox au flowPanel
-            EntrepriseFlow.Controls.Add(ConditionsEnt);
-            EntrepriseFlow.Controls.Add(Hypertxt_Ent);
-            EntrepriseFlow.Controls.Add(Insc_Ent);
-            EntrepriseFlow.Controls.Add(Choisir_Image_Ent);
-        
             //Ajout du FlowPanel au TablPanel en configurant son étendu
             EntreprisePanel.Controls.Add(EntrepriseFlow, 0, 9);
             EntreprisePanel.SetColumnSpan(EntrepriseFlow, EntreprisePanel.ColumnCount); //le FlowPanel s'étend sur le nb de colonnes de ParticulierPanel
@@ -329,8 +336,10 @@ namespace Liv_In_Paris
 
             // Add the Panel to the form
             this.Controls.Add(MainLayout);
+            #endregion
         }
 
+        #region Méthode Bouton
         private void Retour_Click(object? sender, EventArgs e)
         {
             PrésentationForm Form = new PrésentationForm();
@@ -521,29 +530,21 @@ namespace Liv_In_Paris
             }
         }
 
-        private async void Choisir_Image_Click_Part(object? sender, EventArgs e)
+        #endregion
+
+        #region Méthode Image
+        private void Choisir_Image_Click_Part(object? sender, EventArgs e)
         {
             try
             {
                 using(OpenFileDialog fileDialog = new OpenFileDialog())
                 {
-                    MessageBox.Show("Attein");
                     fileDialog.Filter = "Images (*.jpg;*.jpeg;*.png;*.bmp)|*.jpg;*.jpeg;*.png;*.bmp";
                     fileDialog.Title = "Sélectionnez une image";
-                    MessageBox.Show("Attein11");
 
                     if (fileDialog.ShowDialog() == DialogResult.OK)
                     {
-                        MessageBox.Show("AtteinTT");
-                        Image_path_Part = fileDialog.FileName;
-                        // Utiliser une tâche pour lire le fichier sans bloquer le thread principal
-                        Image_path_Ent = fileDialog.FileName;
-                        await Task.Run(() =>
-                        {
-                            // Simuler une opération lourde (lecture du fichier)
-                            byte[] imageBytes = File.ReadAllBytes(Image_path_Ent);
-                        });
-                        
+                        Image_path_Part = fileDialog.FileName;                        
                         MessageBox.Show("Image sélectionnée : "+ Image_path_Part);
                     }
                 }
@@ -568,7 +569,10 @@ namespace Liv_In_Paris
                 }
             }
         }
-        
+
+        #endregion
+
+        #region Méthode Validation        
         private int[]? InscValide_Part(string nom, string prenom, string tel, string email, int Nrue, string rue, int CP, string ville, string mdp, string image)     //Type int[]? pour qu'on puisse afficher les ID à l'utilisateur lors d'un futur login
         {
             //On génère d'abord un ID qui n'existe pas déjà dans Client et/ou Cuisiniers selon le choix avec GenIDSQL pour ne pas encombrer le réel but de la méthode Inscription
@@ -601,7 +605,7 @@ namespace Liv_In_Paris
                     // Dinstinguons le cas Cuisiner et/ou Client
                     if(Part_Client.Checked && !Part_Cuisinier.Checked) //On veut être uniquement Client
                     {
-                        string InsertClient = @"INSERT INTO Client (Id_client, Mdp, Nom_particulier, Prenom_particulier, SIRET_entreprise) VALUES (@id, @mdp, @nomClient, @prenomClient, @SIRET, @photo);";
+                        string InsertClient = @"INSERT INTO Client (Id_client, Mdp, Nom_particulier, Prenom_particulier, SIRET_entreprise, Photo_profil) VALUES (@id, @mdp, @nomClient, @prenomClient, @SIRET, @photo);";
                         using(MySqlCommand cmdPart = new MySqlCommand(InsertClient, connection))
                         {
                             cmdPart.Parameters.AddWithValue("@id", ID_Client);
@@ -625,7 +629,7 @@ namespace Liv_In_Paris
                     }
                     else if(Part_Cuisinier.Checked && !Part_Client.Checked) //On veut être uniquement Cuisinier
                     {
-                        string InsertCuisinier = @"INSERT INTO Cuisinier (Id_cuisinier, Mdp, Nom_cuisinier, Prenom_cuisinier) VALUES (@id, @mdp, @nom, @prenom, @photo);";
+                        string InsertCuisinier = @"INSERT INTO Cuisinier (Id_cuisinier, Mdp, Nom_cuisinier, Prenom_cuisinier, Photo_profil) VALUES (@id, @mdp, @nom, @prenom, @photo);";
                         using(MySqlCommand cmdPart = new MySqlCommand(InsertCuisinier, connection))
                         {
                             cmdPart.Parameters.AddWithValue("@id", ID_Cuisinier);
@@ -648,7 +652,7 @@ namespace Liv_In_Paris
                     }
                     else    //Cas Cuisinier ET Client car les deux = faux est impossible car vérifié dans Insc_Part_Click
                     {
-                        string InsertCuisinier = @"INSERT INTO Cuisinier (Id_cuisinier, Mdp, Nom_cuisinier, Prenom_cuisinier) VALUES (@id, @mdp, @nom, @prenom, @photo);";
+                        string InsertCuisinier = @"INSERT INTO Cuisinier (Id_cuisinier, Mdp, Nom_cuisinier, Prenom_cuisinier, Photo_profil) VALUES (@id, @mdp, @nom, @prenom, @photo);";
                         using(MySqlCommand cmdPart = new MySqlCommand(InsertCuisinier, connection))
                         {
                             cmdPart.Parameters.AddWithValue("@id", ID_Cuisinier);
@@ -669,7 +673,7 @@ namespace Liv_In_Paris
                             cmdPart.ExecuteNonQuery();
                         }
 
-                        string InsertClient = @"INSERT INTO Client (Id_client, Mdp, Nom_particulier, Prenom_particulier, SIRET_entreprise) VALUES (@id, @mdp, @nomClient, @prenomClient, @SIRET, @photo);";
+                        string InsertClient = @"INSERT INTO Client (Id_client, Mdp, Nom_particulier, Prenom_particulier, SIRET_entreprise, Photo_profil) VALUES (@id, @mdp, @nomClient, @prenomClient, @SIRET, @photo);";
                         using(MySqlCommand cmdPart = new MySqlCommand(InsertClient, connection))
                         {
                             cmdPart.Parameters.AddWithValue("@id", ID_Client);
@@ -701,6 +705,7 @@ namespace Liv_In_Paris
             }
         }
 
+
         private int[]? InscValide_Ent(long siret, string nom_Ent, string nomRef, string telRef, int Nrue, string rue, int CP, string ville, string mdp, string image)
         {
             int ID_Ent = GenIDSQL(0);   //obligé 0 car ne peut être qu'un Client
@@ -728,7 +733,7 @@ namespace Liv_In_Paris
                     }
 
                     //Et maintenant dans Client
-                    string InsertClient = @"INSERT INTO Client (Id_client, Mdp, Nom_particulier, Prenom_particulier, SIRET_entreprise) VALUES (@id, @mdp, @nomClient, @prenomClient, @SIRET);";
+                    string InsertClient = @"INSERT INTO Client (Id_client, Mdp, Nom_particulier, Prenom_particulier, SIRET_entreprise, Photo_profil) VALUES (@id, @mdp, @nomClient, @prenomClient, @SIRET);";
                     using(MySqlCommand cmdEnt = new MySqlCommand(InsertClient, connection))
                     {
                         cmdEnt.Parameters.AddWithValue("@id", ID_Ent);
@@ -760,6 +765,9 @@ namespace Liv_In_Paris
             }
         }
 
+        #endregion
+
+        #region Méthode Tiers
         private int GenIDSQL(int choix)     //0 pour Client (Part/Ent) et 1 pour Cuisinier
         {
             int ID = 0;
@@ -812,5 +820,7 @@ namespace Liv_In_Paris
         {
             return File.ReadAllBytes(imagePath);
         }
+
+        #endregion
     }
 }

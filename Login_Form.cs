@@ -4,6 +4,7 @@ namespace Liv_In_Paris
 {
     public class Login_Form : Form
     {
+        #region Attributs
         private Label ID;
         private Label PWD;
         private TextBox Id_box;
@@ -12,8 +13,12 @@ namespace Liv_In_Paris
         private Button Login;
         private Button Retour;
 
+        #endregion
+
         public Login_Form()
         {
+            #region Initialisation Attributs
+
             this.Text = "Login";
             this.Width = 350;
             this.Height = 175;
@@ -56,6 +61,10 @@ namespace Liv_In_Paris
             Retour.Location = new Point((Retour.Width) /2, 75);
             Retour.Click += Retour_Click;  
 
+            #endregion
+
+            #region Ajout et Création
+
             layout.Controls.Add(ID,0,0);
             layout.Controls.Add(Id_box,0,1);
             layout.Controls.Add(PWD,1,0);
@@ -64,6 +73,8 @@ namespace Liv_In_Paris
             this.Controls.Add(Login);
             this.Controls.Add(Retour);
             this.Controls.Add(layout);
+
+            #endregion
         }
 
         private void button_Click(object? sender, EventArgs e)
