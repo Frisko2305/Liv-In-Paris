@@ -69,7 +69,7 @@ namespace Liv_In_Paris
         }
 
         #region Méthode Bouton
-        private void Connection_Click(object sender, EventArgs e)
+        private void Connection_Click(object? sender, EventArgs e)
         {
             Login_Form Form = new Login_Form();
             Form.Show();
@@ -78,7 +78,7 @@ namespace Liv_In_Paris
             Form.FormClosed += (s,args) => this.Close();
         }
 
-        private void Inscription_Click(object sender, EventArgs e)
+        private void Inscription_Click(object? sender, EventArgs e)
         {
             Insc_Form Form = new Insc_Form();
             Form.Show();

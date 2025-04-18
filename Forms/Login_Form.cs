@@ -113,19 +113,54 @@ namespace Liv_In_Paris
             string connectionString = "SERVER=localhost;PORT=3306;" + "DATABASE= psi;" + "UID=root;PASSWORD=root";
             string query =
                 @"
-                SELECT c.Id_client, c.Mdp, c.Nom_particulier, c.Prenom_particulier, c.SIRET_entreprise,
-                p.Num_tel AS Particulier_Num_tel, p.email AS Particulier_Email,
-                e.Nom_entreprise AS Entreprise_Nom, e.Nom_referent AS Entreprise_Referent,
-                cu.Id_cuisinier AS Cuisinier_Id,
-                CASE
-                    WHEN cu.Id_cuisinier IS NOT NULL THEN cu.Photo_profil
-                    ELSE c.Photo_profil
-                END AS Photo_profil
-                FROM client c
-                LEFT JOIN particulier p ON c.Nom_particulier = p.Nom AND c.Prenom_particulier = p.Prenom
-                LEFT JOIN entreprise e ON c.SIRET_entreprise = e.SIRET
-                LEFT JOIN cuisinier cu ON c.Id_client = cu.Id_cuisinier
-                WHERE c.Id_client = @Id AND c.MDP = @pwd;";
+                SELECT
+                    -- Identifiant Unique (Client ou Cuisinier)
+                    CASE
+                        WHEN cu.Id_cuisinier IS NOT NULL THEN cu.Id_cuisinier
+                        ELSE c.Id_client
+                    END AS Id,
+                    CASE
+                        WHEN cu.Id_cuisinier IS NOT NULL THEN cu.Mdp
+                        ELSE c.Id_client
+                    END AS Mdp,
+
+                    CASE
+                        WHEN cu.Id_cuisinier IS NOT NULL THEN cu.Nom_cuisinier
+                        ELSE c.Nom_client
+                    END AS Nom,
+                    CASE
+                        WHEN cu.Id_cuisinier IS NOT NULL THEN cu.Prenom_cuisinier
+                        ELSE c.Prenom_client
+                    END AS Prenom,
+                    
+                    c.SIRET_entreprise AS SIRET,
+                    e.Nom_entreprise AS Nom_entreprise,
+                    e.Nom_referent AS Nom_referent,
+                    e.Num_tel_referent AS Num_tel_referent,
+                    p.Email AS Email,
+                    p.Num_tel AS Num_tel,
+                    p.Num_Rue AS Particulier_Num_Rue,
+                    p.Rue AS Particulier_Rue,
+                    p.CP AS Particulier_CP,
+                    p.Ville AS Particulier_Ville,
+                    e.Num_Rue AS Entreprise_Num_Rue,
+                    e.Rue AS Entreprise_Rue,
+                    e.CP AS Entreprise_CP,
+                    e.Ville AS Entreprise_Ville,
+                    
+                    CASE
+                        WHEN cu.Id_cuisinier IS NOT NULL THEN cu.Photo_profil
+                        ELSE c.Photo_profil
+                    END AS Photo_profil
+                    
+                    FROM client c
+                    LEFT JOIN particulier p ON c.Nom_client = p.Nom AND c.Prenom_client = p.Prenom
+                    LEFT JOIN entreprise e ON c.SIRET_entreprise = e.SIRET
+                    LEFT JOIN cuisinier cu ON c.Nom_client = cu.Nom_cuisinier AND c.Prenom_client = cu.Prenom_cuisinier
+                    
+                    WHERE
+                        (@Id = c.Id_client OR @Id = cu.Id_cuisinier)
+                        AND (@pwd = c.Mdp OR @pwd = cu.Mdp)";
 
             try
             {
@@ -142,14 +177,24 @@ namespace Liv_In_Paris
                         {
                             var userInfo = new Dictionary<string, string>
                             {
-                                { "Id", reader["Id_client"]?.ToString() ?? "" },
-                                { "Nom", reader["Nom_particulier"]?.ToString() ?? "" },
-                                { "Prenom", reader["Prenom_particulier"]?.ToString() ?? "" },
-                                { "SIRET", reader["SIRET_entreprise"]?.ToString() ?? "" },
-                                { "Particulier_Num_tel", reader["Particulier_Num_tel"]?.ToString() ?? "" },
-                                { "Particulier_Email", reader["Particulier_Email"]?.ToString() ?? "" },
-                                { "Entreprise_Nom", reader["Entreprise_Nom"]?.ToString() ?? "" },
-                                { "Entreprise_Referent", reader["Entreprise_Referent"]?.ToString() ?? "" }
+                                { "Id", reader["Id"]?.ToString() ?? "" },
+                                { "Nom", reader["Nom"]?.ToString() ?? "" },
+                                { "Prenom", reader["Prenom"]?.ToString() ?? "" },
+                                { "SIRET", reader["SIRET"]?.ToString() ?? "" },
+                                { "Email", reader["Email"]?.ToString() ?? "" },
+                                { "Num_tel", reader["Num_tel"]?.ToString() ?? "" },
+
+                                // Adresse des Particuliers
+                                { "Particulier_Num_Rue", reader["Particulier_Num_Rue"]?.ToString() ?? "" },
+                                { "Particulier_Rue", reader["Particulier_Rue"]?.ToString() ?? "" },
+                                { "Particulier_CP", reader["Particulier_CP"]?.ToString() ?? "" },
+                                { "Particulier_Ville", reader["Particulier_Ville"]?.ToString() ?? "" },
+
+                                // Adresse des Entreprises
+                                { "Entreprise_Num_Rue", reader["Entreprise_Num_Rue"]?.ToString() ?? "" },
+                                { "Entreprise_Rue", reader["Entreprise_Rue"]?.ToString() ?? "" },
+                                { "Entreprise_CP", reader["Entreprise_CP"]?.ToString() ?? "" },
+                                { "Entreprise_Ville", reader["Entreprise_Ville"]?.ToString() ?? "" }
                             };
 
                             // On récupère l'image du profil s'il existe

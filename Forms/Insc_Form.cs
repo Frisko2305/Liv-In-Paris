@@ -17,9 +17,9 @@ namespace Liv_In_Paris
         private Button Insc_Ent;
         private TableLayoutPanel MainLayout;    //Permet de placer à gauche et droite de la page les Layout Part & Ent
         private Button Choisir_Image_Part;
-        private string Image_path_Part;
+        private string? Image_path_Part;
         private Button Choisir_Image_Ent;
-        private string Image_path_Ent;
+        private string? Image_path_Ent;
         private Button Retour;
         private Label Hypertxt_Part;
         private Label Hypertxt_Ent;     //Créer des 'liens' pour permettre de lire les conditions d'utilisations
@@ -573,7 +573,7 @@ namespace Liv_In_Paris
         #endregion
 
         #region Méthode Validation        
-        private int[]? InscValide_Part(string nom, string prenom, string tel, string email, int Nrue, string rue, int CP, string ville, string mdp, string image)     //Type int[]? pour qu'on puisse afficher les ID à l'utilisateur lors d'un futur login
+        private int[]? InscValide_Part(string nom, string prenom, string tel, string email, int Nrue, string rue, int CP, string ville, string mdp, string? image)     //Type int[]? pour qu'on puisse afficher les ID à l'utilisateur lors d'un futur login
         {
             //On génère d'abord un ID qui n'existe pas déjà dans Client et/ou Cuisiniers selon le choix avec GenIDSQL pour ne pas encombrer le réel but de la méthode Inscription
             int ID_Client = GenIDSQL(0); //ID de 4 chiffres de long uniques et conformes à ce que SQL attend
@@ -605,7 +605,7 @@ namespace Liv_In_Paris
                     // Dinstinguons le cas Cuisiner et/ou Client
                     if(Part_Client.Checked && !Part_Cuisinier.Checked) //On veut être uniquement Client
                     {
-                        string InsertClient = @"INSERT INTO Client (Id_client, Mdp, Nom_particulier, Prenom_particulier, SIRET_entreprise, Photo_profil) VALUES (@id, @mdp, @nomClient, @prenomClient, @SIRET, @photo);";
+                        string InsertClient = @"INSERT INTO Client (Id_client, Mdp, Nom_client, Prenom_client, SIRET_entreprise, Photo_profil) VALUES (@id, @mdp, @nomClient, @prenomClient, @SIRET, @photo);";
                         using(MySqlCommand cmdPart = new MySqlCommand(InsertClient, connection))
                         {
                             cmdPart.Parameters.AddWithValue("@id", ID_Client);
@@ -673,7 +673,7 @@ namespace Liv_In_Paris
                             cmdPart.ExecuteNonQuery();
                         }
 
-                        string InsertClient = @"INSERT INTO Client (Id_client, Mdp, Nom_particulier, Prenom_particulier, SIRET_entreprise, Photo_profil) VALUES (@id, @mdp, @nomClient, @prenomClient, @SIRET, @photo);";
+                        string InsertClient = @"INSERT INTO Client (Id_client, Mdp, Nom_client, Prenom_client, SIRET_entreprise, Photo_profil) VALUES (@id, @mdp, @nomClient, @prenomClient, @SIRET, @photo);";
                         using(MySqlCommand cmdPart = new MySqlCommand(InsertClient, connection))
                         {
                             cmdPart.Parameters.AddWithValue("@id", ID_Client);
@@ -706,7 +706,7 @@ namespace Liv_In_Paris
         }
 
 
-        private int[]? InscValide_Ent(long siret, string nom_Ent, string nomRef, string telRef, int Nrue, string rue, int CP, string ville, string mdp, string image)
+        private int[]? InscValide_Ent(long siret, string nom_Ent, string nomRef, string telRef, int Nrue, string rue, int CP, string ville, string mdp, string? image)
         {
             int ID_Ent = GenIDSQL(0);   //obligé 0 car ne peut être qu'un Client
             int[]? list_ID = {ID_Ent};
@@ -733,7 +733,7 @@ namespace Liv_In_Paris
                     }
 
                     //Et maintenant dans Client
-                    string InsertClient = @"INSERT INTO Client (Id_client, Mdp, Nom_particulier, Prenom_particulier, SIRET_entreprise, Photo_profil) VALUES (@id, @mdp, @nomClient, @prenomClient, @SIRET);";
+                    string InsertClient = @"INSERT INTO Client (Id_client, Mdp, Nom_client, Prenom_client, SIRET_entreprise, Photo_profil) VALUES (@id, @mdp, @nomClient, @prenomClient, @SIRET, @photo);";
                     using(MySqlCommand cmdEnt = new MySqlCommand(InsertClient, connection))
                     {
                         cmdEnt.Parameters.AddWithValue("@id", ID_Ent);
