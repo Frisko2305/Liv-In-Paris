@@ -5,13 +5,10 @@ namespace Liv_In_Paris
     public class Login_Form : Form
     {
         #region Attributs
-        private Label ID;
-        private Label PWD;
-        private TextBox Id_box;
-        private TextBox Pwd_box;
+        private Label ID, PWD;
+        private TextBox Id_box, Pwd_box;
+        private Button Login, Retour;
         private TableLayoutPanel? layout;
-        private Button Login;
-        private Button Retour;
 
         #endregion
 
@@ -77,6 +74,7 @@ namespace Liv_In_Paris
             #endregion
         }
 
+        #region Méthode Boutons
         private void button_Click(object? sender, EventArgs e)
         {
             string userId = Id_box.Text;
@@ -118,7 +116,7 @@ namespace Liv_In_Paris
                     CASE
                         WHEN cu.Id_cuisinier IS NOT NULL THEN cu.Id_cuisinier
                         ELSE c.Id_client
-                    END AS Id,
+                    END AS Id, 
                     CASE
                         WHEN cu.Id_cuisinier IS NOT NULL THEN cu.Mdp
                         ELSE c.Id_client
@@ -138,7 +136,7 @@ namespace Liv_In_Paris
                     e.Nom_referent AS Nom_referent,
                     e.Num_tel_referent AS Num_tel_referent,
                     p.Email AS Email,
-                    p.Num_tel AS Num_tel,
+                    p.Num_tel AS Particulier_Num_tel,
                     p.Num_Rue AS Particulier_Num_Rue,
                     p.Rue AS Particulier_Rue,
                     p.CP AS Particulier_CP,
@@ -161,7 +159,8 @@ namespace Liv_In_Paris
                     WHERE
                         (@Id = c.Id_client OR @Id = cu.Id_cuisinier)
                         AND (@pwd = c.Mdp OR @pwd = cu.Mdp)";
-
+            // A noter : si'l trouve un Id de cuisinier, il prendra celui la au lieu du client même si on saisi un id client
+            // Il faut alors adapter la logique lors du return
             try
             {
                 using(MySqlConnection connection = new MySqlConnection(connectionString))
@@ -182,19 +181,23 @@ namespace Liv_In_Paris
                                 { "Prenom", reader["Prenom"]?.ToString() ?? "" },
                                 { "SIRET", reader["SIRET"]?.ToString() ?? "" },
                                 { "Email", reader["Email"]?.ToString() ?? "" },
-                                { "Num_tel", reader["Num_tel"]?.ToString() ?? "" },
+                                { "Mdp", reader["Mdp"]?.ToString() ?? "" },
 
-                                // Adresse des Particuliers
-                                { "Particulier_Num_Rue", reader["Particulier_Num_Rue"]?.ToString() ?? "" },
-                                { "Particulier_Rue", reader["Particulier_Rue"]?.ToString() ?? "" },
-                                { "Particulier_CP", reader["Particulier_CP"]?.ToString() ?? "" },
-                                { "Particulier_Ville", reader["Particulier_Ville"]?.ToString() ?? "" },
+                                // Infos des Particuliers
+                                { "Part_NumTel", reader["Particulier_Num_tel"]?.ToString() ?? "" },
+                                { "Part_NumRue", reader["Particulier_Num_Rue"]?.ToString() ?? "" },
+                                { "Part_Rue", reader["Particulier_Rue"]?.ToString() ?? "" },
+                                { "Part_CP", reader["Particulier_CP"]?.ToString() ?? "" },
+                                { "Part_Ville", reader["Particulier_Ville"]?.ToString() ?? "" },
 
-                                // Adresse des Entreprises
-                                { "Entreprise_Num_Rue", reader["Entreprise_Num_Rue"]?.ToString() ?? "" },
-                                { "Entreprise_Rue", reader["Entreprise_Rue"]?.ToString() ?? "" },
-                                { "Entreprise_CP", reader["Entreprise_CP"]?.ToString() ?? "" },
-                                { "Entreprise_Ville", reader["Entreprise_Ville"]?.ToString() ?? "" }
+                                // Infos des Entreprises
+                                { "Ent_Nom", reader["Nom_entreprise"]?.ToString() ?? "" },
+                                { "Ent_NumRue", reader["Entreprise_Num_Rue"]?.ToString() ?? "" },
+                                { "Ent_Rue", reader["Entreprise_Rue"]?.ToString() ?? "" },
+                                { "Ent_CP", reader["Entreprise_CP"]?.ToString() ?? "" },
+                                { "Ent_Ville", reader["Entreprise_Ville"]?.ToString() ?? "" },
+                                { "Ent_NomRef", reader["Nom_referent"]?.ToString() ?? "" },
+                                { "Ent_TelRef", reader["Num_tel_referent"]?.ToString() ?? "" }
                             };
 
                             // On récupère l'image du profil s'il existe
@@ -204,9 +207,9 @@ namespace Liv_In_Paris
                                 userInfo.Add("Photo_profil", Convert.ToBase64String(Photo));
                             }
 
-                            if(!string.IsNullOrEmpty(userInfo["Nom"]) && !string.IsNullOrEmpty(userInfo["Prenom"]))     //Si les colonnes de string du nom et prenom ne sont pas vides
+                            if(!string.IsNullOrEmpty(userInfo["Nom"]) && !string.IsNullOrEmpty(userInfo["Prenom"]) && userId == userInfo["Id"])     //Si les colonnes de string du nom et prenom ne sont pas vides et que 
                             {
-                                return ("Particulier", userInfo);
+                                return ("Cuisinier", userInfo);
                             }
                             else if (!string.IsNullOrEmpty(userInfo["SIRET"]))
                             {
@@ -214,7 +217,7 @@ namespace Liv_In_Paris
                             }
                             else
                             {
-                                return ("Cuisinier", userInfo);
+                                return ("Particulier", userInfo);
                             }
                         }
                     }
@@ -227,5 +230,7 @@ namespace Liv_In_Paris
             }
             return ("Invalide", null);
         }
+
+        #endregion
     }
 }

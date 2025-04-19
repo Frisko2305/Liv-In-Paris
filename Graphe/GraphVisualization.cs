@@ -25,7 +25,7 @@ namespace Liv_In_Paris
             this.Paint += new PaintEventHandler(DessinerGraphe);
         }
 
-        private void DessinerGraphe(object sender, PaintEventArgs e)
+        private void DessinerGraphe(object? sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;

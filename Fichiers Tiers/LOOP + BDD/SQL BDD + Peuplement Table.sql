@@ -11,7 +11,9 @@ CREATE TABLE Particulier(
    Rue VARCHAR(50),
    CP INT,
    Ville VARCHAR(50),
-   PRIMARY KEY(Nom, Prenom)
+   PRIMARY KEY(Nom, Prenom),
+   UNIQUE(Num_tel),
+   UNIQUE(Email)
 );
 -- DELETE FROM Particulier;
 
@@ -24,7 +26,9 @@ CREATE TABLE Entreprise(
    Rue VARCHAR(50),
    CP INT,
    Ville VARCHAR(50),
-   PRIMARY KEY(SIRET)
+   PRIMARY KEY(SIRET),
+   UNIQUE(Nom_entreprise),
+   UNIQUE(Num_tel_referent)
 );
 -- DELETE FROM Entreprise;
 

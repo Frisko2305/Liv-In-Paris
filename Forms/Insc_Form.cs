@@ -5,72 +5,29 @@ namespace Liv_In_Paris
     public class Insc_Form : Form
     {
         #region Attributs
-        private GroupBox ParticulierGroup;
-        private GroupBox EntrepriseGroup;
-        private TableLayoutPanel ParticulierPanel;
-        private TableLayoutPanel EntreprisePanel;
-        private FlowLayoutPanel ParticulierFlow;
-        private FlowLayoutPanel EntrepriseFlow;
-        private CheckBox ConditionsPart;
-        private CheckBox ConditionsEnt;
-        private Button Insc_Part;
-        private Button Insc_Ent;
-        private TableLayoutPanel MainLayout;    //Permet de placer à gauche et droite de la page les Layout Part & Ent
-        private Button Choisir_Image_Part;
-        private string? Image_path_Part;
-        private Button Choisir_Image_Ent;
-        private string? Image_path_Ent;
         private Button Retour;
-        private Label Hypertxt_Part;
-        private Label Hypertxt_Ent;     //Créer des 'liens' pour permettre de lire les conditions d'utilisations
         private Label Choix_Part_Client_Cuisinier;
-        private CheckBox Part_Client;
-        private CheckBox Part_Cuisinier;
+        private Label Hypertxt_Part, Hypertxt_Ent;     //Créer des 'liens' pour permettre de lire les conditions d'utilisations
+        private CheckBox Part_Client, Part_Cuisinier;
+        private CheckBox ConditionsPart, ConditionsEnt;
+        private Button Choisir_Image_Part, Choisir_Image_Ent;
+        private Button Insc_Part, Insc_Ent;
+        private string? Image_path_Part, Image_path_Ent;
+        private FlowLayoutPanel ParticulierFlow, EntrepriseFlow;
+        private TableLayoutPanel ParticulierPanel, EntreprisePanel;
+        private GroupBox ParticulierGroup, EntrepriseGroup;
+        private TableLayoutPanel MainLayout;    //Permet de placer à gauche et droite de la page les Layout Part & Ent
 
         //Obligatoire de créer une variable pour chaque élément pour par la suite pouvoir les récupérer et créer le tuple associé
-        private TextBox Nom_Part_Box;
-        private TextBox Prenom_Part_Box;
-        private TextBox Tel_Part_Box;
-        private TextBox Email_Part_Box;
-        private TextBox NumRue_Part_Box;
-        private TextBox Rue_Part_Box;
-        private TextBox CP_Part_Box;
-        private TextBox Ville_Part_Box;
-        private TextBox MDP_Part_Box;
-        private TextBox SIRET_Ent_Box;
-        private TextBox Nom_Ent_Box;
-        private TextBox NomRef_Ent_Box;
-        private TextBox TelRef_Ent_Box;
-        private TextBox NumRue_Ent_Box;
-        private TextBox Rue_Ent_Box;
-        private TextBox CP_Ent_Box;
-        private TextBox Ville_Ent_Box;
-        private TextBox MDP_Ent_Box;
+        private TextBox Nom_Part_Box, Prenom_Part_Box, Tel_Part_Box, Email_Part_Box, NumRue_Part_Box, Rue_Part_Box, CP_Part_Box, Ville_Part_Box, MDP_Part_Box, SIRET_Ent_Box, Nom_Ent_Box, NomRef_Ent_Box, TelRef_Ent_Box, NumRue_Ent_Box, Rue_Ent_Box, CP_Ent_Box, Ville_Ent_Box, MDP_Ent_Box;
 
-        private Label Nom_Part_Label;
-        private Label Prenom_Part_Label;
-        private Label Tel_Part_Label;
-        private Label Email_Part_Label;
-        private Label NumRue_Part_Label;
-        private Label Rue_Part_Label;
-        private Label CP_Part_Label;
-        private Label Ville_Part_Label;
-        private Label MDP_Part_Label;
-        private Label SIRET_Ent_Label;
-        private Label Nom_Ent_Label;
-        private Label NomRef_Ent_Label;
-        private Label TelRef_Ent_Label;
-        private Label NumRue_Ent_Label;
-        private Label Rue_Ent_Label;
-        private Label CP_Ent_Label;
-        private Label Ville_Ent_Label;
-        private Label MDP_Ent_Label;
-
+        private Label Nom_Part_Label, Prenom_Part_Label, Tel_Part_Label, Email_Part_Label, NumRue_Part_Label, Rue_Part_Label, CP_Part_Label, Ville_Part_Label, MDP_Part_Label, SIRET_Ent_Label, Nom_Ent_Label, NomRef_Ent_Label, TelRef_Ent_Label, NumRue_Ent_Label, Rue_Ent_Label, CP_Ent_Label, Ville_Ent_Label, MDP_Ent_Label;
         #endregion
 
         public Insc_Form()
         {
             #region Initialisation Attributs
+            
             this.Text = "Inscription to Liv In Paris !";
             this.Width = 750;
             this.Height = 650;
@@ -371,66 +328,77 @@ namespace Liv_In_Paris
             if(!ConditionsPart.Checked)
             {
                 MessageBox.Show("Vous devez accpeter les termes et conditions d'utilisations pour continuer.");
+                return;
             }
 
             //Check si on a bien coché case Client et/ou Cuisiniers
             if(Part_Client.Checked == false && Part_Cuisinier.Checked == false)
             {
                 MessageBox.Show("Vous devez sélectionner au moins un profil : En tant que Client et commander des plats et/ou en tant que Cuisinier et vendre des plats.");
+                return;
             }
 
             //Check des types des inputs saisis pour requete SQL + association à variable
             if(Nom_Part_Box.Text.Length > 50 || Nom_Part_Box.Text == "")
             {
                 MessageBox.Show("Le Nom ne doit pas dépasser 50 caractères ni être vide.");
+                return;
             }
             string Nom_PartString = Nom_Part_Box.Text;
 
             if(Prenom_Part_Box.Text.Length > 50 || Prenom_Part_Box.Text == "")
             {
                 MessageBox.Show("Le Prénom ne doit pas dépasser 50 caractères ni être vide.");
+                return;
             }
             string Prenom_PartString = Prenom_Part_Box.Text;
 
             if(Tel_Part_Box.Text.Length != 14)
             {
                 MessageBox.Show("Le numéro de Téléphone doit être saisi en format XX XX XX XX XX ni être vide.");
+                return;
             }
             string Tel_PartString = Tel_Part_Box.Text;
 
             if(Email_Part_Box.Text.Length > 100 || Email_Part_Box.Text == "" || Email_Part_Box.Text.Contains('@')  == false)
             {
                 MessageBox.Show("L'email ne doit pas dépasser 50 caractère ni être vide et doit contenir un '@' et un domaine");
+                return;
             }
             string Email_PartString = Email_Part_Box.Text;
 
             if(!int.TryParse(NumRue_Part_Box.Text, out _) || NumRue_Part_Box.Text == "")
             {
                 MessageBox.Show("Le numéro de la rue doit être un entier valide, sans prendre en compte BIS, TER, etc, ni être vide.");
+                return;
             }
             int NumRue_PartInt = Convert.ToInt32(NumRue_Part_Box.Text);
 
             if(Rue_Part_Box.Text.Length > 50 || Rue_Part_Box.Text == "")
             {
                 MessageBox.Show("Le nom de la rue ne doit pas dépasser 50 caractères ni être vide.");
+                return;
             }
             string Rue_PartString = Rue_Part_Box.Text;
 
             if(!int.TryParse(CP_Part_Box.Text, out _) || CP_Part_Box.Text == "")
             {
                 MessageBox.Show("Le code postal doit être un entier valide de format XXXXX, ni être vide");
+                return;
             }
             int CP_PartInt = Convert.ToInt32(CP_Part_Box.Text);
 
             if(Ville_Part_Box.Text.Length > 50 || Ville_Part_Box.Text == "")
             {
                 MessageBox.Show("Le nom de la ville ne doit pas dépasser 50 caractères, ni être vide.");
+                return;
             }
             string Ville_PartString = Ville_Part_Box.Text;
 
             if(MDP_Part_Box.Text.Length > 20 || MDP_Part_Box.Text == "")
             {
                 MessageBox.Show("Le mot de passe ne doit pas dépasser 20 caractères, ni être vide.");
+                return;
             }
             string MDP_PartString = MDP_Part_Box.Text;
 
@@ -466,54 +434,63 @@ namespace Liv_In_Paris
             if(!long.TryParse(SIRET_Ent_Box.Text, out _) || SIRET_Ent_Box.Text == "" || SIRET_Ent_Box.Text.Length != 14)
             {
                 MessageBox.Show("Le numéro de SIRET doit être un entier valide de 14 chiffres, ni être vide.");
+                return;
             }
             long SIRET_EntLong = Convert.ToInt64(SIRET_Ent_Box.Text);
 
             if(Nom_Ent_Box.Text.Length > 50 || Nom_Ent_Box.Text == "")
             {
                 MessageBox.Show("Le nom de l'entreprise ne doit pas dépasser 50 caractères, ni être vide.");
+                return;
             }
             string Nom_EntString = Nom_Ent_Box.Text;
 
             if(NomRef_Ent_Box.Text.Length > 50 || NomRef_Ent_Box.Text == "")
             {
                 MessageBox.Show("Le nom du référent ne doit pas dépasser 50 caractères, ni être vide.");
+                return;
             }
             string NomRef_EntString = NomRef_Ent_Box.Text;
 
             if(TelRef_Ent_Box.Text.Length != 14 || TelRef_Ent_Box.Text == "")
             {
                 MessageBox.Show("Le numéro de téléphone du référent doit être saisi au format XX XX XX XX XX, ni être vide.");
+                return;
             }
             string TelRef_EntString = TelRef_Ent_Box.Text;
 
             if(!int.TryParse(NumRue_Ent_Box.Text, out _) || NumRue_Ent_Box.Text == "")
             {
                 MessageBox.Show("Le numéro de la rue doit être un entier valide, sans prendre en compte BIS, TER, etc, ni être vide.");
+                return;
             }
             int NumRue_EntInt = Convert.ToInt32(NumRue_Ent_Box.Text);
 
             if(Rue_Ent_Box.Text.Length > 50 || Rue_Ent_Box.Text == "")
             {
                 MessageBox.Show("La rue ne doit pas dépasser 50 caractères, ni être vide.");
+                return;
             }
             string Rue_EntString = Rue_Ent_Box.Text;
 
             if(!int.TryParse(CP_Ent_Box.Text, out _) || CP_Ent_Box.Text == "")
             {
                 MessageBox.Show("Le code postal doit être saisi au format XXXXX, ni être vide.");
+                return;
             }
             int CP_EntInt = Convert.ToInt32(CP_Ent_Box.Text);
 
             if(Ville_Ent_Box.Text.Length > 50 || Ville_Ent_Box.Text == "")
             {
                 MessageBox.Show("Le nom de la ville ne doit pas dépasser 50 caractères, ni être vide.");
+                return;
             }
             string Ville_EntString = Ville_Ent_Box.Text;
 
             if(MDP_Ent_Box.Text.Length > 20 || MDP_Ent_Box.Text == "")
             {
                 MessageBox.Show("Le mot de passe ne doit pas dépasser 20 caractères, ni être vide.");
+                return;
             }
             string MDP_EntString = MDP_Ent_Box.Text;
 
@@ -526,7 +503,7 @@ namespace Liv_In_Paris
             }
             else
             {
-                MessageBox.Show("Erreur sur l'inscription, revoir vos informations.");   //Checker l'ID de sorte à ce qu'il n'existe pas déjà dans BDD (ask copilot)
+                MessageBox.Show("Erreur sur l'inscription, revoir vos informations.");
             }
         }
 

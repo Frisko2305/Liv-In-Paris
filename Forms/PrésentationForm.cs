@@ -4,9 +4,7 @@ namespace Liv_In_Paris
     public class PrésentationForm : Form
     {
         #region Attributs
-        private Button Connection;
-        private Button Inscription;
-        private Button Carte;
+        private Button Connection, Inscription, Carte;
         private Label Service;
         private PictureBox Picture;
 

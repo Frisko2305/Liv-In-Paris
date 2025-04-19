@@ -6,7 +6,7 @@ namespace Liv_In_Paris
     public class Profil : Form
     {
         #region Attributs
-        private Dictionary<string, string> infos;
+        private Dictionary<string, string> userInfo;
         private string userType;
         PictureBox? Photo_profil;
 
@@ -14,10 +14,10 @@ namespace Liv_In_Paris
 
         #endregion
 
-        public Profil(string userType, Dictionary<string,string> infos)
+        public Profil(string userType, Dictionary<string,string> userInfo)
         {
             this.userType = userType;
-            this.infos = infos;
+            this.userInfo = userInfo;
             LancementProfil();
         }
 
@@ -36,11 +36,11 @@ namespace Liv_In_Paris
             Photo_profil.SizeMode = PictureBoxSizeMode.Zoom;
             Photo_profil.Anchor = AnchorStyles.None;
 
-            if(infos.ContainsKey("Photo_profil"))
+            if(userInfo.ContainsKey("Photo_profil"))
             {
                 try
                 {
-                    byte[] imagesBytes = Convert.FromBase64String(infos["Photo_profil"]);
+                    byte[] imagesBytes = Convert.FromBase64String(userInfo["Photo_profil"]);
                     using(var mem = new MemoryStream(imagesBytes))
                     {
                         Photo_profil.Image = Image.FromStream(mem); //Charge l'image depuis byte[] vers la PictureBox
@@ -68,7 +68,7 @@ namespace Liv_In_Paris
             switch(userType)
             {
                 case "Particulier" :
-                    AddLabels(layout, infos["Nom"], infos["Prenom"]);
+                    AddLabels(layout, userInfo["Nom"], userInfo["Prenom"]);
                     AddButton(layout, "Passer en mode Cuisinier", 2, 2, ModeCuistot_Click);
                     AddButton(layout, "Changer les informations", 2, 3, ChangerInfos_Click);
                     AddButtonPair(layout, "Passer commande", "Donner un avis", 4, PasserCommande_Click, DonnerAvis_Click);
@@ -77,7 +77,7 @@ namespace Liv_In_Paris
                 break;
 
                 case "Entreprise" :
-                    AddLabels(layout, infos["Nom_entreprise"], infos["Nom_referent"]);
+                    AddLabels(layout, userInfo["Ent_Nom"], userInfo["Ent_NomRef"]);
                     AddButton(layout, "Changer les informations", 2, 2, ChangerInfos_Click);
                     AddButtonPair(layout, "Passer commande", "Donner un avis", 3, PasserCommande_Click, DonnerAvis_Click);
                     AddButtonPair(layout, "Historique des commandes", "Changer moyens de paiements", 4, Historique_Click, ChangerPaiement_Click);
@@ -85,7 +85,7 @@ namespace Liv_In_Paris
                 break;
 
                 case "Cuisinier" :   
-                    AddLabels(layout, infos["Nom"], infos["Prenom"]);
+                    AddLabels(layout, userInfo["Nom"], userInfo["Prenom"]);
                     AddButton(layout, "Passer en mode Client", 2, 2, ModeClient_Click);
                     AddButton(layout, "Changer les informations", 2, 3, ChangerInfos_Click);
                     AddButtonPair(layout, "Ajouter un Plat", "Retirer un Plat", 4, AjoutPlat_Click, RetirePlat_Click);
@@ -139,15 +139,24 @@ namespace Liv_In_Paris
         }
 
         #endregion
-        #region Bouttons Communes
+        #region Boutons Communs
 
         private void ChangerInfos_Click(object? sender, EventArgs e)
         {
-// 
+            ChgInfo Form = new ChgInfo(userType, userInfo);
+            Form.Show();
+
+            this.Hide();
+            Form.FormClosed += (s,args) => this.Close();
         }
 
         private void Deconnexion_Click(object? sender, EventArgs e)
         {
+            PrésentationForm Form = new PrésentationForm();
+            Form.Show();
+
+            this.Hide();
+            Form.FormClosed += (s,args) => this.Close();
 // 
         }
 
@@ -157,7 +166,7 @@ namespace Liv_In_Paris
         }
 
         #endregion
-        #region Bouttons Client
+        #region Boutons Client
 
         private void ModeCuistot_Click(object? sender, EventArgs e)
         {
