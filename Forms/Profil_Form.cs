@@ -99,7 +99,6 @@ namespace Liv_In_Paris
                 break;
             }
 
-
             layout.Controls.Add(Photo_profil);
             layout.SetColumnSpan(Photo_profil, 2);
             this.Controls.Add(layout);

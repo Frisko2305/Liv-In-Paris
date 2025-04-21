@@ -1,3 +1,6 @@
+using System.Text.Json.Serialization;
+using MySql.Data.MySqlClient;
+
 namespace Liv_In_Paris
 {
     public class ChgInfo : Form
@@ -6,9 +9,9 @@ namespace Liv_In_Paris
         private Dictionary<string, string> userInfo;
         private string userType;
         private TableLayoutPanel layout;
-        private TextBox T_Nom, T_Prenom, T_Email, T_Tel, T_NumRue, T_Rue, T_CP, T_Ville, T_NomEnt, T_NomRef, T_TelRef, T_MDP;
+        private TextBox T_Email, T_Tel, T_NumRue, T_Rue, T_CP, T_Ville, T_NomEnt, T_NomRef, T_TelRef, T_MDP;
         private Button BtnSave, BtnCancel, Chg_Photo;
-        private PictureBox profilepicture;
+        private PictureBox? profilepicture;
 
         // Les labels correspondants aux TextBox seront ajoutés directement avec des méthodes
         #endregion
@@ -21,7 +24,14 @@ namespace Liv_In_Paris
 
         private void CreationForm()
         {
-            this.Text = $"Modification des informations du profil de l'utilisateur {userInfo["Id"]}";
+            if(userType == "Particulier" || userType == "Entreprise")
+            {
+                this.Text = $"Modification des informations du profil de l'utilisateur {userInfo["Id_client"]}";
+            }
+            else
+            {
+                this.Text = $"Modification des informations du profil de l'utilisateur {userInfo["Id_cuisinier"]}";
+            }
             this.Width = 500;
             this.Height = 600;
             this.StartPosition = FormStartPosition.CenterScreen;
@@ -54,8 +64,6 @@ namespace Liv_In_Paris
 
             if(userType == "Particulier" || userType == "Cuisinier")
             {
-                T_Nom = CreateLabelEtTextBox("Nom", userInfo.ContainsKey("Nom") ? userInfo["Nom"] : "");
-                T_Prenom = CreateLabelEtTextBox("Prénom", userInfo.ContainsKey("Prenom") ? userInfo["Prenom"] : "");
                 T_Email = CreateLabelEtTextBox("Email", userInfo.ContainsKey("Email") ? userInfo["Email"] : "");
                 T_Tel = CreateLabelEtTextBox("Numéro de Téléphone", userInfo.ContainsKey("Part_NumTel") ? userInfo["Part_NumTel"] : "");
                 T_NumRue = CreateLabelEtTextBox("Numéro de rue", userInfo.ContainsKey("Part_NumRue") ? userInfo["Part_NumRue"] : "");
@@ -101,6 +109,7 @@ namespace Liv_In_Paris
             this.Controls.Add(layout);
         }
 
+        #region Méthode Label/Bouton
         private TextBox CreateLabelEtTextBox(string label, string value)
         {
             Label lbl = new Label { Text = label, Dock = DockStyle.Fill, TextAlign = System.Drawing.ContentAlignment.MiddleLeft };
@@ -126,20 +135,6 @@ namespace Liv_In_Paris
             // On vérifie d'abord si les champs sont bien remplis selon le profil
             if(userType == "Particulier" || userType == "Cuisinier")
             {
-                if(T_Nom.Text.Length > 50 || T_Nom.Text == "")
-                {
-                    MessageBox.Show("Le Nom ne doit pas dépasser 50 caractères ni être vide.");
-                    return;
-                }
-                userInfo["Nom"] = T_Nom.Text;
-
-                if(T_Prenom.Text.Length > 50 || T_Prenom.Text == "")
-                {
-                    MessageBox.Show("Le Prénom ne doit pas dépasser 50 caractères ni être vide.");
-                    return;
-                }
-                userInfo["Prenom"] = T_Prenom.Text;
-
                 if(T_Tel.Text.Length != 14)
                 {
                     MessageBox.Show("Le numéro de Téléphone doit être saisi en format XX XX XX XX XX ni être vide.");
@@ -190,6 +185,7 @@ namespace Liv_In_Paris
                 userInfo["Mdp"] = T_MDP.Text;
 
                 // Verif SQL
+                UpdateDatabase();
 
             }
             else    //Cas Entreprise
@@ -251,6 +247,7 @@ namespace Liv_In_Paris
                 userInfo["Mdp"] = T_MDP.Text;
 
                 // Verif SQL
+                UpdateDatabase();
             }
         }
 
@@ -284,6 +281,206 @@ namespace Liv_In_Paris
                 }
             }
         }
+
+        #endregion
+        #region Mise à jour BDD
+        private void UpdateDatabase()
+        {
+            bool IdentiteUpdated = false;
+            bool ProfileUpdated = false;
+            bool BothProfileUpdated = false;
+            try
+            {
+                using(MySqlConnection connection = new MySqlConnection("SERVER=localhost;PORT=3306;DATABASE=psi;UID=root;PASSWORD=root"))
+                {
+                    connection.Open();
+                    string queryIdentite = "";
+                    string queryProfil = "";
+                    string queryClientToCuisinier = "";
+                    string queryCuisinierToClient = "";
+
+                    string queryCheckBothProfile = @"SELECT 1
+                    FROM Client c
+                    INNER JOIN Cuisinier cu ON c.Nom_client = cu.Nom_cuisinier AND c.Prenom_client = cu.Prenom_cuisinier
+                    WHERE c.Id_client = @IdClient OR cu.Id_cuisinier = @IdCuisinier;";
+
+                    bool hasBothProfiles = false;
+
+                    // On vérifie si l'utilisateur a deux profils
+                    using(MySqlCommand cmdCheck = new MySqlCommand(queryCheckBothProfile, connection))
+                    {
+                        cmdCheck.Parameters.AddWithValue("@IdClient", userInfo["Id_client"]);
+                        cmdCheck.Parameters.AddWithValue("@IdCuisinier", userInfo["Id_cuisinier"]);
+                        hasBothProfiles = cmdCheck.ExecuteScalar() != null; 
+                        //Devient true si l'utilisateur a les deux profiles
+                    }
+
+                    switch(userType)
+                    {
+                        case "Particulier" :
+                            queryIdentite = @"UPDATE Particulier
+                            SET Num_tel = @NumTel, Email = @Email, Num_Rue = @NumRue, Rue = @Rue, CP = @CP, Ville = @Ville
+                            WHERE Nom = @Nom AND Prenom = @Prenom;
+                            ";
+                            queryProfil = @"UPDATE Client
+                            SET Mdp = @Mdp, Photo_profil = @Photo
+                            WHERE Id_client = @Id;
+                            ";
+
+                            queryClientToCuisinier = @"UPDATE Cuisinier
+                            SET Mdp = @Mdp
+                            WHERE Id_cuisinier = @IdCuisinier;
+                            ";
+                        break;
+
+                        case "Entreprise" :
+                            queryIdentite = @"UPDATE Entreprise
+                            SET Nom_entreprise = @NomEnt, Nom_referent = @NomRef, Num_tel_referent = @TelRef, Num_Rue = @NumRue, Rue = @Rue, CP = @CP, Ville = @Ville
+                            WHERE SIRET = @SIRET;
+                            ";
+
+                            queryProfil = @"UPDATE Client
+                            SET Mdp = @Mdp, Photo_profil = @Photo
+                            WHERE Id_client = @Id;
+                            ";
+                        break;
+
+                        case "Cuisinier" :
+                            queryIdentite = @"
+                            UPDATE Particulier
+                            SET Num_tel = @NumTel, Email = @Email, Num_Rue = @NumRue, Rue = @Rue, CP = @CP, Ville = @Ville
+                            WHERE Nom = @Nom AND Prenom = @Prenom;
+                            ";
+
+                            queryProfil = @"UPDATE Cuisinier
+                            SET Mdp = @Mdp, Photo_profil = @Photo
+                            WHERE Id_cuisinier = @Id;
+                            ";
+
+                            queryCuisinierToClient = @"UPDATE Client
+                            SET Mdp = @Mdp
+                            WHERE Id_client = @IdClient;
+                            ";
+                        break;
+
+                        default :
+                            MessageBox.Show("Erreur de type de profil");
+                        break;
+                    }
+                    
+
+                    using(MySqlCommand cmdIdentite = new MySqlCommand(queryIdentite, connection))
+                    {
+                        if(userType == "Particulier" || userType == "Cuisinier")
+                        {
+                            cmdIdentite.Parameters.AddWithValue("@Nom", userInfo["Nom"]);
+                            cmdIdentite.Parameters.AddWithValue("@Prenom", userInfo["Prenom"]);
+                            cmdIdentite.Parameters.AddWithValue("@NumTel", userInfo["Part_NumTel"]);
+                            cmdIdentite.Parameters.AddWithValue("@Email", userInfo["Email"]);
+                            cmdIdentite.Parameters.AddWithValue("@NumRue", Convert.ToInt32(userInfo["Part_NumRue"]));
+                            cmdIdentite.Parameters.AddWithValue("@Rue", userInfo["Part_Rue"]);
+                            cmdIdentite.Parameters.AddWithValue("@CP", Convert.ToInt32(userInfo["Part_CP"]));
+                            cmdIdentite.Parameters.AddWithValue("@Ville", userInfo["Part_Ville"]);
+                        }
+                        else    //Cas Entreprise
+                        {
+                            cmdIdentite.Parameters.AddWithValue("@NomEnt", userInfo["Ent_Nom"]);
+                            cmdIdentite.Parameters.AddWithValue("@NomRef", userInfo["Ent_NomRef"]);
+                            cmdIdentite.Parameters.AddWithValue("@TelRef", userInfo["Ent_TelRef"]);
+                            cmdIdentite.Parameters.AddWithValue("@SIRET", Convert.ToInt64(userInfo["SIRET"]));
+                            cmdIdentite.Parameters.AddWithValue("@NumRue", Convert.ToInt32(userInfo["Ent_NumRue"]));
+                            cmdIdentite.Parameters.AddWithValue("@Rue", userInfo["Ent_Rue"]);
+                            cmdIdentite.Parameters.AddWithValue("@CP", Convert.ToInt32(userInfo["Ent_CP"]));
+                            cmdIdentite.Parameters.AddWithValue("@Ville", userInfo["Ent_Ville"]);
+                        }
+
+                        IdentiteUpdated = cmdIdentite.ExecuteNonQuery() > 0;    //Si nb de lignes retournés > 0 --> Vrai
+                        cmdIdentite.Dispose();
+                    }
+                    
+                    using(MySqlCommand cmdProfil = new MySqlCommand(queryProfil, connection))
+                    {
+                        if(userType == "Particulier" || userType == "Entreprise")
+                        {
+                            cmdProfil.Parameters.AddWithValue("@Id", userInfo["Id_client"]);
+                        }
+                        else    //Cas Cuisinier
+                        {
+                            cmdProfil.Parameters.AddWithValue("@Id", userInfo["Id_cuisinier"]);
+                        }
+
+                        cmdProfil.Parameters.AddWithValue("@Mdp", userInfo["Mdp"]);
+                        if(userInfo.ContainsKey("Photo_profil") && !string.IsNullOrEmpty(userInfo["Photo_profil"]))
+                        {
+                            byte[] photobyte = Convert.FromBase64String(userInfo["Photo_profil"]);
+                            cmdProfil.Parameters.AddWithValue("@Photo", photobyte);
+                        }
+                        else
+                        {
+                            cmdProfil.Parameters.AddWithValue("@Photo", DBNull.Value);
+                        }
+
+                        ProfileUpdated = cmdProfil.ExecuteNonQuery() > 0;    //Si nb de lignes retournés > 0 --> Vrai
+                        cmdProfil.Dispose();
+                    }
+                    if(hasBothProfiles)
+                    {
+                        switch(userType)
+                        {
+                            case "Particulier" :
+                                using(MySqlCommand cmdClientToCuisinier = new MySqlCommand(queryClientToCuisinier, connection))
+                                {
+                                    cmdClientToCuisinier.Parameters.AddWithValue("@Mdp", userInfo["Mdp"]);
+                                    cmdClientToCuisinier.Parameters.AddWithValue("@IdCuisinier", userInfo["Id_cuisinier"]);
+                                    BothProfileUpdated = cmdClientToCuisinier.ExecuteNonQuery() > 0;
+                                    cmdClientToCuisinier.Dispose();
+                                }
+                                
+
+                            break;
+
+                            case "Cuisinier" :
+                                using(MySqlCommand cmdCuisinierToClient = new MySqlCommand(queryCuisinierToClient, connection))
+                                {
+                                    cmdCuisinierToClient.Parameters.AddWithValue("@Mdp", userInfo["Mdp"]);
+                                    cmdCuisinierToClient.Parameters.AddWithValue("@IdClient", userInfo["Id_client"]);
+                                    BothProfileUpdated = cmdCuisinierToClient.ExecuteNonQuery() > 0;
+                                    cmdCuisinierToClient.Dispose();
+                                }
+                            break;
+
+                            default :
+                                MessageBox.Show("Erreur de profil");
+                            break;
+                        }
+                    }
+                    connection.Close();
+
+                    if(IdentiteUpdated && ProfileUpdated)
+                    {
+                        if(BothProfileUpdated)
+                        {
+                            MessageBox.Show("Modification dans vos deux profils enregistrés avex succès");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Modifications enregistrés avec succès.");
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Erreur lors de l'enregistrement des modifications, veuillez réessayer.");
+                    }
+                    connection.Close();
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show($"Erreur lors de l'enregistrement des modifications : {ex.Message}");
+            }
+        }
+
+        #endregion
     }
 }
 

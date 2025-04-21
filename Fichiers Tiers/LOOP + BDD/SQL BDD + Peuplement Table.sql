@@ -5,7 +5,7 @@ USE Psi;
 CREATE TABLE Particulier(
    Nom VARCHAR(50),
    Prenom VARCHAR(50),
-   Num_tel CHAR(14),		-- On oblige à saisire sous format "0X XX XX XX XX"
+   Num_Tel CHAR(14),		-- On oblige à saisire sous format "0X XX XX XX XX"
    Email VARCHAR(100),
    Num_Rue INT,
    Rue VARCHAR(50),

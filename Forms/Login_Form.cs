@@ -112,14 +112,12 @@ namespace Liv_In_Paris
             string query =
                 @"
                 SELECT
-                    -- Identifiant Unique (Client ou Cuisinier)
+                    c.Id_client AS Id_Client,
+                    cu.Id_cuisinier AS Id_Cuisinier,
                     CASE
-                        WHEN cu.Id_cuisinier IS NOT NULL THEN cu.Id_cuisinier
-                        ELSE c.Id_client
-                    END AS Id, 
-                    CASE
-                        WHEN cu.Id_cuisinier IS NOT NULL THEN cu.Mdp
-                        ELSE c.Id_client
+                        WHEN cu.Id_cuisinier IS NOT NULL AND c.Id_client IS NULL THEN cu.Mdp
+                        WHEN cu.Id_cuisinier IS NULL AND c.Id_client IS NOT NULL THEN c.Mdp
+                        ELSE c.Mdp
                     END AS Mdp,
 
                     CASE
@@ -157,8 +155,8 @@ namespace Liv_In_Paris
                     LEFT JOIN cuisinier cu ON c.Nom_client = cu.Nom_cuisinier AND c.Prenom_client = cu.Prenom_cuisinier
                     
                     WHERE
-                        (@Id = c.Id_client OR @Id = cu.Id_cuisinier)
-                        AND (@pwd = c.Mdp OR @pwd = cu.Mdp)";
+                        (@Id = c.Id_client AND @pwd = c.Mdp)
+                        OR (@Id = cu.Id_cuisinier AND @pwd = cu.Mdp)";
             // A noter : si'l trouve un Id de cuisinier, il prendra celui la au lieu du client même si on saisi un id client
             // Il faut alors adapter la logique lors du return
             try
@@ -176,7 +174,8 @@ namespace Liv_In_Paris
                         {
                             var userInfo = new Dictionary<string, string>
                             {
-                                { "Id", reader["Id"]?.ToString() ?? "" },
+                                { "Id_client", reader["Id_Client"]?.ToString() ?? "" },
+                                { "Id_cuisinier", reader["Id_Cuisinier"]?.ToString() ?? "" },
                                 { "Nom", reader["Nom"]?.ToString() ?? "" },
                                 { "Prenom", reader["Prenom"]?.ToString() ?? "" },
                                 { "SIRET", reader["SIRET"]?.ToString() ?? "" },
@@ -207,17 +206,24 @@ namespace Liv_In_Paris
                                 userInfo.Add("Photo_profil", Convert.ToBase64String(Photo));
                             }
 
-                            if(!string.IsNullOrEmpty(userInfo["Nom"]) && !string.IsNullOrEmpty(userInfo["Prenom"]) && userId == userInfo["Id"])     //Si les colonnes de string du nom et prenom ne sont pas vides et que 
+                            if(!string.IsNullOrEmpty(userInfo["Id_cuisinier"]) && userId == userInfo["Id_cuisinier"])       //Cas Cuisinier 
                             {
                                 return ("Cuisinier", userInfo);
                             }
-                            else if (!string.IsNullOrEmpty(userInfo["SIRET"]))
+                            else if (!string.IsNullOrEmpty(userInfo["Id_client"]) && userId == userInfo["Id_client"])       //Cas Client (Part ou Ent)
                             {
-                                return ("Entreprise", userInfo);
+                                if(!string.IsNullOrEmpty(userInfo["SIRET"]))    //Cas Ent
+                                {
+                                    return ("Entreprise", userInfo);
+                                }
+                                else
+                                {
+                                    return ("Particulier", userInfo);
+                                }
                             }
                             else
                             {
-                                return ("Particulier", userInfo);
+                                return("Invalide", null);
                             }
                         }
                     }
@@ -226,7 +232,7 @@ namespace Liv_In_Paris
             }
             catch(Exception e)
             {
-                MessageBox.Show("Erreur de connexion à la base de donnée"+e.Message);
+                MessageBox.Show("Erreur de connexion à la base de donnée : "+e.Message);
             }
             return ("Invalide", null);
         }
