@@ -461,10 +461,22 @@ namespace Liv_In_Paris
                         if(BothProfileUpdated)
                         {
                             MessageBox.Show("Modification dans vos deux profils enregistrés avex succès");
+                            // Retour vers Profil Form
+                            Profil Profil_User = new Profil(userType, userInfo);    //On transmet les informations au Form Profil
+                            Profil_User.Show();
+
+                            this.Hide();
+                            Profil_User.FormClosed += (s,args) => this.Close();
                         }
                         else
                         {
                             MessageBox.Show("Modifications enregistrés avec succès.");
+                            // Retour vers Profil Form
+                            Profil Profil_User = new Profil(userType, userInfo);    //On transmet les informations au Form Profil
+                            Profil_User.Show();
+
+                            this.Hide();
+                            Profil_User.FormClosed += (s,args) => this.Close();
                         }
                     }
                     else
