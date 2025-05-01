@@ -1,5 +1,6 @@
 using System.Collections;
 using MySql.Data.MySqlClient;
+using Org.BouncyCastle.Cmp;
 
 namespace Liv_In_Paris
 {
@@ -18,6 +19,10 @@ namespace Liv_In_Paris
         {
             this.userType = userType;
             this.userInfo = userInfo;
+            foreach(var e in userInfo.Values)
+            {
+                MessageBox.Show(e);
+            }
             LancementProfil();
         }
 
@@ -161,7 +166,40 @@ namespace Liv_In_Paris
 
         private void SuppCompte_Click(object? sender, EventArgs e)
         {
-// 
+            List<string> comptesDispo = new List<string>();
+
+            switch(userType)
+            {
+                case "Particulier" :
+                    comptesDispo.Add("Particulier");
+                break;
+
+                case "Cuisinier" :
+                    comptesDispo.Add("Cuisinier");
+                break;
+
+                default :         //Uniquement le cas de l'Entreprise
+                    comptesDispo.Add("Entreprise");
+                break;
+            }
+
+            if(comptesDispo.Count == 0)
+            {
+                MessageBox.Show("Aucun compte associé trouvé ;", "Information : ", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            DialogResult result = MessageBox.Show(
+                    $"Voulez-vous vraiment supprimer votre compte {string.Join(" et ", comptesDispo)} ?",
+                    "Confirmation de suppresion",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning
+            );
+
+            if(result == DialogResult.Yes)
+            {
+                SupprimerCompte();
+            }
         }
 
         #endregion
@@ -226,6 +264,11 @@ namespace Liv_In_Paris
         }
 
         #endregion
+
+        private void SupprimerCompte()
+        {
+            
+        }
     }
 }
 

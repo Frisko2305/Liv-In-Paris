@@ -100,7 +100,8 @@ CREATE TABLE SousCommande(
     Ville VARCHAR(50) NOT NULL,
     PRIMARY KEY(Id_sous_commande),
     FOREIGN KEY(Id_commande) REFERENCES Commande(Id_commande) ON DELETE CASCADE,
-    FOREIGN KEY(Id_plat) REFERENCES Plat(Id_plat)
+    ADD CONSTRAINT FK_SousCommande_Plat
+    FOREIGN KEY(Id_plat) REFERENCES Plat(Id_plat) ON DELETE CASCADE
 );
 -- DELETE FROM SousCommande;
 
@@ -117,6 +118,7 @@ CREATE TABLE Avis(
    PRIMARY KEY(Id_avis),
    FOREIGN KEY(Nom, Prenom) REFERENCES Particulier(Nom, Prenom) ON DELETE CASCADE,
    FOREIGN KEY(SIRET) REFERENCES Entreprise(SIRET) ON DELETE CASCADE,
+   ADD CONSTRAINT FK_Avis_Plat
    FOREIGN KEY(Id_plat) REFERENCES Plat(Id_plat) ON DELETE CASCADE,
    FOREIGN KEY(Id_client) REFERENCES Client(Id_client) ON DELETE CASCADE,
    FOREIGN KEY(Id_cuisinier) REFERENCES Cuisinier(Id_cuisinier) ON DELETE CASCADE,
@@ -132,8 +134,10 @@ CREATE TABLE Propose(
    Id_cuisinier INT,
    Id_plat INT,
    PRIMARY KEY(Id_cuisinier, Id_plat),
-   FOREIGN KEY(Id_cuisinier) REFERENCES Cuisinier(Id_cuisinier),
-   FOREIGN KEY(Id_plat) REFERENCES Plat(Id_plat)
+   ADD CONSTRAINT FK_Propose_Cuisinier
+   FOREIGN KEY(Id_cuisinier) REFERENCES Cuisinier(Id_cuisinier) ON DELETE CASCADE,
+   ADD CONSTRAINT FK_Propose_Plat
+   FOREIGN KEY(Id_plat) REFERENCES Plat(Id_plat) ON DELETE CASCADE
 );
 -- DELETE FROM Propose;
 
@@ -150,6 +154,32 @@ JOIN
    Plat p On pr.Id_plat = p.Id_plat
 JOIN
    Cuisinier c On pr.Id_cuisinier = c.Id_cuisinier;
+
+CREATE VIEW Cuisinier_Commandes AS
+SELECT
+    c.Id_cuisinier,
+    c.Nom_cuisinier,
+    c.Prenom_cuisinier,
+    p.Id_plat,
+    p.Type_de_plat,
+    sc.Id_commande,
+    sc.Quantite,
+    sc.Date_livraison,
+    cl.Id_client,
+    cl.Nom_client,
+    cl.Prenom_client
+FROM
+    Cuisinier c
+JOIN
+    Propose pr ON c.Id_cuisinier = pr.Id_cuisinier
+JOIN
+    Plat p ON pr.Id_plat = p.Id_plat
+JOIN
+    SousCommande sc ON p.Id_plat = sc.Id_plat
+JOIN
+    Commande co ON sc.Id_commande = co.Id_commande
+JOIN
+    Client cl ON co.Id_client = cl.Id_client;
 -- Facilite la requete SQL sur C#
 
 		-- Peuplement des tables
@@ -318,13 +348,6 @@ INSERT INTO Cuisinier (Id_cuisinier, Mdp, Nom_cuisinier, Prenom_cuisinier) VALUE
 INSERT INTO Cuisinier (Id_cuisinier, Mdp, Nom_cuisinier, Prenom_cuisinier) VALUES ('9308', 'cookpass', 'Da Silva', 'Robert');
 INSERT INTO Cuisinier (Id_cuisinier, Mdp, Nom_cuisinier, Prenom_cuisinier) VALUES ('7217', 'kitchenpass', 'Thierry', 'Nicolas');
 INSERT INTO Cuisinier (Id_cuisinier, Mdp, Nom_cuisinier, Prenom_cuisinier) VALUES ('2472', 'foodpass', 'Wagner', 'Sophie');
-INSERT INTO Cuisinier (Id_cuisinier, Mdp, Nom_cuisinier, Prenom_cuisinier) VALUES ('6303', 'dishpass', 'Roger', 'Dominique');
-INSERT INTO Cuisinier (Id_cuisinier, Mdp, Nom_cuisinier, Prenom_cuisinier) VALUES ('8992', 'mealpass', 'Bernard', 'Tristan');
-INSERT INTO Cuisinier (Id_cuisinier, Mdp, Nom_cuisinier, Prenom_cuisinier) VALUES ('5392', 'tastepass', 'Blondel', 'Anne');
-INSERT INTO Cuisinier (Id_cuisinier, Mdp, Nom_cuisinier, Prenom_cuisinier) VALUES ('7983', 'yummypass', 'Bazin', 'Théodore');
-INSERT INTO Cuisinier (Id_cuisinier, Mdp, Nom_cuisinier, Prenom_cuisinier) VALUES ('9734', 'delishpass', 'Huet', 'Maggie');
-INSERT INTO Cuisinier (Id_cuisinier, Mdp, Nom_cuisinier, Prenom_cuisinier) VALUES ('1292', 'bakepass', 'Fontaine', 'Alain');
-
 
     -- Peuplement Plat
 INSERT INTO Plat (Id_plat, Type_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire) VALUES (1632, 'Sushi', '33', '1', '8.51', '2025-02-24', '2025-02-27', 'Japonaise', 'Équilibré');
