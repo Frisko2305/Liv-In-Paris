@@ -100,7 +100,7 @@ CREATE TABLE SousCommande(
     Ville VARCHAR(50) NOT NULL,
     PRIMARY KEY(Id_sous_commande),
     FOREIGN KEY(Id_commande) REFERENCES Commande(Id_commande) ON DELETE CASCADE,
-    ADD CONSTRAINT FK_SousCommande_Plat
+    CONSTRAINT FK_SousCommande_Plat
     FOREIGN KEY(Id_plat) REFERENCES Plat(Id_plat) ON DELETE CASCADE
 );
 -- DELETE FROM SousCommande;
@@ -118,7 +118,7 @@ CREATE TABLE Avis(
    PRIMARY KEY(Id_avis),
    FOREIGN KEY(Nom, Prenom) REFERENCES Particulier(Nom, Prenom) ON DELETE CASCADE,
    FOREIGN KEY(SIRET) REFERENCES Entreprise(SIRET) ON DELETE CASCADE,
-   ADD CONSTRAINT FK_Avis_Plat
+   CONSTRAINT FK_Avis_Plat
    FOREIGN KEY(Id_plat) REFERENCES Plat(Id_plat) ON DELETE CASCADE,
    FOREIGN KEY(Id_client) REFERENCES Client(Id_client) ON DELETE CASCADE,
    FOREIGN KEY(Id_cuisinier) REFERENCES Cuisinier(Id_cuisinier) ON DELETE CASCADE,
@@ -134,9 +134,9 @@ CREATE TABLE Propose(
    Id_cuisinier INT,
    Id_plat INT,
    PRIMARY KEY(Id_cuisinier, Id_plat),
-   ADD CONSTRAINT FK_Propose_Cuisinier
+   CONSTRAINT FK_Propose_Cuisinier
    FOREIGN KEY(Id_cuisinier) REFERENCES Cuisinier(Id_cuisinier) ON DELETE CASCADE,
-   ADD CONSTRAINT FK_Propose_Plat
+   CONSTRAINT FK_Propose_Plat
    FOREIGN KEY(Id_plat) REFERENCES Plat(Id_plat) ON DELETE CASCADE
 );
 -- DELETE FROM Propose;
