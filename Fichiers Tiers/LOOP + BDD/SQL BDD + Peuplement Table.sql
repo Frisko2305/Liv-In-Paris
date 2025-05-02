@@ -84,7 +84,8 @@ CREATE TABLE Commande(
    Prevision_arrivee DATETIME,
    Id_client INT NOT NULL,
    PRIMARY KEY(Id_commande),
-   FOREIGN KEY(Id_client) REFERENCES Client(Id_client)
+   CONSTRAINT FK_Commande_Client
+   FOREIGN KEY(Id_client) REFERENCES Client(Id_client) ON DELETE CASCADE
 );
 -- DELETE FROM Commande;
 

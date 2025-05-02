@@ -1,6 +1,7 @@
 using System.Collections;
 using MySql.Data.MySqlClient;
 using Org.BouncyCastle.Cmp;
+using Org.BouncyCastle.Cms;
 
 namespace Liv_In_Paris
 {
@@ -19,10 +20,6 @@ namespace Liv_In_Paris
         {
             this.userType = userType;
             this.userInfo = userInfo;
-            foreach(var e in userInfo.Values)
-            {
-                MessageBox.Show(e);
-            }
             LancementProfil();
         }
 
@@ -168,19 +165,20 @@ namespace Liv_In_Paris
         {
             List<string> comptesDispo = new List<string>();
 
-            switch(userType)
+            if (userType == "Particulier")
             {
-                case "Particulier" :
-                    comptesDispo.Add("Particulier");
-                break;
-
-                case "Cuisinier" :
+                if (!string.IsNullOrEmpty(userInfo["Id_client"]))
+                {
+                    comptesDispo.Add("Client");
+                }
+                if (!string.IsNullOrEmpty(userInfo["Id_cuisinier"]))
+                {
                     comptesDispo.Add("Cuisinier");
-                break;
-
-                default :         //Uniquement le cas de l'Entreprise
-                    comptesDispo.Add("Entreprise");
-                break;
+                }
+            }
+            else if (userType == "Entreprise")
+            {
+                comptesDispo.Add("Entreprise");
             }
 
             if(comptesDispo.Count == 0)
@@ -188,17 +186,62 @@ namespace Liv_In_Paris
                 MessageBox.Show("Aucun compte associé trouvé ;", "Information : ", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
-
-            DialogResult result = MessageBox.Show(
-                    $"Voulez-vous vraiment supprimer votre compte {string.Join(" et ", comptesDispo)} ?",
-                    "Confirmation de suppresion",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Warning
-            );
-
-            if(result == DialogResult.Yes)
+            else
             {
-                SupprimerCompte();
+                // On construit le mesasge de la boîte de dialogue
+                string message = "Vous avez plusieurs comptes associés. Veuillez choisir lequel vous souhaitez supprimer :\n";
+                for(int i = 0 ; i < comptesDispo.Count ; i++)
+                {
+                    message += $"{i + 1}. {comptesDispo[i]}\n";
+                }
+                if(userType == "Particulier" && comptesDispo.Count > 1)
+                {
+                    message += $"{comptesDispo.Count + 1}. Tous les comptes.\n";
+                }
+
+                // Choix de l'utilisateur via une mini fenêtre
+                string choix = Microsoft.VisualBasic.Interaction.InputBox(
+                        message,
+                        "Suppression de compte",
+                        "1"
+                );
+
+                if(int.TryParse(choix, out int choixIndex) && choixIndex > 0 && choixIndex <= comptesDispo.Count + 1)
+                {
+                    if(choixIndex == comptesDispo.Count + 1)    //On choisie de supprimer tous les comptes disponibles
+                    {
+                        // Supprimer tous les compts (Particulier uniquement)
+                        if(userType == "Particulier")
+                        {
+                            if(SupprimerCompte("Particulier"))
+                            {
+                                MessageBox.Show("Suppression de tous les comptes réussie. Retour au menu principale.");
+                                PrésentationForm Form = new PrésentationForm();
+                                Form.Show();
+
+                                this.Hide();
+                                Form.FormClosed += (s,args) => this.Close();
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // Supprime le compte sélectionné
+                        if(SupprimerCompte(comptesDispo[choixIndex -1]))
+                        {
+                            MessageBox.Show("Suppression du compte réussie. Retour à la page de présentation.");
+                            PrésentationForm Form = new PrésentationForm();
+                            Form.Show();
+
+                            this.Hide();
+                            Form.FormClosed += (s,args) => this.Close();
+                        }
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Choix invalide. Aucune action effectuée.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
             }
         }
 
@@ -207,7 +250,14 @@ namespace Liv_In_Paris
 
         private void ModeCuistot_Click(object? sender, EventArgs e)
         {
-// 
+            if(!string.IsNullOrEmpty(userInfo["Id_cuisinier"]))
+            {
+                Profil Form = new Profil("Cuisinier", userInfo);
+                Form.Show();
+
+                this.Hide();
+                Form.FormClosed += (s,args) => this.Close();
+            }
         }
 
         private void ChangerPaiement_Click(object? sender, EventArgs e)
@@ -260,14 +310,78 @@ namespace Liv_In_Paris
 
         private void ModeClient_Click(object? sender, EventArgs e)
         {
-// 
+            if(!string.IsNullOrEmpty(userInfo["Id_client"]))
+            {
+                Profil Form = new Profil("Particulier", userInfo);
+                Form.Show();
+
+                this.Hide();
+                Form.FormClosed += (s,args) => this.Close();
+            }
         }
 
         #endregion
 
-        private void SupprimerCompte()
+        private bool SupprimerCompte(string compteType)
         {
-            
+            // compteType = Particulier --> On supprime les deux comptes du Particulier directement depuis la table Particulier
+            // compteType = Client --> On supprime uniquement le compte Client du Particulier
+            // compteType = Cuisinier --> On supprime uniquement le compte Cuisinier du Particulier
+            // compteType = Entreprise --> On supprime le compte Client de l'Entreprise directement depuis la table Entreprise
+
+            string connectionstring = "SERVER=localhost;DATABASE=psi;UID=root;PWD=root";
+            using(MySqlConnection connection = new MySqlConnection(connectionstring))
+            {
+                connection.Open();
+
+                MySqlCommand cmd = new MySqlCommand();
+                bool queryReussi = false;
+
+                try
+                {
+                    switch(compteType)
+                    {
+                        case "Particulier":
+                            string querySuppParticulier = "DELETE FROM Particulier WHERE Nom = @Nom AND Prenom = @Prenom;";
+                            cmd = new MySqlCommand(querySuppParticulier, connection);
+                            cmd.Parameters.AddWithValue("@Nom", userInfo["Nom"]);
+                            cmd.Parameters.AddWithValue("@Prenom", userInfo["Prenom"]);
+                            queryReussi = cmd.ExecuteNonQuery() > 0;
+                        break;
+
+                        case "Client" :
+                            string querySuppClient = "DELETE FROM Client WHERE Id_client = @Id;";
+                            cmd = new MySqlCommand(querySuppClient, connection);
+                            cmd.Parameters.AddWithValue("@Id", userInfo["Id_client"]);
+                            queryReussi = cmd.ExecuteNonQuery() > 0;
+                        break;
+
+                        case "Cuisinier" :
+                            string querySuppCuisinier = "DELETE FROM Cuisinier WHERE Id_cuisinier = @Id;";
+                            cmd = new MySqlCommand(querySuppCuisinier, connection);
+                            cmd.Parameters.AddWithValue("@Id", userInfo["Id_cuisinier"]);
+                            queryReussi = cmd.ExecuteNonQuery() > 0;
+                        break;
+
+                        case "Entreprise" :
+                            string querySuppEntreprise = "DELETE FROM Entreprise WHERE SIRET = @SIRET;";
+                            cmd = new MySqlCommand(querySuppEntreprise, connection);
+                            cmd.Parameters.AddWithValue("@SIRET", userInfo["SIRET"]);
+                            queryReussi = cmd.ExecuteNonQuery() > 0;
+                        break;
+
+                        default :       //Dans le cas d'une erreur inattendu
+                            MessageBox.Show("Erreur inattendu. Aucune action effectuée.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        break;
+                    }
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show($"Erreur lors de la suppresion du compte {compteType} : "+ ex.Message);
+                }
+
+                return queryReussi;
+            }
         }
     }
 }
