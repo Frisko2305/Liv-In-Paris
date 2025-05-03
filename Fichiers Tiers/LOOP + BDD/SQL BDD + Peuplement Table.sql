@@ -64,7 +64,7 @@ CREATE TABLE Cuisinier(
 
 CREATE TABLE Plat(
    Id_plat INT,
-   Type_de_plat VARCHAR(100),
+   Nom_de_plat VARCHAR(100),
    Stock INT,
    Nb_personnes INT,
    Prix DECIMAL(5,2),
@@ -72,7 +72,7 @@ CREATE TABLE Plat(
    Date_peremption DATE,
    Type_de_cuisine VARCHAR(50),
    Regime_alimentaire VARCHAR(50),
-   Photo BLOB,
+   Photo MEDIUMBLOB,
    PRIMARY KEY(Id_plat)
 );
 -- DELETE FROM Plat;
@@ -145,7 +145,7 @@ CREATE TABLE Propose(
 CREATE VIEW Cuisinier_propose_Plat AS
 SELECT
    p.Id_plat,
-   p.Type_de_plat,
+   p.Nom_de_plat,
    c.Id_cuisinier,
    c.Nom_cuisinier,
    c.Prenom_cuisinier
@@ -162,7 +162,7 @@ SELECT
     c.Nom_cuisinier,
     c.Prenom_cuisinier,
     p.Id_plat,
-    p.Type_de_plat,
+    p.Nom_de_plat,
     sc.Id_commande,
     sc.Quantite,
     sc.Date_livraison,
@@ -351,41 +351,41 @@ INSERT INTO Cuisinier (Id_cuisinier, Mdp, Nom_cuisinier, Prenom_cuisinier) VALUE
 INSERT INTO Cuisinier (Id_cuisinier, Mdp, Nom_cuisinier, Prenom_cuisinier) VALUES ('2472', 'foodpass', 'Wagner', 'Sophie');
 
     -- Peuplement Plat
-INSERT INTO Plat (Id_plat, Type_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire) VALUES (1632, 'Sushi', '33', '1', '8.51', '2025-02-24', '2025-02-27', 'Japonaise', 'Équilibré');
-INSERT INTO Plat (Id_plat, Type_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire) VALUES (1587, 'Feijoada', '44', '2', '13.53', '2025-02-26', '2025-03-01', 'Brésilienne', 'Sans gluten');
-INSERT INTO Plat (Id_plat, Type_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire) VALUES (8652, 'Couscous', '26', '6', '11.45', '2025-02-24', '2025-03-03', 'Maghrébine', 'Classique');
-INSERT INTO Plat (Id_plat, Type_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire) VALUES (4563, 'Pizza Margherita', '22', '1', '10.93', '2025-02-28', '2025-03-01', 'Italienne', 'Sans lactose');
-INSERT INTO Plat (Id_plat, Type_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire) VALUES (2589, 'Pad Thaï', '31', '1', '5.21', '2025-02-25', '2025-02-27', 'Thaïlandaise', 'Classique');
-INSERT INTO Plat (Id_plat, Type_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire) VALUES (6547, 'Tacos', '44', '1', '22.64', '2025-02-26', '2025-03-01', 'Mexicaine', 'Végétarien');
-INSERT INTO Plat (Id_plat, Type_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire) VALUES (8965, 'Ratatouille', '30', '6', '19.07', '2025-02-26', '2025-03-03', 'Française', 'Casher');
-INSERT INTO Plat (Id_plat, Type_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire) VALUES (3214, 'Chili con carne', '18', '4', '11.91', '2025-03-01', '2025-03-07', 'Tex-Mex', 'Végétarien');
-INSERT INTO Plat (Id_plat, Type_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire) VALUES (5046, 'Biryani', '28', '1', '22.79', '2025-02-25', '2025-03-01', 'Indienne', 'Végétarien');
-INSERT INTO Plat (Id_plat, Type_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire) VALUES (3058, 'Moussaka', '26', '3', '15.47', '2025-02-25', '2025-02-26', 'Grecque', 'Sans lactose');
-INSERT INTO Plat (Id_plat, Type_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire) VALUES (4205, 'Falafel', '7', '6', '16.2', '2025-02-27', '2025-02-28', 'Moyen-Orient', 'Bio');
-INSERT INTO Plat (Id_plat, Type_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire) VALUES (7604, 'Burger végétarien', '45', '5', '27.25', '2025-02-25', '2025-02-26', 'Végétarienne', 'Vegan');
-INSERT INTO Plat (Id_plat, Type_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire) VALUES (6950, 'Saumon Teriyaki', '12', '5', '25.6', '2025-02-28', '2025-03-07', 'Asiatique', 'Sans gluten');
-INSERT INTO Plat (Id_plat, Type_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire) VALUES (3210, 'Paella', '16', '5', '22.66', '2025-02-27', '2025-03-02', 'Espagnole', 'Halal');
-INSERT INTO Plat (Id_plat, Type_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire) VALUES (8543, 'Goulash', '13', '3', '15.81', '2025-02-28', '2025-03-05', 'Hongroise', 'Classique');
-INSERT INTO Plat (Id_plat, Type_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire) VALUES ('6183', 'Pizza', 20, 1, 12.50, '2023-10-01', '2023-10-05', 'Italienne', 'Végétarien');
-INSERT INTO Plat (Id_plat, Type_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire) VALUES ('6455', 'Salade', 15, 2, 8.00, '2023-09-25', '2023-10-02', 'Française', 'Vegan');
-INSERT INTO Plat (Id_plat, Type_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire) VALUES ('6225', 'Burger', 10, 1, 15.00, '2023-10-03', '2023-10-08', 'Américaine', 'Sans gluten');
-INSERT INTO Plat (Id_plat, Type_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire) VALUES ('4368', 'Pâtes', 25, 2, 10.50, '2023-09-30', '2023-10-07', 'Italienne', 'Végétarien');
-INSERT INTO Plat (Id_plat, Type_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire) VALUES ('3184', 'Sushi', 30, 1, 18.00, '2023-10-02', '2023-10-06', 'Japonaise', 'Sans gluten');
-INSERT INTO Plat (Id_plat, Type_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire) VALUES ('5910', 'Tacos', 12, 1, 11.50, '2023-10-04', '2023-10-09', 'Mexicaine', 'Végétarien');
-INSERT INTO Plat (Id_plat, Type_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire) VALUES ('7104', 'Quiche', 8, 4, 22.00, '2023-09-28', '2023-10-05', 'Française', 'Végétarien');
-INSERT INTO Plat (Id_plat, Type_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire) VALUES ('5008', 'Soupe', 35, 2, 7.50, '2023-10-01', '2023-10-04', 'Française', 'Vegan');
-INSERT INTO Plat (Id_plat, Type_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire) VALUES ('2118', 'Wrap', 18, 1, 9.00, '2023-09-29', '2023-10-06', 'Américaine', 'Végétarien');
-INSERT INTO Plat (Id_plat, Type_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire) VALUES ('5058', 'Risotto', 22, 2, 16.50, '2023-10-03', '2023-10-07', 'Italienne', 'Végétarien');
-INSERT INTO Plat (Id_plat, Type_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire) VALUES ('4011', 'Pizza', 20, 1, 12.50, '2023-10-01', '2023-10-05', 'Italienne', 'Végétarien');
-INSERT INTO Plat (Id_plat, Type_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire) VALUES ('2472', 'Salade', 15, 2, 8.00, '2023-09-25', '2023-10-02', 'Française', 'Vegan');
-INSERT INTO Plat (Id_plat, Type_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire) VALUES ('9239', 'Burger', 10, 1, 15.00, '2023-10-03', '2023-10-08', 'Américaine', 'Sans gluten');
-INSERT INTO Plat (Id_plat, Type_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire) VALUES ('4058', 'Pâtes', 25, 2, 10.50, '2023-09-30', '2023-10-07', 'Italienne', 'Végétarien');
-INSERT INTO Plat (Id_plat, Type_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire) VALUES ('2658', 'Sushi', 30, 1, 18.00, '2023-10-02', '2023-10-06', 'Japonaise', 'Sans gluten');
-INSERT INTO Plat (Id_plat, Type_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire) VALUES ('9063', 'Tacos', 12, 1, 11.50, '2023-10-04', '2023-10-09', 'Mexicaine', 'Végétarien');
-INSERT INTO Plat (Id_plat, Type_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire) VALUES ('7154', 'Quiche', 8, 4, 22.00, '2023-09-28', '2023-10-05', 'Française', 'Végétarien');
-INSERT INTO Plat (Id_plat, Type_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire) VALUES ('9221', 'Soupe', 35, 2, 7.50, '2023-10-01', '2023-10-04', 'Française', 'Vegan');
-INSERT INTO Plat (Id_plat, Type_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire) VALUES ('2918', 'Wrap', 18, 1, 9.00, '2023-09-29', '2023-10-06', 'Américaine', 'Végétarien');
-INSERT INTO Plat (Id_plat, Type_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire) VALUES ('1292', 'Risotto', 22, 2, 16.50, '2023-10-03', '2023-10-07', 'Italienne', 'Végétarien');
+INSERT INTO Plat (Id_plat, Nom_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire, Photo) VALUES (1632, 'Sushi', '33', '1', '8.51', '2025-02-24', '2025-02-27', 'Japonaise', 'Équilibré', NULL);
+INSERT INTO Plat (Id_plat, Nom_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire, Photo) VALUES (1587, 'Feijoada', '44', '2', '13.53', '2025-02-26', '2025-03-01', 'Brésilienne', 'Sans gluten', NULL);
+INSERT INTO Plat (Id_plat, Nom_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire, Photo) VALUES (8652, 'Couscous', '26', '6', '11.45', '2025-02-24', '2025-03-03', 'Maghrébine', NULL, NULL);
+INSERT INTO Plat (Id_plat, Nom_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire, Photo) VALUES (4563, 'Pizza Margherita', '22', '1', '10.93', '2025-02-28', '2025-03-01', 'Italienne', 'Sans lactose', NULL);
+INSERT INTO Plat (Id_plat, Nom_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire, Photo) VALUES (2589, 'Pad Thaï', '31', '1', '5.21', '2025-02-25', '2025-02-27', 'Thaïlandaise', NULL, NULL);
+INSERT INTO Plat (Id_plat, Nom_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire, Photo) VALUES (6547, 'Tacos', '44', '1', '22.64', '2025-02-26', '2025-03-01', 'Mexicaine', 'Végétarien', NULL);
+INSERT INTO Plat (Id_plat, Nom_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire, Photo) VALUES (8965, 'Ratatouille', '30', '6', '19.07', '2025-02-26', '2025-03-03', 'Française', 'Casher', NULL);
+INSERT INTO Plat (Id_plat, Nom_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire, Photo) VALUES (3214, 'Chili con carne', '18', '4', '11.91', '2025-03-01', '2025-03-07', 'Tex-Mex', 'Végétarien', NULL);
+INSERT INTO Plat (Id_plat, Nom_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire, Photo) VALUES (5046, 'Biryani', '28', '1', '22.79', '2025-02-25', '2025-03-01', 'Indienne', 'Végétarien', NULL);
+INSERT INTO Plat (Id_plat, Nom_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire, Photo) VALUES (3058, 'Moussaka', '26', '3', '15.47', '2025-02-25', '2025-02-26', 'Grecque', 'Sans lactose', NULL);
+INSERT INTO Plat (Id_plat, Nom_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire, Photo) VALUES (4205, 'Falafel', '7', '6', '16.2', '2025-02-27', '2025-02-28', 'Moyen-Orient', 'Bio', NULL);
+INSERT INTO Plat (Id_plat, Nom_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire, Photo) VALUES (7604, 'Burger végétarien', '45', '5', '27.25', '2025-02-25', '2025-02-26', 'Végétarienne', 'Vegan', NULL);
+INSERT INTO Plat (Id_plat, Nom_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire, Photo) VALUES (6950, 'Saumon Teriyaki', '12', '5', '25.6', '2025-02-28', '2025-03-07', 'Asiatique', 'Sans gluten', NULL);
+INSERT INTO Plat (Id_plat, Nom_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire, Photo) VALUES (3210, 'Paella', '16', '5', '22.66', '2025-02-27', '2025-03-02', 'Espagnole', 'Halal', NULL);
+INSERT INTO Plat (Id_plat, Nom_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire, Photo) VALUES (8543, 'Goulash', '13', '3', '15.81', '2025-02-28', '2025-03-05', 'Hongroise', NULL, NULL);
+INSERT INTO Plat (Id_plat, Nom_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire, Photo) VALUES ('6183', 'Pizza', 20, 1, 12.50, '2023-10-01', '2023-10-05', 'Italienne', 'Végétarien', NULL);
+INSERT INTO Plat (Id_plat, Nom_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire, Photo) VALUES ('6455', 'Salade', 15, 2, 8.00, '2023-09-25', '2023-10-02', 'Française', 'Vegan', NULL);
+INSERT INTO Plat (Id_plat, Nom_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire, Photo) VALUES ('6225', 'Burger', 10, 1, 15.00, '2023-10-03', '2023-10-08', 'Américaine', 'Sans gluten', NULL);
+INSERT INTO Plat (Id_plat, Nom_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire, Photo) VALUES ('4368', 'Pâtes', 25, 2, 10.50, '2023-09-30', '2023-10-07', 'Italienne', 'Végétarien', NULL);
+INSERT INTO Plat (Id_plat, Nom_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire, Photo) VALUES ('3184', 'Sushi', 30, 1, 18.00, '2023-10-02', '2023-10-06', 'Japonaise', 'Sans gluten', NULL);
+INSERT INTO Plat (Id_plat, Nom_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire, Photo) VALUES ('5910', 'Tacos', 12, 1, 11.50, '2023-10-04', '2023-10-09', 'Mexicaine', 'Végétarien', NULL);
+INSERT INTO Plat (Id_plat, Nom_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire, Photo) VALUES ('7104', 'Quiche', 8, 4, 22.00, '2023-09-28', '2023-10-05', 'Française', 'Végétarien', NULL);
+INSERT INTO Plat (Id_plat, Nom_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire, Photo) VALUES ('5008', 'Soupe', 35, 2, 7.50, '2023-10-01', '2023-10-04', 'Française', 'Vegan', NULL);
+INSERT INTO Plat (Id_plat, Nom_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire, Photo) VALUES ('2118', 'Wrap', 18, 1, 9.00, '2023-09-29', '2023-10-06', 'Américaine', 'Végétarien', NULL);
+INSERT INTO Plat (Id_plat, Nom_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire, Photo) VALUES ('5058', 'Risotto', 22, 2, 16.50, '2023-10-03', '2023-10-07', 'Italienne', 'Végétarien', NULL);
+INSERT INTO Plat (Id_plat, Nom_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire, Photo) VALUES ('4011', 'Pizza', 20, 1, 12.50, '2023-10-01', '2023-10-05', 'Italienne', 'Végétarien', NULL);
+INSERT INTO Plat (Id_plat, Nom_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire, Photo) VALUES ('2472', 'Salade', 15, 2, 8.00, '2023-09-25', '2023-10-02', 'Française', 'Vegan', NULL);
+INSERT INTO Plat (Id_plat, Nom_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire, Photo) VALUES ('9239', 'Burger', 10, 1, 15.00, '2023-10-03', '2023-10-08', 'Américaine', 'Sans gluten', NULL);
+INSERT INTO Plat (Id_plat, Nom_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire, Photo) VALUES ('4058', 'Pâtes', 25, 2, 10.50, '2023-09-30', '2023-10-07', 'Italienne', 'Végétarien', NULL);
+INSERT INTO Plat (Id_plat, Nom_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire, Photo) VALUES ('2658', 'Sushi', 30, 1, 18.00, '2023-10-02', '2023-10-06', 'Japonaise', 'Sans gluten', NULL);
+INSERT INTO Plat (Id_plat, Nom_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire, Photo) VALUES ('9063', 'Tacos', 12, 1, 11.50, '2023-10-04', '2023-10-09', 'Mexicaine', 'Végétarien', NULL);
+INSERT INTO Plat (Id_plat, Nom_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire, Photo) VALUES ('7154', 'Quiche', 8, 4, 22.00, '2023-09-28', '2023-10-05', 'Française', 'Végétarien', NULL);
+INSERT INTO Plat (Id_plat, Nom_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire, Photo) VALUES ('9221', 'Soupe', 35, 2, 7.50, '2023-10-01', '2023-10-04', 'Française', 'Vegan', NULL);
+INSERT INTO Plat (Id_plat, Nom_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire, Photo) VALUES ('2918', 'Wrap', 18, 1, 9.00, '2023-09-29', '2023-10-06', 'Américaine', 'Végétarien', NULL);
+INSERT INTO Plat (Id_plat, Nom_de_plat, Stock, Nb_personnes, Prix, Date_fabrication, Date_peremption, Type_de_cuisine, Regime_alimentaire, Photo) VALUES ('1292', 'Risotto', 22, 2, 16.50, '2023-10-03', '2023-10-07', 'Italienne', 'Végétarien', NULL);
 
     -- Peuplement Commande
 INSERT INTO Commande (Id_commande, Prix, Statut, Prevision_arrivee, Id_client) VALUES (7008, '428.74', 'En préparation', '2025-03-03 06:23:26', 8189);

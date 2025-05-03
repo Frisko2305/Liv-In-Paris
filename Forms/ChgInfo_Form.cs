@@ -10,7 +10,7 @@ namespace Liv_In_Paris
         private string userType;
         private TableLayoutPanel layout;
         private TextBox T_Email, T_Tel, T_NumRue, T_Rue, T_CP, T_Ville, T_NomEnt, T_NomRef, T_TelRef, T_MDP;
-        private Button BtnSave, BtnCancel, Chg_Photo;
+        private Button? BtnSave, BtnCancel, Chg_Photo;
         private PictureBox? profilepicture;
 
         // Les labels correspondants aux TextBox seront ajoutés directement avec des méthodes
@@ -32,8 +32,7 @@ namespace Liv_In_Paris
             {
                 this.Text = $"Modification des informations du profil de l'utilisateur {userInfo["Id_cuisinier"]}";
             }
-            this.Width = 500;
-            this.Height = 600;
+            this.Size = new Size(500,600);
             this.StartPosition = FormStartPosition.CenterScreen;
 
             layout = new TableLayoutPanel

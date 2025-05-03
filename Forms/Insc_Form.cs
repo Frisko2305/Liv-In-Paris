@@ -1,3 +1,4 @@
+using System.Windows.Forms.VisualStyles;
 using MySql.Data.MySqlClient;
 
 namespace Liv_In_Paris
@@ -29,8 +30,7 @@ namespace Liv_In_Paris
             #region Initialisation Attributs
             
             this.Text = "Inscription to Liv In Paris !";
-            this.Width = 750;
-            this.Height = 650;
+            this.Size = new Size(750,650);
             this.StartPosition = FormStartPosition.CenterScreen;    //Centre la fenêtre centre écran
 
             Retour = new Button();
@@ -757,7 +757,7 @@ namespace Liv_In_Paris
                     Random random = new Random();
                     do
                     {
-                        ID = random.Next(1000, 10000);
+                        ID = random.Next(1, 10000);
                         string query = "";
                         switch(choix)
                         {
@@ -787,9 +787,7 @@ namespace Liv_In_Paris
             {
                 MessageBox.Show($"Erreur durant de l'inscription : {ex.Message}");
                 return -1;   
-                //Arbitraire car le while permet d'éviter une erreur, la seule erreur que nous pourrions avoir
-                //est si l'intitulé de la connection est fausse, et même la on retombera sur nos pieds
-                ///car quand l'inscription poursuivra, l'ID étant négatif il va être refusé
+                //Arbitraire
             }
         }
 

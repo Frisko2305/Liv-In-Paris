@@ -1,8 +1,3 @@
-using System.Collections;
-using MySql.Data.MySqlClient;
-using Org.BouncyCastle.Cmp;
-using Org.BouncyCastle.Cms;
-
 namespace Liv_In_Paris
 {
     public class Profil : Form
@@ -26,8 +21,7 @@ namespace Liv_In_Paris
         private void LancementProfil()
         {
             this.Text = $"Profil -- {userType}.";
-            this.Width = 1050;
-            this.Height = 600;
+            this.Size = new Size(1050,600);
             this.StartPosition = FormStartPosition.CenterScreen;    //Centre la fenêtre centre écran
 
             Photo_profil = new PictureBox();
@@ -158,91 +152,15 @@ namespace Liv_In_Paris
 
             this.Hide();
             Form.FormClosed += (s,args) => this.Close();
-// 
         }
 
         private void SuppCompte_Click(object? sender, EventArgs e)
         {
-            List<string> comptesDispo = new List<string>();
+            SuppCompte Form = new SuppCompte(userType, userInfo);
+            Form.Show();
 
-            if (userType == "Particulier")
-            {
-                if (!string.IsNullOrEmpty(userInfo["Id_client"]))
-                {
-                    comptesDispo.Add("Client");
-                }
-                if (!string.IsNullOrEmpty(userInfo["Id_cuisinier"]))
-                {
-                    comptesDispo.Add("Cuisinier");
-                }
-            }
-            else if (userType == "Entreprise")
-            {
-                comptesDispo.Add("Entreprise");
-            }
-
-            if(comptesDispo.Count == 0)
-            {
-                MessageBox.Show("Aucun compte associé trouvé ;", "Information : ", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
-            else
-            {
-                // On construit le mesasge de la boîte de dialogue
-                string message = "Vous avez plusieurs comptes associés. Veuillez choisir lequel vous souhaitez supprimer :\n";
-                for(int i = 0 ; i < comptesDispo.Count ; i++)
-                {
-                    message += $"{i + 1}. {comptesDispo[i]}\n";
-                }
-                if(userType == "Particulier" && comptesDispo.Count > 1)
-                {
-                    message += $"{comptesDispo.Count + 1}. Tous les comptes.\n";
-                }
-
-                // Choix de l'utilisateur via une mini fenêtre
-                string choix = Microsoft.VisualBasic.Interaction.InputBox(
-                        message,
-                        "Suppression de compte",
-                        "1"
-                );
-
-                if(int.TryParse(choix, out int choixIndex) && choixIndex > 0 && choixIndex <= comptesDispo.Count + 1)
-                {
-                    if(choixIndex == comptesDispo.Count + 1)    //On choisie de supprimer tous les comptes disponibles
-                    {
-                        // Supprimer tous les compts (Particulier uniquement)
-                        if(userType == "Particulier")
-                        {
-                            if(SupprimerCompte("Particulier"))
-                            {
-                                MessageBox.Show("Suppression de tous les comptes réussie. Retour au menu principale.");
-                                PrésentationForm Form = new PrésentationForm();
-                                Form.Show();
-
-                                this.Hide();
-                                Form.FormClosed += (s,args) => this.Close();
-                            }
-                        }
-                    }
-                    else
-                    {
-                        // Supprime le compte sélectionné
-                        if(SupprimerCompte(comptesDispo[choixIndex -1]))
-                        {
-                            MessageBox.Show("Suppression du compte réussie. Retour à la page de présentation.");
-                            PrésentationForm Form = new PrésentationForm();
-                            Form.Show();
-
-                            this.Hide();
-                            Form.FormClosed += (s,args) => this.Close();
-                        }
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("Choix invalide. Aucune action effectuée.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
-            }
+            this.Hide();
+            Form.FormClosed += (s,args) => this.Close();
         }
 
         #endregion
@@ -300,12 +218,20 @@ namespace Liv_In_Paris
 
         private void AjoutPlat_Click(object? sender, EventArgs e)
         {
-// 
+            Plat Form = new Plat(userInfo, true);
+                Form.Show();
+
+                this.Hide();
+                Form.FormClosed += (s,args) => this.Close();
         }
 
         private void RetirePlat_Click(object? sender, EventArgs e)
         {
-// 
+            Plat Form = new Plat(userInfo, false);
+                Form.Show();
+
+                this.Hide();
+                Form.FormClosed += (s,args) => this.Close();
         }
 
         private void ModeClient_Click(object? sender, EventArgs e)
@@ -322,67 +248,8 @@ namespace Liv_In_Paris
 
         #endregion
 
-        private bool SupprimerCompte(string compteType)
-        {
-            // compteType = Particulier --> On supprime les deux comptes du Particulier directement depuis la table Particulier
-            // compteType = Client --> On supprime uniquement le compte Client du Particulier
-            // compteType = Cuisinier --> On supprime uniquement le compte Cuisinier du Particulier
-            // compteType = Entreprise --> On supprime le compte Client de l'Entreprise directement depuis la table Entreprise
-
-            string connectionstring = "SERVER=localhost;DATABASE=psi;UID=root;PWD=root";
-            using(MySqlConnection connection = new MySqlConnection(connectionstring))
-            {
-                connection.Open();
-
-                MySqlCommand cmd = new MySqlCommand();
-                bool queryReussi = false;
-
-                try
-                {
-                    switch(compteType)
-                    {
-                        case "Particulier":
-                            string querySuppParticulier = "DELETE FROM Particulier WHERE Nom = @Nom AND Prenom = @Prenom;";
-                            cmd = new MySqlCommand(querySuppParticulier, connection);
-                            cmd.Parameters.AddWithValue("@Nom", userInfo["Nom"]);
-                            cmd.Parameters.AddWithValue("@Prenom", userInfo["Prenom"]);
-                            queryReussi = cmd.ExecuteNonQuery() > 0;
-                        break;
-
-                        case "Client" :
-                            string querySuppClient = "DELETE FROM Client WHERE Id_client = @Id;";
-                            cmd = new MySqlCommand(querySuppClient, connection);
-                            cmd.Parameters.AddWithValue("@Id", userInfo["Id_client"]);
-                            queryReussi = cmd.ExecuteNonQuery() > 0;
-                        break;
-
-                        case "Cuisinier" :
-                            string querySuppCuisinier = "DELETE FROM Cuisinier WHERE Id_cuisinier = @Id;";
-                            cmd = new MySqlCommand(querySuppCuisinier, connection);
-                            cmd.Parameters.AddWithValue("@Id", userInfo["Id_cuisinier"]);
-                            queryReussi = cmd.ExecuteNonQuery() > 0;
-                        break;
-
-                        case "Entreprise" :
-                            string querySuppEntreprise = "DELETE FROM Entreprise WHERE SIRET = @SIRET;";
-                            cmd = new MySqlCommand(querySuppEntreprise, connection);
-                            cmd.Parameters.AddWithValue("@SIRET", userInfo["SIRET"]);
-                            queryReussi = cmd.ExecuteNonQuery() > 0;
-                        break;
-
-                        default :       //Dans le cas d'une erreur inattendu
-                            MessageBox.Show("Erreur inattendu. Aucune action effectuée.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        break;
-                    }
-                }
-                catch(Exception ex)
-                {
-                    MessageBox.Show($"Erreur lors de la suppresion du compte {compteType} : "+ ex.Message);
-                }
-
-                return queryReussi;
-            }
-        }
+        #region Méthode Boutons
+        #endregion
     }
 }
 

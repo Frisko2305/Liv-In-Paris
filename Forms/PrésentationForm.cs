@@ -1,4 +1,3 @@
-using System.Drawing.Text;
 namespace Liv_In_Paris
 {
     public class PrésentationForm : Form
@@ -14,8 +13,7 @@ namespace Liv_In_Paris
             #region Initialisation Attributs
 
             this.Text = "Liv-In Paris";
-            this.Width = 500;
-            this.Height = 500;
+            this.Size = new Size(500,500);
             this.StartPosition = FormStartPosition.CenterScreen;    //Centre la fenêtre centre écran
 
             Connection = new Button();

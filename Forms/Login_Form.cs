@@ -17,8 +17,7 @@ namespace Liv_In_Paris
             #region Initialisation Attributs
 
             this.Text = "Login";
-            this.Width = 350;
-            this.Height = 175;
+            this.Size = new Size(350,175);
             this.StartPosition = FormStartPosition.CenterScreen;    //Centre la fenêtre centre écran
 
             layout = new TableLayoutPanel();           //avec un layout
