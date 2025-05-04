@@ -9,7 +9,7 @@ namespace Liv_In_Paris
         {
             /// Création du graphe
             
-            Graphe<double> graphe = new Graphe<double>();
+            /*Graphe<double> graphe = new Graphe<double>();
             List<NoeudsStation<double>> noeuds = graphe.Noeuds_Pte;
             List<LienStation<double>> liens = graphe.Liens_Pte;
 
@@ -21,7 +21,7 @@ namespace Liv_In_Paris
             GraphVisualizer<double>.AfficherGraphe(graphe);
 
             NoeudsStation<double> noeudDepart = graphe.RechercherNoeud(2); // Exemple de nœud de départ
-            NoeudsStation<double> noeudDestination = graphe.RechercherNoeud(10); // Exemple de nœud de destination
+            NoeudsStation<double> noeudDestination = graphe.RechercherNoeud(10); // Exemple de nœud de destination*/
 
 
             // DijkstraTest(graphe, noeudDepart, noeudDestination, noeuds);
@@ -29,11 +29,11 @@ namespace Liv_In_Paris
             // FloydWarshallTest(graphe, noeudDepart, noeudDestination, noeuds);
             
             //Partie Interface
-            /*
+            
             ApplicationConfiguration.Initialize();
             PrésentationForm mainForm = new PrésentationForm();
             Application.Run(mainForm);
-            */
+            
         }
 
 

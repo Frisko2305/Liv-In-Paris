@@ -142,6 +142,11 @@ namespace Liv_In_Paris
                     e.Rue AS Entreprise_Rue,
                     e.CP AS Entreprise_CP,
                     e.Ville AS Entreprise_Ville,
+
+                    CASE
+                        WHEN c.SIRET_entreprise IS NOT NULL THEN e.Metro
+                        ELSE p.Metro
+                    END AS Metro,
                     
                     CASE
                         WHEN cu.Id_cuisinier IS NOT NULL THEN cu.Photo_profil
@@ -180,6 +185,7 @@ namespace Liv_In_Paris
                                 { "SIRET", reader["SIRET"]?.ToString() ?? "" },
                                 { "Email", reader["Email"]?.ToString() ?? "" },
                                 { "Mdp", reader["Mdp"]?.ToString() ?? "" },
+                                { "Metro", reader["Metro"]?.ToString() ?? ""},
 
                                 // Infos des Particuliers
                                 { "Part_NumTel", reader["Particulier_Num_tel"]?.ToString() ?? "" },

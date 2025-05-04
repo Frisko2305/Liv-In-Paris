@@ -11,6 +11,7 @@ CREATE TABLE Particulier(
    Rue VARCHAR(50),
    CP INT,
    Ville VARCHAR(50),
+   Metro VARCHAR(50) NOT NULL,
    PRIMARY KEY(Nom, Prenom),
    UNIQUE(Num_tel),
    UNIQUE(Email)
@@ -26,6 +27,7 @@ CREATE TABLE Entreprise(
    Rue VARCHAR(50),
    CP INT,
    Ville VARCHAR(50),
+   Metro VARCHAR(50) NOT NULL,
    PRIMARY KEY(SIRET),
    UNIQUE(Nom_entreprise),
    UNIQUE(Num_tel_referent)
@@ -186,79 +188,79 @@ JOIN
 		-- Peuplement des tables
 	
     -- Peuplement Particulier
-INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville) VALUES ('Dupont', 'Jean', '01 45 23 67 89', 'jean.dupont@fakEmail.com', '12', 'Rue de Rivoli', '75001', 'Paris');
-INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville) VALUES ('Martin', 'Sophie', '01 56 34 78 90', 'sophie.martin@mockmail.net', '45', 'Avenue des Champs-Élysées', '75008', 'Paris');
-INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville) VALUES ('Bernard', 'Michel', '01 67 89 45 23', 'michel.bernard@testinbox.org', '78', 'Boulevard Haussmann', '75009', 'Paris');
-INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville) VALUES ('Petit', 'Claire', '01 78 90 56 34', 'claire.petit@randommail.io', '23', 'Rue Saint-Honoré', '75001', 'Paris');
-INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville) VALUES ('Moreau', 'Paul', '01 89 45 67 23', 'paul.moreau@demoEmail.com', '56', 'Avenue Foch', '75116', 'Paris');
-INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville) VALUES ('Lefebvre', 'Isabelle', '01 90 56 78 12', 'isabelle.lefebvre@bogusEmail.net', '34', 'Rue Lafayette', '75009', 'Paris');
-INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville) VALUES ('Garcia', 'Luc', '01 23 67 89 45', 'luc.garcia@dummyinbox.com', '89', 'Boulevard Saint-Michel', '75005', 'Paris');
-INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville) VALUES ('Lopez', 'Marie', '01 34 78 90 56', 'marie.lopez@madeupmail.org', '67', 'Rue de la Paix', '75002', 'Paris');
-INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville) VALUES ('Gonzalez', 'Nicolas', '01 45 67 23 89', 'nicolas.gonzalez@samplEmail.io', '11', 'Avenue de l''Opéra', '75001', 'Paris');
-INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville) VALUES ('Rodriguez', 'Camille', '01 56 78 12 34', 'camille.rodriguez@inventedmail.net', '90', 'Rue du Faubourg Saint-Honoré', '75008', 'Paris');
-INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville) VALUES ('Hernandez', 'Antoine', '01 67 89 45 12', 'antoine.hernandez@nopEmail.com', '55', 'Boulevard Malesherbes', '75008', 'Paris');
-INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville) VALUES ('Schneider', 'Julien', '01 78 90 34 56', 'julien.schneider@fakEmail.net', '42', 'Rue de Turenne', '75003', 'Paris');
-INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville) VALUES ('Fischer', 'Elise', '01 89 12 56 78', 'elise.fischer@mockdomain.org', '31', 'Boulevard de Sébastopol', '75002', 'Paris');
-INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville) VALUES ('Weber', 'Thomas', '01 90 23 67 45', 'thomas.weber@testmail.io', '77', 'Avenue Victor Hugo', '75116', 'Paris');
-INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville) VALUES ('Muller', 'Laurence', '01 12 34 56 78', 'laurence.muller@randominbox.com', '25', 'Rue Réaumur', '75002', 'Paris');
-INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville) VALUES ('Roche', 'Frédéric', '07 10 91 64 54', 'frédéric.roche@blanc.org', 74, 'boulevard de Bègue', '97337', 'Paris');
-INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville) VALUES ('Lefèvre', 'Philippe', '06 30 11 73 53', 'philippe.lefèvre@daniel.org', 2, 'rue Nicolas Dos Santos', '71913', 'Paris');
-INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville) VALUES ('Baudry', 'Lucie', '07 00 42 44 57', 'lucie.baudry@daniel.fr', 97, 'boulevard Anouk Lebon', '04249', 'Paris');
-INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville) VALUES ('Poulain', 'Isaac', '06 34 69 36 82', 'isaac.poulain@lecoq.fr', 67, 'avenue Audrey Bodin', '20403', 'Paris');
-INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville) VALUES ('Boyer', 'Luc', '07 62 61 52 14', 'luc.boyer@becker.fr', 87, 'boulevard Timothée Julien', '52722', 'Paris');
-INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville) VALUES ('Fournier', 'Thomas', '07 06 08 05 12', 'thomas.fournier@samson.org', 28, 'rue de Marques', '33697', 'Paris');
-INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville) VALUES ('Brun', 'Margot', '06 04 06 95 57', 'margot.brun@lemonnier.net', 48, 'rue Barthelemy', '90398', 'Paris');
-INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville) VALUES ('Bonneau', 'Louis', '07 22 58 48 95', 'louis.bonneau@laroche.org', 54, 'chemin Renée Perret', '59856', 'Paris');
-INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville) VALUES ('Morel', 'Anaïs', '07 90 47 08 72', 'anaïs.morel@henry.net', 9, 'rue Garnier', '01405', 'Paris');
-INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville) VALUES ('Regnier', 'Suzanne', '06 50 27 71 03', 'suzanne.regnier@vidal.com', 100, 'avenue Mathilde Buisson', '57410', 'Paris');
-INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville) VALUES ('Georges', 'Susan', '06 73 36 27 75', 'susan.georges@le.fr', 49, 'rue de Bouvet', '32648', 'Paris');
-INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville) VALUES ('Da Silva', 'Robert', '06 30 02 52 81', 'robert.da silva@launay.com', 97, 'boulevard de Pelletier', '11924', 'Paris');
-INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville) VALUES ('Thierry', 'Nicolas', '07 17 01 16 46', 'nicolas.thierry@aubert.fr', 97, 'chemin de Ollivier', '68912', 'Paris');
-INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville) VALUES ('Wagner', 'Sophie', '07 01 45 57 62', 'sophie.wagner@guillaume.org', 77, 'boulevard Patricia Lambert', '25342', 'Paris');
-INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville) VALUES ('Roger', 'Dominique', '07 66 21 61 38', 'dominique.roger@pottier.net', 34, 'avenue de Morel', '71938', 'Paris');
-INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville) VALUES ('Bernard', 'Tristan', '07 28 01 58 85', 'tristan.bernard@ollivier.com', 85, 'rue Jeannine Joly', '44320', 'Paris');
-INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville) VALUES ('Blondel', 'Anne', '07 83 92 13 92', 'anne.blondel@barthelemy.fr', 4, 'rue Hortense Hernandez', '32431', 'Paris');
-INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville) VALUES ('Bazin', 'Théodore', '07 58 88 78 71', 'théodore.bazin@paris.fr', 39, 'rue Alexandrie Guibert', '31364', 'Paris');
-INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville) VALUES ('Huet', 'Maggie', '07 51 27 71 20', 'maggie.huet@humbert.fr', 18, 'avenue de Camus', '34458', 'Paris');
-INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville) VALUES ('Fontaine', 'Alain', '07 34 52 11 14', 'alain.fontaine@pichon.com', 19, 'rue Perrin', '46360', 'Paris');
+INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville, Metro) VALUES ('Dupont', 'Jean', '01 45 23 67 89', 'jean.dupont@fakEmail.com', '12', 'Rue de Rivoli', '75001', 'Paris', 'Louvre - Rivoli');
+INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville, Metro) VALUES ('Martin', 'Sophie', '01 56 34 78 90', 'sophie.martin@mockmail.net', '45', 'Avenue des Champs-Élysées', '75008', 'Paris', 'Franklin D. Roosevelt');
+INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville, Metro) VALUES ('Bernard', 'Michel', '01 67 89 45 23', 'michel.bernard@testinbox.org', '78', 'Boulevard Haussmann', '75009', 'Paris', 'Saint-Lazare');
+INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville, Metro) VALUES ('Petit', 'Claire', '01 78 90 56 34', 'claire.petit@randommail.io', '23', 'Rue Saint-Honoré', '75001', 'Paris', 'Louvre - Rivoli');
+INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville, Metro) VALUES ('Moreau', 'Paul', '01 89 45 67 23', 'paul.moreau@demoEmail.com', '56', 'Avenue Foch', '75116', 'Paris', 'Victor Hugo');
+INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville, Metro) VALUES ('Lefebvre', 'Isabelle', '01 90 56 78 12', 'isabelle.lefebvre@bogusEmail.net', '34', 'Rue Lafayette', '75009', 'Paris', 'Le Peletier');
+INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville, Metro) VALUES ('Garcia', 'Luc', '01 23 67 89 45', 'luc.garcia@dummyinbox.com', '89', 'Boulevard Saint-Michel', '75005', 'Paris', 'Cluny - La Sorbonne');
+INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville, Metro) VALUES ('Lopez', 'Marie', '01 34 78 90 56', 'marie.lopez@madeupmail.org', '67', 'Rue de la Paix', '75002', 'Paris', 'Opéra');
+INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville, Metro) VALUES ('Gonzalez', 'Nicolas', '01 45 67 23 89', 'nicolas.gonzalez@samplEmail.io', '11', 'Avenue de l''Opéra', '75001', 'Paris', 'Pyramides');
+INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville, Metro) VALUES ('Rodriguez', 'Camille', '01 56 78 12 34', 'camille.rodriguez@inventedmail.net', '90', 'Rue du Faubourg Saint-Honoré', '75008', 'Paris', 'Miromesnil');
+INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville, Metro) VALUES ('Hernandez', 'Antoine', '01 67 89 45 12', 'antoine.hernandez@nopEmail.com', '55', 'Boulevard Malesherbes', '75008', 'Paris', 'Malesherbes');
+INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville, Metro) VALUES ('Schneider', 'Julien', '01 78 90 34 56', 'julien.schneider@fakEmail.net', '42', 'Rue de Turenne', '75003', 'Paris', 'Filles du Calvaire');
+INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville, Metro) VALUES ('Fischer', 'Elise', '01 89 12 56 78', 'elise.fischer@mockdomain.org', '31', 'Boulevard de Sébastopol', '75002', 'Paris', 'Châtelet');
+INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville, Metro) VALUES ('Weber', 'Thomas', '01 90 23 67 45', 'thomas.weber@testmail.io', '77', 'Avenue Victor Hugo', '75116', 'Paris', 'Victor Hugo');
+INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville, Metro) VALUES ('Muller', 'Laurence', '01 12 34 56 78', 'laurence.muller@randominbox.com', '25', 'Rue Réaumur', '75002', 'Paris', 'Réaumur - Sébastopol');
+INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville, Metro) VALUES ('Roche', 'Frédéric', '07 10 91 64 54', 'frédéric.roche@blanc.org', 7, 'Rue Taylor', '75010', 'Paris', 'Jacques Bonsergent');
+INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville, Metro) VALUES ('Lefèvre', 'Philippe', '06 30 11 73 53', 'philippe.lefèvre@daniel.org', 6, 'rue Sainte Lucie', '71015', 'Paris', 'Charles Michels');
+INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville, Metro) VALUES ('Baudry', 'Lucie', '07 00 42 44 57', 'lucie.baudry@daniel.fr', 10, 'Rue Jean Dolent', '75014', 'Paris', 'Denfert-Rochereau');
+INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville, Metro) VALUES ('Poulain', 'Isaac', '06 34 69 36 82', 'isaac.poulain@lecoq.fr', 20, 'Rue Odessa', '75014', 'Paris', 'Montparnasse Bienvenue');
+INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville, Metro) VALUES ('Boyer', 'Luc', '07 62 61 52 14', 'luc.boyer@becker.fr', 40, 'Rue de Rivoli', '75004', 'Paris', 'Hôtel de Ville, Metro');
+INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville, Metro) VALUES ('Fournier', 'Thomas', '07 06 08 05 12', 'thomas.fournier@samson.org', 123, 'Rue Saint-Antoine', '75004', 'Paris', 'Bastille');
+INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville, Metro) VALUES ('Brun', 'Margot', '06 04 06 95 57', 'margot.brun@lemonnier.net', 123, 'Rue Saint-Martin', '75004', 'Paris', 'Hôtel de Ville, Metro');
+INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville, Metro) VALUES ('Bonneau', 'Louis', '07 22 58 48 95', 'louis.bonneau@laroche.org', 88, 'Boulevard de Port-Royal', '75005', 'Paris', 'Denfert-Rochereau');
+INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville, Metro) VALUES ('Morel', 'Anaïs', '07 90 47 08 72', 'anaïs.morel@henry.net', 75, 'Rue Monge', '75005', 'Paris', 'Censier - Daubenton');
+INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville, Metro) VALUES ('Regnier', 'Suzanne', '06 50 27 71 03', 'suzanne.regnier@vidal.com', 139, 'Boulevard Saint-Michel', '75006', 'Paris', 'Cluny - La Sorbonne');
+INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville, Metro) VALUES ('Georges', 'Susan', '06 73 36 27 75', 'susan.georges@le.fr', 186, 'Boulevard Saint-Germain', '75006', 'Paris', 'Rue du Bac');
+INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville, Metro) VALUES ('Da Silva', 'Robert', '06 30 02 52 81', 'robert.da silva@launay.com', 76, 'Rue Brancion', '75015', 'Paris', 'Porte de Vanves');
+INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville, Metro) VALUES ('Thierry', 'Nicolas', '07 17 01 16 46', 'nicolas.thierry@aubert.fr', 170, 'Rue de Lourmel', '75015', 'Paris', 'Lourmel');
+INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville, Metro) VALUES ('Wagner', 'Sophie', '07 01 45 57 62', 'sophie.wagner@guillaume.org', 7, 'Rue La Quintinie', '75015', 'Paris', 'Volontaires');
+INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville, Metro) VALUES ('Roger', 'Dominique', '07 66 21 61 38', 'dominique.roger@pottier.net', 5, 'Place du Commerce', '75015', 'Paris', 'Commerce');
+INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville, Metro) VALUES ('Bernard', 'Tristan', '07 28 01 58 85', 'tristan.bernard@ollivier.com', 9, 'Quai Louis Blériot', '75016', 'Paris', 'Mirabeau');
+INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville, Metro) VALUES ('Blondel', 'Anne', '07 83 92 13 92', 'anne.blondel@barthelemy.fr', 39, 'Boulevard Amiral Bruix', '75016', 'Paris', 'Porte Dauphine');
+INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville, Metro) VALUES ('Bazin', 'Théodore', '07 58 88 78 71', 'théodore.bazin@paris.fr', 123, 'Rue Saint-Antoine', '75004', 'Paris', 'Saint-Paul (Le Marais)');
+INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville, Metro) VALUES ('Huet', 'Maggie', '07 51 27 71 20', 'maggie.huet@humbert.fr', 123, 'Rue Saint-Martin', '75004', 'Paris', 'Hôtel de Ville, Metro');
+INSERT INTO Particulier (Nom, Prenom, Num_tel, Email, Num_Rue, Rue, CP, Ville, Metro) VALUES ('Fontaine', 'Alain', '07 34 52 11 14', 'alain.fontaine@pichon.com', 80, 'Boulevard de Port-Royal', '75005', 'Paris', 'Denfert-Rochereau');
 
 
 	-- Peuplement Entreprise
-INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville) VALUES (21619009196044, 'ParisTech Solutions', 'Simon', '622351285', '16', 'Boulevard Raspail', '75001', 'Paris');
-INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville) VALUES (16593760297582, 'Innovatech France', 'Lemoine', '679380501', '195', 'Boulevard Raspail', '75002', 'Paris');
-INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville) VALUES (16728799614726, 'EcoEnergy Group', 'Laurent', '658678802', '30', 'Boulevard Saint-Michel', '75003', 'Paris');
-INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville) VALUES (66845121871244, 'Digital Wave', 'Dubois', '654968966', '194', 'Boulevard Saint-Michel', '75004', 'Paris');
-INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville) VALUES (71545421471430, 'GreenBuild Corp', 'Colin', '695814024', '188', 'Boulevard Haussmann', '75005', 'Paris');
-INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville) VALUES (77985164597385, 'SmartCom Networks', 'Simon', '657870628', '105', 'Rue Saint-Honoré', '75006', 'Paris');
-INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville) VALUES (50330030541557, 'NextGen Robotics', 'Lemoine', '678074981', '143', 'Avenue de l''Opéra', '75007', 'Paris');
-INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville) VALUES (80654494216740, 'BioHealth Innov', 'Durand', '668252744', '85', 'Avenue Montaigne', '75008', 'Paris');
-INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville) VALUES (50434007721092, 'SecureData Systems', 'Lemoine', '640812635', '59', 'Rue Saint-Honoré', '75009', 'Paris');
-INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville) VALUES (16273402436509, 'Urban Mobility Tech', 'Durand', '699276790', '168', 'Rue Lafayette', '75010', 'Paris');
-INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville) VALUES (12091511850336, 'CloudVision AI', 'Bertrand', '696232577', '98', 'Boulevard Saint-Michel', '75011', 'Paris');
-INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville) VALUES (35736502840212, 'Quantum IT Solutions', 'Dubois', '654601915', '112', 'Boulevard Raspail', '75012', 'Paris');
-INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville) VALUES (63063409867949, 'BlueSky Aerospace', 'Germain', '660874931', '79', 'Rue de Rivoli', '75013', 'Paris');
-INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville) VALUES (10575439913150, 'Future Finance', 'Garcia', '674537251', '28', 'Rue de Rennes', '75014', 'Paris');
-INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville) VALUES (56317477012275, 'Solaris Energy', 'Perrot', '668885784', '195', 'Avenue des Champs-Élysées', '75015', 'Paris');
-INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville) VALUES ('00194627579614', 'Roche SARL', 'Marinon', '07 85 46 15 47', 58, 'boulevard de Bègue', '97337', 'Paris');
-INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville) VALUES ('50410902066985', 'Lefèvre Inc.', 'Constantin', '06 32 14 77 52', 10, 'rue Nicolas Dos Santos', '71913', 'Paris');
-INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville) VALUES ('75918948277878', 'Baudry Ltd', 'Marcel', '07 08 40 40 55', 26, 'boulevard Anouk Lebon', '04249', 'Paris');
-INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville) VALUES ('15575674421893', 'Poulain SAS', 'Ismael', '06 34 69 36 82', 5, 'avenue Audrey Bodin', '20403', 'Paris');
-INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville) VALUES ('42086885306941', 'Boyer SA', 'Benjamin', '07 62 61 52 14', 84, 'boulevard Timothée Julien', '52722', 'Paris');
-INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville) VALUES ('71906462471656', 'Fournier SARL', 'Feaurnet', '07 06 08 05 12', 14, 'rue de Marques', '33697', 'Paris');
-INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville) VALUES ('04527796024153', 'Brun Ltd', 'Bougenot', '06 04 06 90 57', 20, 'rue Barthelemy', '90398', 'Paris');
-INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville) VALUES ('57586684034233', 'Bonneau Inc.', 'Marcilat', '07 20 50 48 95', 2, 'chemin Renée Perret', '59856', 'Paris');
-INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville) VALUES ('31354744055777', 'Morel SA', 'Poisson', '07 90 47 08 72', 4, 'rue Garnier', '01405', 'Paris');
-INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville) VALUES ('68287167703647', 'Regnier SAS', 'Declire', '06 50 20 71 03', 58, 'avenue Mathilde Buisson', '57410', 'Paris');
-INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville) VALUES ('27925070069231', 'Georges Ltd', 'Salmendor', '06 73 36 20 75', 25, 'rue de Bouvet', '32648', 'Paris');
-INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville) VALUES ('50412516543948', 'Da Silva Inc.', 'Constanti', '06 30 02 50 81', 36, 'boulevard de Pelletier', '11924', 'Paris');
-INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville) VALUES ('67798923742406', 'Thierry SAS', 'Parginot', '07 17 01 10 46', 78, 'chemin de Ollivier', '68912', 'Paris');
-INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville) VALUES ('57927783352507', 'Wagner SARL', 'Massine', '07 01 40 57 62', 14, 'boulevard Patricia Lambert', '25342', 'Paris');
-INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville) VALUES ('57518838229779', 'Roger SA', 'Levicar', '07 60 21 61 38', 20, 'avenue de Morel', '71938', 'Paris');
-INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville) VALUES ('90412516543948', 'Bernard Ltd', 'Jinot', '07 28 01 50 85', 10, 'rue Jeannine Joly', '44320', 'Paris');
-INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville) VALUES ('72636964897378', 'Blondel Inc.', 'Blondot', '07 83 92 10 92', 8, 'rue Hortense Hernandez', '32431', 'Paris');
-INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville) VALUES ('78676484385935', 'Bazin SARL', 'Parcival', '07 58 80 78 71', 34, 'rue Alexandrie Guibert', '31364', 'Paris');
-INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville) VALUES ('54728694242483', 'Huet SA', 'Florait', '07 51 27 71 20', 25, 'avenue de Camus', '34458', 'Paris');
-INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville) VALUES ('25490269184448', 'Fontaine Ltd', 'Gargen', '07 34 50 11 14', 46, 'rue Perrin', '46360', 'Paris');
+INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville, Metro) VALUES (21619009196044, 'ParisTech Solutions', 'Simon', '06 22 35 12 85', '16', 'Boulevard Raspail', '75001', 'Paris', '');
+INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville, Metro) VALUES (16593760297582, 'Innovatech France', 'Lemoine', '06 79 38 05 01', '195', 'Boulevard Raspail', '75002', 'Paris', '');
+INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville, Metro) VALUES (16728799614726, 'EcoEnergy Group', 'Laurent', '06 58 67 88 02', '30', 'Boulevard Saint-Michel', '75003', 'Paris', '');
+INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville, Metro) VALUES (66845121871244, 'Digital Wave', 'Dubois', '06 54 96 89 66', '194', 'Boulevard Saint-Michel', '75004', 'Paris', '');
+INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville, Metro) VALUES (71545421471430, 'GreenBuild Corp', 'Colin', '06 95 81 40 24', '188', 'Boulevard Haussmann', '75005', 'Paris', '');
+INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville, Metro) VALUES (77985164597385, 'SmartCom Networks', 'Simon', '06 57 87 06 28', '105', 'Rue Saint-Honoré', '75006', 'Paris', '');
+INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville, Metro) VALUES (50330030541557, 'NextGen Robotics', 'Lemoine', '06 78 07 49 81', '143', 'Avenue de l''Opéra', '75007', 'Paris', '');
+INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville, Metro) VALUES (80654494216740, 'BioHealth Innov', 'Durand', '06 68 25 27 44', '85', 'Avenue Montaigne', '75008', 'Paris', '');
+INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville, Metro) VALUES (50434007721092, 'SecureData Systems', 'Lemoine', '06 40 81 26 35', '59', 'Rue Saint-Honoré', '75009', 'Paris', '');
+INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville, Metro) VALUES (16273402436509, 'Urban Mobility Tech', 'Durand', '06 99 27 67 90', '168', 'Rue Lafayette', '75010', 'Paris', '');
+INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville, Metro) VALUES (12091511850336, 'CloudVision AI', 'Bertrand', '06 96 23 25 77', '98', 'Boulevard Saint-Michel', '75011', 'Paris', '');
+INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville, Metro) VALUES (35736502840212, 'Quantum IT Solutions', 'Dubois', '06 54 60 19 15', '112', 'Boulevard Raspail', '75012', 'Paris', '');
+INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville, Metro) VALUES (63063409867949, 'BlueSky Aerospace', 'Germain', '06 60 87 49 31', '79', 'Rue de Rivoli', '75013', 'Paris', '');
+INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville, Metro) VALUES (10575439913150, 'Future Finance', 'Garcia', '06 74 53 72 51', '28', 'Rue de Rennes', '75014', 'Paris', '');
+INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville, Metro) VALUES (56317477012275, 'Solaris Energy', 'Perrot', '06 68 88 57 84', '195', 'Avenue des Champs-Élysées', '75015', 'Paris', '');
+INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville, Metro) VALUES ('00194627579614', 'Roche SARL', 'Marinon', '07 85 46 15 47', 12, 'Rue de la Paix', '75002', 'Paris', 'Opéra');
+INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville, Metro) VALUES ('50410902066985', 'Lefèvre Inc.', 'Constantin', '06 32 14 77 52', 15, 'Rue des Archives', '75003', 'Paris', 'Rambuteau');
+INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville, Metro) VALUES ('75918948277878', 'Baudry Ltd', 'Marcel', '07 08 40 40 55', 22, 'Rue Oberkampf', '75011', 'Paris', 'Oberkampf');
+INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville, Metro) VALUES ('15575674421893', 'Poulain SAS', 'Ismael', '06 34 69 36 82', 8, 'Rue de Charonne', '75011', 'Paris', 'Ledru-Rollin');
+INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville, Metro) VALUES ('42086885306941', 'Boyer SA', 'Benjamin', '07 62 61 52 14', 35, 'Boulevard Voltaire', '75011', 'Paris', 'Oberkampf');
+INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville, Metro) VALUES ('71906462471656', 'Fournier SARL', 'Feaurnet', '07 06 08 05 12', 50, 'Rue de la Roquette', '75011', 'Paris', 'Voltaire');
+INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville, Metro) VALUES ('04527796024153', 'Brun Ltd', 'Bougenot', '06 04 06 90 57', 60, 'Rue de la Folie-Méricourt', '75011', 'Paris', 'Oberkampf');
+INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville, Metro) VALUES ('57586684034233', 'Bonneau Inc.', 'Marcilat', '07 20 50 48 95', 75, 'Rue du Faubourg Saint-Antoine', '75011', 'Paris', 'Ledru-Rollin');
+INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville, Metro) VALUES ('31354744055777', 'Morel SA', 'Poisson', '07 90 47 08 72', 90, 'Rue de la Fontaine au Roi', '75011', 'Paris', 'Parmentier');
+INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville, Metro) VALUES ('68287167703647', 'Regnier SAS', 'Declire', '06 50 20 71 03', 100, 'Rue Saint-Maur', '75011', 'Paris', 'Rue Saint-Maur');
+INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville, Metro) VALUES ('27925070069231', 'Georges Ltd', 'Salmendor', '06 73 36 20 75', 110, 'Rue de la République', '75011', 'Paris', 'Parmentier');
+INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville, Metro) VALUES ('50412516543948', 'Da Silva Inc.', 'Constanti', '06 30 02 50 81', 120, 'Rue de la Forge Royale', '75011', 'Paris', 'Faidherbe - Chaligny');
+INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville, Metro) VALUES ('67798923742406', 'Thierry SAS', 'Parginot', '07 17 01 10 46', 130, 'Rue de la Présentation', '75011', 'Paris', 'Parmentier');
+INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville, Metro) VALUES ('57927783352507', 'Wagner SARL', 'Massine', '07 01 40 57 62', 140, 'Rue de la Pierre Levée', '75011', 'Paris', 'Parmentier');
+INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville, Metro) VALUES ('57518838229779', 'Roger SA', 'Levicar', '07 60 21 61 38', 150, 'Rue de la Folie-Regnault', '75011', 'Paris', 'Père Lachaise');
+INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville, Metro) VALUES ('90412516543948', 'Bernard Ltd', 'Jinot', '07 28 01 50 85', 160, 'Rue de la Fontaine au Roi', '75011', 'Paris', 'Parmentier');
+INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville, Metro) VALUES ('72636964897378', 'Blondel Inc.', 'Blondot', '07 83 92 10 92', 170, 'Rue de la Présentation', '75011', 'Paris', 'Parmentier');
+INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville, Metro) VALUES ('78676484385935', 'Bazin SARL', 'Parcival', '07 58 80 78 71', 180, 'Rue de la Forge Royale', '75011', 'Paris', 'Faidherbe - Chaligny');
+INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville, Metro) VALUES ('54728694242483', 'Huet SA', 'Florait', '07 51 27 71 20', 190, 'Rue de la République', '75011', 'Paris', 'Parmentier');
+INSERT INTO Entreprise (SIRET, Nom_entreprise, Nom_referent, Num_tel_referent, Num_Rue, Rue, CP, Ville, Metro) VALUES ('25490269184448', 'Fontaine Ltd', 'Gargen', '07 34 50 11 14', 200, 'Rue Saint-Maur', '75011', 'Paris', 'Rue Saint-Maur');
 
 
     -- Peuplement Client

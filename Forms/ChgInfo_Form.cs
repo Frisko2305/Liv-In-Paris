@@ -1,4 +1,4 @@
-using System.Text.Json.Serialization;
+using OfficeOpenXml;
 using MySql.Data.MySqlClient;
 
 namespace Liv_In_Paris
@@ -10,8 +10,10 @@ namespace Liv_In_Paris
         private string userType;
         private TableLayoutPanel layout;
         private TextBox T_Email, T_Tel, T_NumRue, T_Rue, T_CP, T_Ville, T_NomEnt, T_NomRef, T_TelRef, T_MDP;
+        private ComboBox C_Metro;
         private Button? BtnSave, BtnCancel, Chg_Photo;
         private PictureBox? profilepicture;
+        private List<string> ListeMetro;
 
         // Les labels correspondants aux TextBox seront ajoutés directement avec des méthodes
         #endregion
@@ -19,6 +21,9 @@ namespace Liv_In_Paris
         {
             this.userType = userType;
             this.userInfo = userInfo;
+
+            //On va charger l'entiereté des libelles des stations dans ListeMetro avec son chemin
+            ListeMetro = ChargerListeMetro(Path.Combine(Directory.GetCurrentDirectory(), "MetroParis.xlsx"));
             CreationForm();
         }
 
@@ -63,25 +68,27 @@ namespace Liv_In_Paris
 
             if(userType == "Particulier" || userType == "Cuisinier")
             {
-                T_Email = CreateLabelEtTextBox("Email", userInfo.ContainsKey("Email") ? userInfo["Email"] : "");
-                T_Tel = CreateLabelEtTextBox("Numéro de Téléphone", userInfo.ContainsKey("Part_NumTel") ? userInfo["Part_NumTel"] : "");
-                T_NumRue = CreateLabelEtTextBox("Numéro de rue", userInfo.ContainsKey("Part_NumRue") ? userInfo["Part_NumRue"] : "");
-                T_Rue = CreateLabelEtTextBox("Rue", userInfo.ContainsKey("Part_Rue") ? userInfo["Part_Rue"] : "");
-                T_CP = CreateLabelEtTextBox("CP", userInfo.ContainsKey("Part_CP") ? userInfo["Part_CP"] : "");
-                T_Ville = CreateLabelEtTextBox("Ville", userInfo.ContainsKey("Part_Ville") ? userInfo["Part_Ville"] : "");
-                T_MDP = CreateLabelEtTextBox("Mot de passe", userInfo.ContainsKey("Mdp") ? userInfo["Mdp"] : "");
+                T_Email = AjoutLabelEtTextBox("Email", userInfo.ContainsKey("Email") ? userInfo["Email"] : "");
+                T_Tel = AjoutLabelEtTextBox("Numéro de Téléphone", userInfo.ContainsKey("Part_NumTel") ? userInfo["Part_NumTel"] : "");
+                T_NumRue = AjoutLabelEtTextBox("Numéro de rue", userInfo.ContainsKey("Part_NumRue") ? userInfo["Part_NumRue"] : "");
+                T_Rue = AjoutLabelEtTextBox("Rue", userInfo.ContainsKey("Part_Rue") ? userInfo["Part_Rue"] : "");
+                T_CP = AjoutLabelEtTextBox("CP", userInfo.ContainsKey("Part_CP") ? userInfo["Part_CP"] : "");
+                T_Ville = AjoutLabelEtTextBox("Ville", userInfo.ContainsKey("Part_Ville") ? userInfo["Part_Ville"] : "");
+                T_MDP = AjoutLabelEtTextBox("Mot de passe", userInfo.ContainsKey("Mdp") ? userInfo["Mdp"] : "");
+                C_Metro = AjoutLabelEtComboBox("Station de métro la plus proche", userInfo.ContainsKey("Metro") ? userInfo["Metro"] : "", ListeMetro);
 
             }
             else    //Cas Entreprise
             {
-                T_NomEnt = CreateLabelEtTextBox("Nom de l'entreprise", userInfo.ContainsKey("Ent_Nom") ? userInfo["Ent_Nom"] : "");
-                T_NomRef = CreateLabelEtTextBox("Nom du référent", userInfo.ContainsKey("Ent_NomRef") ? userInfo["Ent_NomRef"] : "");
-                T_TelRef = CreateLabelEtTextBox("Téléphone du référent", userInfo.ContainsKey("Ent_TelRef") ? userInfo["Ent_TelRef"] : "");
-                T_NumRue = CreateLabelEtTextBox("Numéro de rue", userInfo.ContainsKey("Ent_NumRue") ? userInfo["Ent_NumRue"] : "");
-                T_Rue = CreateLabelEtTextBox("Rue", userInfo.ContainsKey("Ent_Rue") ? userInfo["Ent_Rue"] : "");
-                T_CP = CreateLabelEtTextBox("CP", userInfo.ContainsKey("Ent_CP") ? userInfo["Ent_CP"] : "");
-                T_Ville = CreateLabelEtTextBox("Ville", userInfo.ContainsKey("Ent_Ville") ? userInfo["Ent_Ville"] : "");
-                T_MDP = CreateLabelEtTextBox("Mot de passe", userInfo.ContainsKey("Mdp") ? userInfo["Mdp"] : "");
+                T_NomEnt = AjoutLabelEtTextBox("Nom de l'entreprise", userInfo.ContainsKey("Ent_Nom") ? userInfo["Ent_Nom"] : "");
+                T_NomRef = AjoutLabelEtTextBox("Nom du référent", userInfo.ContainsKey("Ent_NomRef") ? userInfo["Ent_NomRef"] : "");
+                T_TelRef = AjoutLabelEtTextBox("Téléphone du référent", userInfo.ContainsKey("Ent_TelRef") ? userInfo["Ent_TelRef"] : "");
+                T_NumRue = AjoutLabelEtTextBox("Numéro de rue", userInfo.ContainsKey("Ent_NumRue") ? userInfo["Ent_NumRue"] : "");
+                T_Rue = AjoutLabelEtTextBox("Rue", userInfo.ContainsKey("Ent_Rue") ? userInfo["Ent_Rue"] : "");
+                T_CP = AjoutLabelEtTextBox("CP", userInfo.ContainsKey("Ent_CP") ? userInfo["Ent_CP"] : "");
+                T_Ville = AjoutLabelEtTextBox("Ville", userInfo.ContainsKey("Ent_Ville") ? userInfo["Ent_Ville"] : "");
+                T_MDP = AjoutLabelEtTextBox("Mot de passe", userInfo.ContainsKey("Mdp") ? userInfo["Mdp"] : "");
+                C_Metro = AjoutLabelEtComboBox("Station de métro la plus proche", userInfo.ContainsKey("Metro") ? userInfo["Metro"] : "", ListeMetro);
             }
 
             if(userInfo.ContainsKey("Photo_profil") && !string.IsNullOrEmpty(userInfo["Photo_profil"]))
@@ -109,7 +116,7 @@ namespace Liv_In_Paris
         }
 
         #region Méthode Label/Bouton
-        private TextBox CreateLabelEtTextBox(string label, string value)
+        private TextBox AjoutLabelEtTextBox(string label, string value)
         {
             Label lbl = new Label { Text = label, Dock = DockStyle.Fill, TextAlign = System.Drawing.ContentAlignment.MiddleLeft };
             TextBox txt = new TextBox { Text = value, Dock = DockStyle.Fill };
@@ -118,6 +125,64 @@ namespace Liv_In_Paris
             layout.Controls.Add(txt);
 
             return txt;     //On return le TextBox car il nous faudra accéder à son .Text pour les vérifications
+        }
+
+        private ComboBox AjoutLabelEtComboBox(string label, string defaut, List<string> liste)
+        {
+            Label Label = new Label {Text = label, AutoSize = true, Anchor = AnchorStyles.Left};
+            ComboBox ComboBox = new ComboBox();
+            ComboBox.Items.AddRange(liste.ToArray());
+            ComboBox.Text = defaut;
+            ComboBox.DropDownStyle = ComboBoxStyle.DropDown;
+            ComboBox.Width = 200;
+            ComboBox.AutoSize = true;
+            ComboBox.Anchor = AnchorStyles.Left;
+            ComboBox.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            ComboBox.AutoCompleteSource = AutoCompleteSource.CustomSource;
+
+            var autoComplete = new AutoCompleteStringCollection();
+            autoComplete.AddRange(liste.ToArray());
+            ComboBox.AutoCompleteCustomSource = autoComplete;
+            
+            layout.Controls.Add(Label);
+            layout.Controls.Add(ComboBox);
+            return ComboBox;
+        }
+
+        private List<string> ChargerListeMetro(string cheminFichier)
+        {
+            // Enregistrer le fournisseur d'encodage pour éviter l'erreur IBM437
+            System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+            
+            HashSet<string> stationSet= new HashSet<string>();   //Afin de ne pas avoir de doublons, on le convertira en List à la fin
+
+            try
+            {
+                using(var package = new ExcelPackage(new FileInfo(cheminFichier)))
+                {
+                    var feuille = package.Workbook.Worksheets["Noeuds"];
+                    if(feuille == null)
+                    {
+                        throw new Exception("La feuille 'Noeuds' est introuvable dans le fichier Excel");
+                    }
+
+                    int rowCount = feuille.Dimension.Rows;
+
+                    for(int i = 2 ; i <= rowCount ; i++)
+                    {
+                        string station = feuille.Cells[i, 3].Text;
+                        if(!string.IsNullOrWhiteSpace(station))
+                        {
+                            stationSet.Add(station);
+                        }
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show($"Erreru lors du chargement des Stations : {ex.Message}");
+            }
+            return stationSet.ToList();
         }
 
         private void BtnCancel_Click(object? sender, EventArgs e)
@@ -183,6 +248,9 @@ namespace Liv_In_Paris
                 }
                 userInfo["Mdp"] = T_MDP.Text;
 
+                // Il ne peut pas y avoir d'erreur sur le métro
+                userInfo["Metro"] = C_Metro.Text;
+
                 // Verif SQL
                 UpdateDatabase();
 
@@ -244,6 +312,9 @@ namespace Liv_In_Paris
                     return;
                 }
                 userInfo["Mdp"] = T_MDP.Text;
+
+                // Il ne peut pas y avoir d'erreur sur le métro
+                userInfo["Metro"] = C_Metro.Text;
 
                 // Verif SQL
                 UpdateDatabase();
@@ -318,7 +389,7 @@ namespace Liv_In_Paris
                     {
                         case "Particulier" :
                             queryIdentite = @"UPDATE Particulier
-                            SET Num_tel = @NumTel, Email = @Email, Num_Rue = @NumRue, Rue = @Rue, CP = @CP, Ville = @Ville
+                            SET Num_tel = @NumTel, Email = @Email, Num_Rue = @NumRue, Rue = @Rue, CP = @CP, Ville = @Ville, Metro = @metro
                             WHERE Nom = @Nom AND Prenom = @Prenom;
                             ";
                             queryProfil = @"UPDATE Client
@@ -334,7 +405,7 @@ namespace Liv_In_Paris
 
                         case "Entreprise" :
                             queryIdentite = @"UPDATE Entreprise
-                            SET Nom_entreprise = @NomEnt, Nom_referent = @NomRef, Num_tel_referent = @TelRef, Num_Rue = @NumRue, Rue = @Rue, CP = @CP, Ville = @Ville
+                            SET Nom_entreprise = @NomEnt, Nom_referent = @NomRef, Num_tel_referent = @TelRef, Num_Rue = @NumRue, Rue = @Rue, CP = @CP, Ville = @Ville, Metro = @Metro
                             WHERE SIRET = @SIRET;
                             ";
 
@@ -347,7 +418,7 @@ namespace Liv_In_Paris
                         case "Cuisinier" :
                             queryIdentite = @"
                             UPDATE Particulier
-                            SET Num_tel = @NumTel, Email = @Email, Num_Rue = @NumRue, Rue = @Rue, CP = @CP, Ville = @Ville
+                            SET Num_tel = @NumTel, Email = @Email, Num_Rue = @NumRue, Rue = @Rue, CP = @CP, Ville = @Ville, Metro = @Metro
                             WHERE Nom = @Nom AND Prenom = @Prenom;
                             ";
 
@@ -380,6 +451,7 @@ namespace Liv_In_Paris
                             cmdIdentite.Parameters.AddWithValue("@Rue", userInfo["Part_Rue"]);
                             cmdIdentite.Parameters.AddWithValue("@CP", Convert.ToInt32(userInfo["Part_CP"]));
                             cmdIdentite.Parameters.AddWithValue("@Ville", userInfo["Part_Ville"]);
+                            cmdIdentite.Parameters.AddWithValue("@Metro", userInfo["Metro"]);
                         }
                         else    //Cas Entreprise
                         {
@@ -391,6 +463,7 @@ namespace Liv_In_Paris
                             cmdIdentite.Parameters.AddWithValue("@Rue", userInfo["Ent_Rue"]);
                             cmdIdentite.Parameters.AddWithValue("@CP", Convert.ToInt32(userInfo["Ent_CP"]));
                             cmdIdentite.Parameters.AddWithValue("@Ville", userInfo["Ent_Ville"]);
+                            cmdIdentite.Parameters.AddWithValue("@Metro", userInfo["Metro"]);
                         }
 
                         IdentiteUpdated = cmdIdentite.ExecuteNonQuery() > 0;    //Si nb de lignes retournés > 0 --> Vrai
