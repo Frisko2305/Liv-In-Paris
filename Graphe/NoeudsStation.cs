@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace Liv_In_Paris
 {
     class NoeudsStation<T>
     {
-        private int id;
+        private T id;
         private string libelle;
         private string nom;
         private T longitude;
@@ -17,7 +12,7 @@ namespace Liv_In_Paris
         private int codeInsee;
 
 
-        public int Id
+        public T Id
         {
             get { return id; }
             set { id = value; }
@@ -62,9 +57,9 @@ namespace Liv_In_Paris
             set { codeInsee = value; }
         }
 
-        public NoeudsStation(int son_id, string libelle, string nom, T longitude, T latitude,   string communenom, int codeInsee)
+        public NoeudsStation(T id, string libelle, string nom, T longitude, T latitude,   string communenom, int codeInsee)
         {
-            this.id = son_id;
+            this.id = id;
             this.libelle = libelle;
             this.nom = nom;
             this.longitude = longitude;

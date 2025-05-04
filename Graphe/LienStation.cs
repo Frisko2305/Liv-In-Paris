@@ -1,22 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Liv_In_Paris
+﻿namespace Liv_In_Paris
 {
     class LienStation<T>
     {
 
-        private int id;
+        private T id;
         private string nom;
         private NoeudsStation<T> id_precedent;
         private NoeudsStation<T>? id_suivant;
         private int poids;
 
 
-        public int Id
+        public T Id
         {
             get { return id; }
             set { id = value; }
@@ -47,7 +41,7 @@ namespace Liv_In_Paris
         }
 
 
-        public LienStation(int id, string nom, NoeudsStation<T> id_precedent,NoeudsStation<T> id_suivant, int poids = 1)
+        public LienStation(T id, string nom, NoeudsStation<T> id_precedent,NoeudsStation<T> id_suivant, int poids = 1)
         {
             this.id = id;
             this.nom = nom;

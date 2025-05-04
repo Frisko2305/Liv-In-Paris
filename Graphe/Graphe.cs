@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
-
-
-namespace Liv_In_Paris
+﻿namespace Liv_In_Paris
 {
     internal class Graphe<T>
     {
@@ -49,15 +41,14 @@ namespace Liv_In_Paris
 
         public NoeudsStation<T> RechercherNoeud(int id)
         {
-            foreach(var noeud in this.noeuds)
+            foreach (var noeud in this.noeuds)
             {
-                if(noeud.Id ==id)
+                if (Convert.ToInt32(noeud.Id) == id)
                 {
                     return noeud;
                 }
-
             }
-            return null;
+            throw new Exception("Noeud inexistant");
         }
 
         public int[,] CreerMatriceAdjacence()

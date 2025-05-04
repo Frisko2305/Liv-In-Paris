@@ -8,7 +8,7 @@ namespace Liv_In_Paris
         static void Main(string[] args)
         {
             /// Création du graphe
-            /*
+            
             Graphe<double> graphe = new Graphe<double>();
             List<NoeudsStation<double>> noeuds = graphe.Noeuds_Pte;
             List<LienStation<double>> liens = graphe.Liens_Pte;
@@ -24,14 +24,16 @@ namespace Liv_In_Paris
             NoeudsStation<double> noeudDestination = graphe.RechercherNoeud(10); // Exemple de nœud de destination
 
 
-            DijkstraTest(graphe, noeudDepart, noeudDestination, noeuds);
-            BellmanFordTest(graphe, noeudDepart, noeudDestination, noeuds, liens);
-            FloydWarshallTest(graphe, noeudDepart, noeudDestination, noeuds);
-            */
-            //Partie Interface 
+            // DijkstraTest(graphe, noeudDepart, noeudDestination, noeuds);
+            // BellmanFordTest(graphe, noeudDepart, noeudDestination, noeuds, liens);
+            // FloydWarshallTest(graphe, noeudDepart, noeudDestination, noeuds);
+            
+            //Partie Interface
+            /*
             ApplicationConfiguration.Initialize();
             PrésentationForm mainForm = new PrésentationForm();
             Application.Run(mainForm);
+            */
         }
 
 
@@ -102,17 +104,15 @@ namespace Liv_In_Paris
                         }
                         else
                         {
-
-                            graphe.AjouterNoeud(new NoeudsStation<double>(Convert.ToInt32(mat[i, 0]), mat[i, 1], mat[i, 2], Convert.ToDouble(mat[i, 3]), Convert.ToDouble(mat[i, 4]), mat[i, 5], Convert.ToInt32(mat[i, 6])));
+                            graphe.AjouterNoeud(new NoeudsStation<double>(Convert.ToDouble(mat[i, 0]), mat[i, 1], mat[i, 2], Convert.ToDouble(mat[i, 3]), Convert.ToDouble(mat[i, 4]), mat[i, 5], Convert.ToInt32(mat[i, 6])));
                         }
-
                     }
+                LienParCorrespondance(graphe);
                 }
                 else
                 {
                     for (int i = 0; i < mat.GetLength(0); i++)
                     {
-
                         if (mat[i, 2] == "")    //quand l'id_precedant est vide
                         {
                             continue;
@@ -123,18 +123,15 @@ namespace Liv_In_Paris
                         }
                         else if(mat[i,3] == "") //quand l'id_suivant est vide
                         {
-                            graphe.AjouterLien(new LienStation<double>(Convert.ToInt32(mat[i, 0]), mat[i, 1], graphe.RechercherNoeud(Convert.ToInt32(mat[i, 2])), null, Convert.ToInt32(mat[i, 4])));
+                            graphe.AjouterLien(new LienStation<double>(Convert.ToDouble(mat[i, 0]), mat[i, 1], graphe.RechercherNoeud(Convert.ToInt32(mat[i, 2])), null, Convert.ToInt32(mat[i, 4])));
                         }
                         else
                         {
-                            graphe.AjouterLien(new LienStation<double>(Convert.ToInt32(mat[i, 0]), mat[i, 1], graphe.RechercherNoeud(Convert.ToInt32(mat[i, 2])), graphe.RechercherNoeud(Convert.ToInt32(mat[i, 3])), Convert.ToInt32(mat[i, 4])));
+                            graphe.AjouterLien(new LienStation<double>(Convert.ToDouble(mat[i, 0]), mat[i, 1], graphe.RechercherNoeud(Convert.ToInt32(mat[i, 2])), graphe.RechercherNoeud(Convert.ToInt32(mat[i, 3])), Convert.ToInt32(mat[i, 4])));
                         }
                     }
                 }
-                LienParCorrespondance(graphe);
             }
-
-
 
         static void LienParCorrespondance(Graphe<double> graphe)
         {
@@ -143,9 +140,9 @@ namespace Liv_In_Paris
             {
                 for(int j = i+1 ; j < graphe.Noeuds_Pte.Count ; j++)
                 {
+                    int corres = random.Next(1,5);
                     if(graphe.Noeuds_Pte[i].Nom == graphe.Noeuds_Pte[j].Nom)
                     {
-                        int corres = random.Next(1,7);
                         graphe.AjouterLien(new LienStation<double>(graphe.Noeuds_Pte[i].Id, graphe.Noeuds_Pte[i].Nom, graphe.Noeuds_Pte[j], null, corres ));
                         graphe.AjouterLien(new LienStation<double>(graphe.Noeuds_Pte[j].Id, graphe.Noeuds_Pte[j].Nom, graphe.Noeuds_Pte[i], null, corres ));
                     }
