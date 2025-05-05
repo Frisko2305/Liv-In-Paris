@@ -126,5 +126,4 @@ class NoeudsStation<T>
         this.codeInsee = codeInsee;
     }
 }
-    
 }

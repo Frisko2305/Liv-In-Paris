@@ -247,4 +247,3 @@ namespace Liv_In_Paris
         #endregion
     }
 }
-
