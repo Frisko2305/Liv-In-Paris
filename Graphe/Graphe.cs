@@ -51,75 +51,11 @@
             throw new Exception("Noeud inexistant");
         }
 
-        public int[,] CreerMatriceAdjacence()
-        {
-            int n = noeuds.Count;
-            int[,] matrice = new int[n, n];
 
-            // Initialiser la matrice avec des valeurs infinies (int.MaxValue) sauf sur la diagonale
-            for (int i = 0; i < n; i++)
-            {
-                for (int j = 0; j < n; j++)
-                {
-                    matrice[i, j] = (i == j) ? 0 : int.MaxValue;
-                }
-            }
 
-            // Remplir la matrice avec les poids des liens
-            foreach (var lien in liens)
-            {
-                if (lien.Id_precedent != null && lien.Id_suivant != null)
-                {
-                    int i = noeuds.IndexOf(lien.Id_precedent);
-                    int j = noeuds.IndexOf(lien.Id_suivant);
-                    matrice[i, j] = lien.Poids;
+       
 
-                    // Si le graphe est non orienté, ajouter aussi l'inverse
-                    matrice[j, i] = lien.Poids;
-                }
-            }
-
-            return matrice;
-        }
-
-        public Dictionary<NoeudsStation<T>, int> Dijkstra(NoeudsStation<T> depart, List<NoeudsStation<T>> noeuds, Graphe<T> graphe)
-        {
-            var distances = new Dictionary<NoeudsStation<T>, int>();
-            var precedents = new Dictionary<NoeudsStation<T>, NoeudsStation<T>>();
-            var noeudsNonVisites = new HashSet<NoeudsStation<T>>(noeuds);
-
-            // Initialiser les distances
-            foreach (var noeud in noeuds)
-            {
-                distances[noeud] = int.MaxValue;
-                precedents[noeud] = null;
-            }
-            distances[depart] = 0;
-
-            while (noeudsNonVisites.Count > 0)
-            {
-                // Trouver le nœud avec la plus petite distance
-                var noeudCourant = noeudsNonVisites.OrderBy(n => distances[n]).First();
-                noeudsNonVisites.Remove(noeudCourant);
-
-                foreach (var lien in liens)
-                {
-                    if (lien.Id_precedent == noeudCourant && lien.Id_suivant != null && noeudsNonVisites.Contains(lien.Id_suivant))
-                    {
-                        int distance = distances[noeudCourant] + lien.Poids;
-                        if (distance < distances[lien.Id_suivant])
-                        {
-                            distances[lien.Id_suivant] = distance;
-                            precedents[lien.Id_suivant] = noeudCourant;
-                        }
-                    }
-                }
-            }
-
-            return distances;
-        }
-
-        public Dictionary<NoeudsStation<T>, int> BellmanFord(NoeudsStation<T> depart, List<NoeudsStation<T>> noeuds, List<LienStation<T>> liens)
+        /*public Dictionary<NoeudsStation<T>, int> BellmanFord(NoeudsStation<T> depart, List<NoeudsStation<T>> noeuds, List<LienStation<T>> liens)
         {
             var distances = new Dictionary<NoeudsStation<T>, int>();
             var precedents = new Dictionary<NoeudsStation<T>, NoeudsStation<T>>();
@@ -185,6 +121,6 @@
             }
 
             return distances;
-        }
+        }*/
     }
 }
