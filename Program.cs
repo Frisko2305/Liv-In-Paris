@@ -24,7 +24,7 @@ namespace Liv_In_Paris
             NoeudsStation<double> noeudDestination = graphe.RechercherNoeud(10); // Exemple de nœud de destination*/
 
 
-            // DijkstraTest(graphe, noeudDepart, noeudDestination, noeuds);
+            FloydWarshallTest(graphe, noeudDepart, noeudDestination, noeuds);
             // BellmanFordTest(graphe, noeudDepart, noeudDestination, noeuds, liens);
             // FloydWarshallTest(graphe, noeudDepart, noeudDestination, noeuds);
             
@@ -151,7 +151,7 @@ namespace Liv_In_Paris
         }
 
         ///Methode de test des programmes de plus courts chemins
-        static void DijkstraTest(Graphe<double> graphe, NoeudsStation<double> noeudDepart, NoeudsStation<double> noeudDestination, List<NoeudsStation<double>> noeuds)
+        /*static void DijkstraTest(Graphe<double> graphe, NoeudsStation<double> noeudDepart, NoeudsStation<double> noeudDestination, List<NoeudsStation<double>> noeuds)
 
              {
 
@@ -188,33 +188,85 @@ namespace Liv_In_Paris
             {
                 Console.WriteLine(ex.Message);
             }
-        }  
+        } */ 
 
-        static void FloydWarshallTest(Graphe<double> graphe, NoeudsStation<double> noeudDepart, NoeudsStation<double> noeudDestination, List<NoeudsStation<double>> noeuds)
+        static int[,] CreerMatriceAdjacence(int n,Graphe<double> graphe)
+ {
+     var liens = graphe.Liens_Pte;
+     var noeuds = graphe.Noeuds_Pte;
+     int[,] matrice = new int[n, n];
+
+     // Initialiser la matrice avec des valeurs infinies (int.MaxValue) sauf sur la diagonale
+     for (int i = 0; i < n; i++)
+     {
+         for (int j = 0; j < n; j++)
+         {
+             matrice[i, j] = (i == j) ? 0 : int.MaxValue;
+         }
+     }
+// Remplir la matrice avec les poids des liens
+    foreach (var lien in liens)
+    {
+        if (lien.Id_precedent != null && lien.Id_suivant != null)
         {
-            try
-            {
-                // Exécuter l'algorithme de Floyd-Warshall
-                int[,] distances = graphe.FloydWarshall(noeuds, graphe);
+            int i = noeuds.IndexOf(lien.Id_precedent);
+            int j = noeuds.IndexOf(graphe.RechercherNoeud(Convert.ToInt32(lien.Id)));
+            matrice[i, j] = lien.Poids;
 
-                // Obtenir les indices des nœuds de départ et de destination
-                int indexDepart = graphe.Noeuds_Pte.IndexOf(noeudDepart);
-                int indexDestination = graphe.Noeuds_Pte.IndexOf(noeudDestination);
+            // Si le graphe est non orienté, ajouter aussi l'inverse
+            matrice[j, i] = lien.Poids;
+        }
+    }
 
-                // Afficher la distance minimale entre le nœud de départ et le nœud de destination
-                if (distances[indexDepart, indexDestination] != int.MaxValue)
-                {
-                    Console.WriteLine($"La distance minimale entre le nœud {noeudDepart.Id} et le nœud {noeudDestination.Id} est : {distances[indexDepart, indexDestination]}");
-                }
-                else
-                {
-                    Console.WriteLine("Il n'y a pas de chemin entre le nœud de départ et le nœud de destination.");
-                }
-            }
-            catch (InvalidOperationException ex)
+    return matrice;
+}
+static int[,] FloydWarshall(Graphe<double> graphe)
+{
+    int n = graphe.Noeuds_Pte.Count;
+    int[,] distances = CreerMatriceAdjacence(n, graphe);
+
+    // Appliquer l'algorithme de Floyd-Warshall
+    for (int k = 0; k < n; k++)
+    {
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < n; j++)
             {
-                Console.WriteLine(ex.Message);
+                if (distances[i, k] != int.MaxValue && distances[k, j] != int.MaxValue)
+                {
+                    distances[i, j] = Math.Min(distances[i, j], distances[i, k] + distances[k, j]);
+                }
             }
         }
+    }
+
+    return distances;
+}
+static void FloydWarshallTest(Graphe<double> graphe, NoeudsStation<double> noeudDepart, NoeudsStation<double> noeudDestination, List<NoeudsStation<double>> noeuds)
+{
+    try
+    {
+        // Exécuter l'algorithme de Floyd-Warshall
+        int[,] distances = FloydWarshall(graphe);
+
+        // Obtenir les indices des nœuds de départ et de destination
+        int indexDepart = graphe.Noeuds_Pte.IndexOf(noeudDepart);
+        int indexDestination = graphe.Noeuds_Pte.IndexOf(noeudDestination);
+
+        // Afficher la distance minimale entre le nœud de départ et le nœud de destination
+        if (distances[indexDepart, indexDestination] != int.MaxValue)
+        {
+            Console.WriteLine($"La distance minimale entre le nœud {noeudDepart.Id} et le nœud {noeudDestination.Id} est : {distances[indexDepart, indexDestination]}");
+        }
+        else
+        {
+            Console.WriteLine("Il n'y a pas de chemin entre le nœud de départ et le nœud de destination.");
+        }
+    }
+    catch (InvalidOperationException ex)
+    {
+        Console.WriteLine(ex.Message);
+    }
+}
     }
 }
