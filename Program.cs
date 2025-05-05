@@ -160,7 +160,7 @@ namespace Liv_In_Paris
         }
 
         ///Créer la matrice d'adjacence
-        static int[,] CreerMatriceAdjacence(int n, Graphe<double> graphe)
+        public static int[,] CreerMatriceAdjacence(int n, Graphe<double> graphe)
         {
             var liens = graphe.Liens_Pte;
             var noeuds = graphe.Noeuds_Pte;

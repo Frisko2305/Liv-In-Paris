@@ -79,7 +79,7 @@ namespace Liv_In_Paris
             throw new Exception("Noeud inexistant");
         }
 
-        /*
+        
         /// <summary>
         /// Implémente l'algorithme de Bellman-Ford pour trouver le plus court chemin depuis un noeud de départ.
         /// </summary>
@@ -93,7 +93,6 @@ namespace Liv_In_Paris
             var distances = new Dictionary<NoeudsStation<T>, int>();
             var precedents = new Dictionary<NoeudsStation<T>, NoeudsStation<T>>();
 
-            // Initialiser les distances
             foreach (var noeud in noeuds)
             {
                 distances[noeud] = int.MaxValue;
@@ -101,7 +100,6 @@ namespace Liv_In_Paris
             }
             distances[depart] = 0;
 
-            // Relaxer les arêtes |V| - 1 fois
             for (int i = 0; i < noeuds.Count - 1; i++)
             {
                 foreach (var lien in liens)
@@ -118,7 +116,6 @@ namespace Liv_In_Paris
                 }
             }
 
-            // Vérifier les cycles négatifs
             foreach (var lien in liens)
             {
                 if (lien.Id_precedent != null && lien.Id_suivant != null)
@@ -139,12 +136,11 @@ namespace Liv_In_Paris
         /// <param name="noeuds">La liste des noeuds.</param>
         /// <param name="graphe">Le graphe contenant les liens.</param>
         /// <returns>Une matrice des distances minimales entre les noeuds.</returns>
-        public int[,] FloydWarshall(List<NoeudsStation<T>> noeuds, Graphe<T> graphe)
+        public int[,] FloydWarshall(List<NoeudsStation<T>> noeuds, Graphe<double> graphe)
         {
-            int n = noeuds.Count;
-            int[,] distances = CreerMatriceAdjacence();
+            int n = graphe.noeuds.Count;
+            int[,] distances = Program.CreerMatriceAdjacence(n, graphe);
 
-            // Appliquer l'algorithme de Floyd-Warshall
             for (int k = 0; k < n; k++)
             {
                 for (int i = 0; i < n; i++)
@@ -161,6 +157,6 @@ namespace Liv_In_Paris
 
             return distances;
         }
-        */
+        
     }
 }

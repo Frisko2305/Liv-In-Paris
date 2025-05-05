@@ -27,7 +27,7 @@ namespace Liv_In_Paris
 
             this.userInfo = userInfo;
 
-            ListePlatChoisi = new List<Dictionary<string, string>>(); // Initialisation de la liste
+            ListePlatChoisi = new List<Dictionary<string, string>>();
 
             TypePlat = new ComboBox { Text = "Type de plat" };
             Regime = new ComboBox { Text = "Régime alimentaire" };
@@ -292,7 +292,7 @@ namespace Liv_In_Paris
                 {
                     Dock = DockStyle.Fill,
                     ColumnCount = 2,
-                    RowCount = 5, // Ajout d'une ligne pour le bouton
+                    RowCount = 5,
                     AutoSize = true
                 };
 
@@ -317,7 +317,7 @@ namespace Liv_In_Paris
 
                 addButton.Click += AjoutAuPanier;
 
-                tableLayout.Controls.Add(addButton, 1, 4); // Ajout du bouton dans la dernière ligne, deuxième colonne
+                tableLayout.Controls.Add(addButton, 1, 4);
 
                 platPanel.Controls.Add(tableLayout);
                 Platlayout.Controls.Add(platPanel);

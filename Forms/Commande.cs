@@ -102,11 +102,9 @@ namespace Liv_In_Paris
                 Graphe<double> graphe = new Graphe<double>();
                 Program.PeuplementTable(graphe);
 
-                // Nettoyer les données de recherche
                 string metroUtilisateur = userInfo["Metro"].Trim().ToLower();
                 string metroCuisinier = ListePlatChoisi[0]["Metro"].Trim().ToLower();
 
-                // Rechercher les nœuds correspondants
                 var noeudUtilisateur = graphe.Noeuds_Pte.FirstOrDefault(n => n.Libelle.Trim().ToLower() == metroUtilisateur);
                 if (noeudUtilisateur == null)
                 {
