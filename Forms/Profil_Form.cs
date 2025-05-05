@@ -68,7 +68,7 @@ namespace Liv_In_Paris
                     AddButton(layout, "Passer en mode Cuisinier", 2, 2, ModeCuistot_Click);
                     AddButton(layout, "Changer les informations", 2, 3, ChangerInfos_Click);
                     AddButtonPair(layout, "Passer commande", "Donner un avis", 4, PasserCommande_Click, DonnerAvis_Click);
-                    AddButtonPair(layout, "Historique des commandes", "Changer moyens de paiements", 5, Historique_Click, ChangerPaiement_Click);
+                    AddButton(layout, "Historique des commandes", 2, 5, Historique_Click);
                     AddButtonPair(layout, "Se déconnecter", "Supprimer mon compte", 6, Deconnexion_Click, SuppCompte_Click);
                 break;
 
@@ -76,7 +76,7 @@ namespace Liv_In_Paris
                     AddLabels(layout, userInfo["Ent_Nom"], userInfo["Ent_NomRef"]);
                     AddButton(layout, "Changer les informations", 2, 2, ChangerInfos_Click);
                     AddButtonPair(layout, "Passer commande", "Donner un avis", 3, PasserCommande_Click, DonnerAvis_Click);
-                    AddButtonPair(layout, "Historique des commandes", "Changer moyens de paiements", 4, Historique_Click, ChangerPaiement_Click);
+                    AddButton(layout, "Historique des commandes", 2, 5, Historique_Click);
                     AddButtonPair(layout, "Se déconnecter", "Supprimer mon compte", 5, Deconnexion_Click, SuppCompte_Click);
                 break;
 
@@ -185,7 +185,11 @@ namespace Liv_In_Paris
 
         private void PasserCommande_Click(object? sender, EventArgs e)
         {
-            
+            Choix_Plat Form = new Choix_Plat(userInfo);
+            Form.Show();
+
+            this.Hide();
+            Form.FormClosed += (s,args) => this.Close();
         }
 
         private void DonnerAvis_Click(object? sender, EventArgs e)

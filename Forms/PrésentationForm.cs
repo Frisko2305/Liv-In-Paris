@@ -85,11 +85,15 @@ namespace Liv_In_Paris
 
         private void Carte_Click(object? sender, EventArgs e)
         {
-            // Carte_Form Form = new Carte_Form();
-            // Form.Show();
-            MessageBox.Show("En cours de développement. A voir à la prochaine mise à jour !!");
-            // this.Hide();
-            // Form.FormClosed += (s,args) => this.Close();
+            this.Hide();
+
+            Graphe<double> graphe = new Graphe<double>();
+            Program.PeuplementTable(graphe);
+            GraphVisualizer<double> graphForm = new GraphVisualizer<double>(graphe);
+
+            graphForm.Show();
+            
+            graphForm.FormClosed += (s, args) => this.Show();
         }
 
         #endregion

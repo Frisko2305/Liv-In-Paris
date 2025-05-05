@@ -13,22 +13,13 @@ namespace Liv_In_Paris
 
             Graphe<double> graphe = new Graphe<double>();
             List<NoeudsStation<double>> noeuds = graphe.Noeuds_Pte;
-            List<LienStation<double>> liens = graphe.Liens_Pte;
 
             PeuplementTable(graphe);
-
-            
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            GraphVisualizer<double>.AfficherGraphe(graphe);
 
             NoeudsStation<double> noeudDepart = graphe.RechercherNoeud(2); 
             NoeudsStation<double> noeudDestination = graphe.RechercherNoeud(10); 
 
-
             FloydWarshallTest(graphe, noeudDepart, noeudDestination, noeuds);
-            // BellmanFordTest(graphe, noeudDepart, noeudDestination, noeuds, liens);
-            // FloydWarshallTest(graphe, noeudDepart, noeudDestination, noeuds);
 
             
 
@@ -43,7 +34,7 @@ namespace Liv_In_Paris
         /// Récupérer les données du fichier excel sous forme de matrice
         /// </summary>
         /// <param name="graphe"></param>
-        static void PeuplementTable(Graphe<double> graphe)
+        public static void PeuplementTable(Graphe<double> graphe)
         {
             
             System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
@@ -167,49 +158,6 @@ namespace Liv_In_Paris
                 }
             }
         }
-
-        ///Methode de test des programmes de plus courts chemins
-        /*static void DijkstraTest(Graphe<double> graphe, NoeudsStation<double> noeudDepart, NoeudsStation<double> noeudDestination, List<NoeudsStation<double>> noeuds)
-
-             {
-
-            var distances = graphe.Dijkstra(noeudDepart, noeuds, graphe);
-
-                 if (distances.ContainsKey(noeudDestination))
-                 {
-                     Console.WriteLine($"La distance minimale entre le nœud {noeudDepart.Id} et le nœud {noeudDestination.Id} est : {distances[noeudDestination]}");
-                 }
-                 else
-                 {
-                     Console.WriteLine("Il n'y a pas de chemin entre le nœud de départ et le nœud de destination.");
-                 }
-             }
-        
-        static void BellmanFordTest(Graphe<double> graphe, NoeudsStation<double> noeudDepart, NoeudsStation<double> noeudDestination, List<NoeudsStation<double>> noeuds, List<LienStation<double>> liens)
-        {
-            try
-            {
-                // Exécuter l'algorithme de Bellman-Ford
-                var distances = graphe.BellmanFord(noeudDepart, noeuds, liens);
-
-                // Afficher la distance minimale entre le nœud de départ et le nœud de destination
-                if (distances.ContainsKey(noeudDestination))
-                {
-                    Console.WriteLine($"La distance minimale entre le nœud {noeudDepart.Id} et le nœud {noeudDestination.Id} est : {distances[noeudDestination]}");
-                }
-                else
-                {
-                    Console.WriteLine("Il n'y a pas de chemin entre le nœud de départ et le nœud de destination.");
-                }
-            }
-            catch (InvalidOperationException ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-        } */
-
-
-
 
         ///Créer la matrice d'adjacence
         static int[,] CreerMatriceAdjacence(int n, Graphe<double> graphe)
