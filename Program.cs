@@ -1,4 +1,4 @@
-sing OfficeOpenXml;
+using OfficeOpenXml;
 
 namespace Liv_In_Paris
 {
@@ -56,15 +56,15 @@ namespace Liv_In_Paris
             if (!File.Exists(fichiersExcel))
             {
                 Console.WriteLine($"Le fichier spécifié n'existe pas : {fichiersExcel}");
-                return; // Sortir de la méthode ou gérer l'erreur comme nécessaire
+                return; 
             }
 
-            // Créer un objet FileInfo
+            
             FileInfo fileInfo = new FileInfo(fichiersExcel);
 
             using (var package = new ExcelPackage(fileInfo))
             {
-                // Parcourir toutes les feuilles
+                
                 foreach (var feuille in package.Workbook.Worksheets)
                 {
                     int ligCount = feuille.Dimension.End.Row;
@@ -81,14 +81,14 @@ namespace Liv_In_Paris
                     {
                         for (int j = 0; j < donnees.GetLength(1); j++)
                         {
-                            // Vérifier si la cellule existe avant d'y accéder
-                            if (feuille.Cells[i + 2, j + 1] != null) // i + 2 pour ignorer l'en-tête
+                            
+                            if (feuille.Cells[i + 2, j + 1] != null) 
                             {
                                 donnees[i, j] = feuille.Cells[i + 2, j + 1].Text.Trim();
                             }
                             else
                             {
-                                donnees[i, j] = string.Empty; // Valeur par défaut si la cellule est vide
+                                donnees[i, j] = string.Empty; 
                             }
                         }
                     }
@@ -125,15 +125,15 @@ namespace Liv_In_Paris
             {
                 for (int i = 0; i < mat.GetLength(0); i++)
                 {
-                    if (mat[i, 2] == "")    //quand l'id_precedant est vide
+                    if (mat[i, 2] == "")    
                     {
                         continue;
                     }
-                    else if (mat[i, 0] == "" && mat[i, 1] == "" && mat[i, 2] == "" && mat[i, 3] == "" && mat[i, 4] == "" && mat[i, 5] == "")   //quand on est à la dernière ligne, que du vide
+                    else if (mat[i, 0] == "" && mat[i, 1] == "" && mat[i, 2] == "" && mat[i, 3] == "" && mat[i, 4] == "" && mat[i, 5] == "")   
                     {
                         continue;
                     }
-                    else if (mat[i, 3] == "") //quand l'id_suivant est vide
+                    else if (mat[i, 3] == "") 
                     {
                         graphe.AjouterLien(new LienStation<double>(Convert.ToDouble(mat[i, 0]), mat[i, 1], graphe.RechercherNoeud(Convert.ToInt32(mat[i, 2])), null, Convert.ToInt32(mat[i, 4])));
                     }
@@ -218,7 +218,7 @@ namespace Liv_In_Paris
             var noeuds = graphe.Noeuds_Pte;
             int[,] matrice = new int[n, n];
 
-            // Initialiser la matrice avec des valeurs infinies (int.MaxValue) sauf sur la diagonale
+           
             for (int i = 0; i < n; i++)
             {
                 for (int j = 0; j < n; j++)
@@ -226,7 +226,7 @@ namespace Liv_In_Paris
                     matrice[i, j] = (i == j) ? 0 : int.MaxValue;
                 }
             }
-            // Remplir la matrice avec les poids des liens
+          
             foreach (var lien in liens)
             {
                 if (lien.Id_precedent != null && lien.Id_suivant != null)
@@ -235,7 +235,7 @@ namespace Liv_In_Paris
                     int j = noeuds.IndexOf(graphe.RechercherNoeud(Convert.ToInt32(lien.Id)));
                     matrice[i, j] = lien.Poids;
 
-                    // Si le graphe est non orienté, ajouter aussi l'inverse
+                   
                     matrice[j, i] = lien.Poids;
                 }
             }
@@ -255,7 +255,7 @@ namespace Liv_In_Paris
             int n = graphe.Noeuds_Pte.Count;
             int[,] distances = CreerMatriceAdjacence(n, graphe);
 
-            // Appliquer l'algorithme de Floyd-Warshall
+            
             for (int k = 0; k < n; k++)
             {
                 for (int i = 0; i < n; i++)
@@ -286,14 +286,14 @@ namespace Liv_In_Paris
         {
             try
             {
-                // Exécuter l'algorithme de Floyd-Warshall
+                
                 int[,] distances = FloydWarshall(graphe);
 
-                // Obtenir les indices des nœuds de départ et de destination
+              
                 int indexDepart = graphe.Noeuds_Pte.IndexOf(noeudDepart);
                 int indexDestination = graphe.Noeuds_Pte.IndexOf(noeudDestination);
 
-                // Afficher la distance minimale entre le nœud de départ et le nœud de destination
+           
                 if (distances[indexDepart, indexDestination] != int.MaxValue)
                 {
                     Console.WriteLine($"La distance minimale entre le nœud {noeudDepart.Id} et le nœud {noeudDestination.Id} est : {distances[indexDepart, indexDestination]}");
