@@ -16,7 +16,7 @@ namespace Liv_In_Paris
         #endregion
 
         /// <summary>
-        /// /
+        /// 
         /// </summary>
         /// <param name="userInfo"></param>
         public Choix_Plat(Dictionary<string,string> userInfo)
@@ -140,13 +140,10 @@ namespace Liv_In_Paris
                 {
                     connection.Open();
 
-                    // Remplir la ComboBox TypePlat
                     RemplirComboBox(TypePlat, "SELECT DISTINCT Type_de_cuisine FROM Plat ORDER BY Type_de_cuisine", "Type_de_cuisine", connection);
 
-                    // Remplir la ComboBox Regime
                     RemplirComboBox(Regime, "SELECT DISTINCT Regime_alimentaire FROM Plat WHERE Regime_alimentaire IS NOT NULL ORDER BY Regime_alimentaire", "Regime_alimentaire", connection);
 
-                    // Remplir la ComboBox NbPers
                     RemplirComboBox(NbPers, "SELECT DISTINCT Nb_personnes FROM Plat ORDER BY Nb_personnes", "Nb_personnes", connection);
                 }
             }

@@ -14,7 +14,7 @@ namespace Liv_In_Paris
 
             this.Text = "Liv-In Paris";
             this.Size = new Size(500,500);
-            this.StartPosition = FormStartPosition.CenterScreen;    //Centre la fenêtre centre écran
+            this.StartPosition = FormStartPosition.CenterScreen;
 
             Connection = new Button();
             Connection.Text = "Se connecter";
@@ -44,9 +44,8 @@ namespace Liv_In_Paris
             Service.AutoSize = true;
             Service.Location = new Point((this.ClientSize.Width - Service.PreferredSize.Width) /2, 30);
 
-            //Ici ajouter pour l'image avec PictureBox Image
             Picture = new PictureBox();
-            Picture.Image = Image.FromFile("Image_Présentation.png");   //filepath avec file à la racine du projet
+            Picture.Image = Image.FromFile("Image_Présentation.png");
             Picture.SizeMode = PictureBoxSizeMode.StretchImage;
             Picture.Size = new Size(240, 270);
             Picture.Location = new Point(20,115); 

@@ -117,11 +117,6 @@ namespace Liv_In_Paris
 
         private bool SupprimerCompte(string compteType, Dictionary<string,string> userInfo)
         {
-            // compteType = Particulier --> On supprime les deux comptes du Particulier directement depuis la table Particulier
-            // compteType = Client --> On supprime uniquement le compte Client du Particulier
-            // compteType = Cuisinier --> On supprime uniquement le compte Cuisinier du Particulier
-            // compteType = Entreprise --> On supprime le compte Client de l'Entreprise directement depuis la table Entreprise
-
             string connectionstring = "SERVER=localhost;DATABASE=psi;UID=root;PWD=root";
             using(MySqlConnection connection = new MySqlConnection(connectionstring))
             {
@@ -167,7 +162,7 @@ namespace Liv_In_Paris
                             cmd.Dispose();
                         break;
 
-                        default :       //Dans le cas d'une erreur inattendu
+                        default :
                             MessageBox.Show("Erreur inattendu. Aucune action effectuée.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         break;
                     }
@@ -188,9 +183,8 @@ namespace Liv_In_Paris
 
             if(int.TryParse(saisie, out int choixIndex) && choixIndex > 0 && choixIndex <= comptesDispo.Count + 1)
                 {
-                    if(choixIndex == comptesDispo.Count + 1)    //On choisie de supprimer tous les comptes disponibles
+                    if(choixIndex == comptesDispo.Count + 1)
                     {
-                        // Supprimer tous les compts (Particulier uniquement)
                         if(userType == "Particulier")
                         {
                             if(SupprimerCompte("Particulier", userInfo))
@@ -206,7 +200,6 @@ namespace Liv_In_Paris
                     }
                     else
                     {
-                        // Supprime le compte sélectionné
                         if(SupprimerCompte(comptesDispo[choixIndex -1], userInfo))
                         {
                             MessageBox.Show("Suppression du compte réussie. Retour à la page de présentation.");

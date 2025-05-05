@@ -18,23 +18,23 @@ namespace Liv_In_Paris
 
             this.Text = "Login";
             this.Size = new Size(350,175);
-            this.StartPosition = FormStartPosition.CenterScreen;    //Centre la fenêtre centre écran
+            this.StartPosition = FormStartPosition.CenterScreen;
 
-            layout = new TableLayoutPanel();           //avec un layout
-            layout.RowCount = 2; //ID then PWD with 1 for space in-between
-            layout.ColumnCount = 2;  //Label then Field
-            layout.Dock = DockStyle.Fill;       //Remplis les cases pour pouvoir y mettre les choses
-            layout.RowStyles.Add(new RowStyle(SizeType.AutoSize));  //Autosize pour ID
-            layout.RowStyles.Add(new RowStyle(SizeType.AutoSize));  //Autosize pour PWD
+            layout = new TableLayoutPanel();
+            layout.RowCount = 2;
+            layout.ColumnCount = 2;
+            layout.Dock = DockStyle.Fill;
+            layout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            layout.RowStyles.Add(new RowStyle(SizeType.AutoSize)); 
 
             ID = new Label();
             ID.Text = "ID";
-            ID.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            ID.TextAlign = ContentAlignment.MiddleRight;
             ID.AutoSize = true;
 
             PWD = new Label();
             PWD.Text = "Password";
-            PWD.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            PWD.TextAlign = ContentAlignment.MiddleRight;
             PWD.AutoSize = true; 
 
             Id_box = new TextBox();
@@ -81,10 +81,10 @@ namespace Liv_In_Paris
             
             var(userType, userInfo) = LoginValide(userId, userpwd);
 
-            if(userType != "Invalide" && userInfo != null)  //Qu'importe qui que ce soit tant que que c'est pas null
+            if(userType != "Invalide" && userInfo != null)
             {
                 MessageBox.Show("Login réussi");
-                Profil Profil_User = new Profil(userType, userInfo);    //On transmet les informations au Form Profil
+                Profil Profil_User = new Profil(userType, userInfo);
                 Profil_User.Show();
 
                 this.Hide();
@@ -161,8 +161,6 @@ namespace Liv_In_Paris
                     WHERE
                         (@Id = c.Id_client AND @pwd = c.Mdp)
                         OR (@Id = cu.Id_cuisinier AND @pwd = cu.Mdp)";
-            // A noter : si'l trouve un Id de cuisinier, il prendra celui la au lieu du client même si on saisi un id client
-            // Il faut alors adapter la logique lors du return
             try
             {
                 using(MySqlConnection connection = new MySqlConnection(connectionString))
@@ -187,14 +185,12 @@ namespace Liv_In_Paris
                                 { "Mdp", reader["Mdp"]?.ToString() ?? "" },
                                 { "Metro", reader["Metro"]?.ToString() ?? ""},
 
-                                // Infos des Particuliers
                                 { "Part_NumTel", reader["Particulier_Num_tel"]?.ToString() ?? "" },
                                 { "Part_NumRue", reader["Particulier_Num_Rue"]?.ToString() ?? "" },
                                 { "Part_Rue", reader["Particulier_Rue"]?.ToString() ?? "" },
                                 { "Part_CP", reader["Particulier_CP"]?.ToString() ?? "" },
                                 { "Part_Ville", reader["Particulier_Ville"]?.ToString() ?? "" },
 
-                                // Infos des Entreprises
                                 { "Ent_Nom", reader["Nom_entreprise"]?.ToString() ?? "" },
                                 { "Ent_NumRue", reader["Entreprise_Num_Rue"]?.ToString() ?? "" },
                                 { "Ent_Rue", reader["Entreprise_Rue"]?.ToString() ?? "" },
@@ -204,20 +200,19 @@ namespace Liv_In_Paris
                                 { "Ent_TelRef", reader["Num_tel_referent"]?.ToString() ?? "" }
                             };
 
-                            // On récupère l'image du profil s'il existe
                             if(!reader.IsDBNull(reader.GetOrdinal("Photo_profil")))
                             {
                                 byte[] Photo = (byte[])reader["Photo_profil"];
                                 userInfo.Add("Photo_profil", Convert.ToBase64String(Photo));
                             }
 
-                            if(!string.IsNullOrEmpty(userInfo["Id_cuisinier"]) && userId == userInfo["Id_cuisinier"])       //Cas Cuisinier 
+                            if(!string.IsNullOrEmpty(userInfo["Id_cuisinier"]) && userId == userInfo["Id_cuisinier"])
                             {
                                 return ("Cuisinier", userInfo);
                             }
-                            else if (!string.IsNullOrEmpty(userInfo["Id_client"]) && userId == userInfo["Id_client"])       //Cas Client (Part ou Ent)
+                            else if (!string.IsNullOrEmpty(userInfo["Id_client"]) && userId == userInfo["Id_client"]) 
                             {
-                                if(!string.IsNullOrEmpty(userInfo["SIRET"]))    //Cas Ent
+                                if(!string.IsNullOrEmpty(userInfo["SIRET"]))
                                 {
                                     return ("Entreprise", userInfo);
                                 }

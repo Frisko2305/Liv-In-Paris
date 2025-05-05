@@ -6,9 +6,6 @@ namespace Liv_In_Paris
         private Dictionary<string, string> userInfo;
         private string userType;
         PictureBox? Photo_profil;
-
-        // Puisqu'il y a énormèment de boutons qui diffère selon le profil, on opte plutôt pour une méthode qui va les construire
-
         #endregion
 
         public Profil(string userType, Dictionary<string,string> userInfo)
@@ -22,7 +19,7 @@ namespace Liv_In_Paris
         {
             this.Text = $"Profil -- {userType}.";
             this.Size = new Size(1050,600);
-            this.StartPosition = FormStartPosition.CenterScreen;    //Centre la fenêtre centre écran
+            this.StartPosition = FormStartPosition.CenterScreen;
 
             Photo_profil = new PictureBox();
             Photo_profil.Width = 150;
@@ -39,7 +36,7 @@ namespace Liv_In_Paris
                     byte[] imagesBytes = Convert.FromBase64String(userInfo["Photo_profil"]);
                     using(var mem = new MemoryStream(imagesBytes))
                     {
-                        Photo_profil.Image = Image.FromStream(mem); //Charge l'image depuis byte[] vers la PictureBox
+                        Photo_profil.Image = Image.FromStream(mem);
                     }
                 }
                 catch (Exception e)
@@ -102,7 +99,7 @@ namespace Liv_In_Paris
 
         #region Création Attributs
 
-        //Méthode pour ajouter les deux identités (Nom/Prénom ou Nom Entreprise/Nom Référent)
+
         private void AddLabels(TableLayoutPanel layout, string text1, string text2)
         {
             Label label1 = new Label{ Text = text1, TextAlign = ContentAlignment.MiddleCenter, Dock = DockStyle.Fill, AutoSize = true, Margin = new Padding(10), Font = new Font("Impact", 30)};
@@ -111,7 +108,7 @@ namespace Liv_In_Paris
             layout.Controls.Add(label2, 1, 1);
         }
 
-        //Méthode pour ajouter un seul bouton, centré dans le layout au travers des 2 colonnes
+
         private void AddButton(TableLayoutPanel layout, string text, int colSpan, int row, EventHandler onClick)
         {
             Button button = new Button { Text = text, AutoSize = true, Anchor = AnchorStyles.None, Font = new Font("Arial Black", 20)};
@@ -120,7 +117,6 @@ namespace Liv_In_Paris
             layout.SetColumnSpan(button, colSpan);
         }
 
-        //Méthode pour ajouter deux boutons côtes à côtes sur une ligne dans le layout
         private void AddButtonPair(TableLayoutPanel layout, string text1, string text2, int row, EventHandler onClick1, EventHandler onClick2)
         {
             Button button1 = new Button{ Text = text1, AutoSize = true, Anchor = AnchorStyles.None, Font = new Font("Arial Black", 20)};
@@ -178,11 +174,6 @@ namespace Liv_In_Paris
             }
         }
 
-        private void ChangerPaiement_Click(object? sender, EventArgs e)
-        {
-
-        }
-
         private void PasserCommande_Click(object? sender, EventArgs e)
         {
             Choix_Plat Form = new Choix_Plat(userInfo);
@@ -202,7 +193,7 @@ namespace Liv_In_Paris
 
         private void LireAvis_Click(object? sender, EventArgs e)
         {
-// 
+
         }
 
         private void Historique_Click(object? sender, EventArgs e)

@@ -133,12 +133,11 @@ namespace Liv_In_Paris
 
         private void Retire_Click(object? sender, EventArgs e)
         {
-            // On vérifie d'abord si les dates sont au bons formats, sinon on sort de la méthode
             string resultFab = FormatDate(T_Date_Fab.Text);
             string resultPeremp = FormatDate(T_Date_Perem.Text);
             if(resultFab == string.Empty && resultPeremp == string.Empty)
             {
-                return; //Les dates ne sont pas au bons formats
+                return;
             }
 
             try
@@ -188,12 +187,11 @@ namespace Liv_In_Paris
 
         private void Ajout_Click(object? sender, EventArgs e)
         {
-            // On vérifie d'abord si les dates sont au bons formats, sinon on sort de la méthode
             string resultFab = FormatDate(T_Date_Fab.Text);
             string resultPeremp = FormatDate(T_Date_Perem.Text);
             if(resultFab == string.Empty && resultPeremp == string.Empty)
             {
-                return; //Les dates ne sont pas au bons formats
+                return;
             }
 
             try
@@ -317,15 +315,12 @@ namespace Liv_In_Paris
         
         private string FormatDate(string text)
         {
-            // On vérifie si la saisie respecte le format JJ/MM/AAAA
             if(System.Text.RegularExpressions.Regex.IsMatch(text, @"^\d{2}/\d{2}/\d{4}"))
             {
                 try
                 {
-                    // Si ok, on convertit en variable DateTime
                     DateTime date = DateTime.ParseExact(text, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture);
 
-                    // Et on la renvoie sous format AAAA-MM-JJ
                     return date.ToString("yyyy-MM-dd");
                 }
                 catch(FormatException)

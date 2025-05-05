@@ -15,14 +15,13 @@ namespace Liv_In_Paris
         private PictureBox? profilepicture;
         private List<string> ListeMetro;
 
-        // Les labels correspondants aux TextBox seront ajoutés directement avec des méthodes
+
         #endregion
         public ChgInfo(string userType, Dictionary<string, string> userInfo)
         {
             this.userType = userType;
             this.userInfo = userInfo;
 
-            //On va charger l'entiereté des libelles des stations dans ListeMetro avec son chemin
             ListeMetro = ChargerListeMetro(Path.Combine(Directory.GetCurrentDirectory(), "MetroParis.xlsx"));
             CreationForm();
         }
@@ -49,10 +48,8 @@ namespace Liv_In_Paris
             layout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50));
             layout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50));
 
-            // Ajout photo de profil
             profilepicture = new PictureBox{ Size = new Size(200,200), SizeMode = PictureBoxSizeMode.Zoom };
 
-            // Boutons
             Chg_Photo = new Button
             {
                 Text = "Changer de photo :",
@@ -78,7 +75,7 @@ namespace Liv_In_Paris
                 C_Metro = AjoutLabelEtComboBox("Station de métro la plus proche", userInfo.ContainsKey("Metro") ? userInfo["Metro"] : "", ListeMetro);
 
             }
-            else    //Cas Entreprise
+            else
             {
                 T_NomEnt = AjoutLabelEtTextBox("Nom de l'entreprise", userInfo.ContainsKey("Ent_Nom") ? userInfo["Ent_Nom"] : "");
                 T_NomRef = AjoutLabelEtTextBox("Nom du référent", userInfo.ContainsKey("Ent_NomRef") ? userInfo["Ent_NomRef"] : "");
@@ -98,19 +95,19 @@ namespace Liv_In_Paris
                     byte[] imagesBytes = Convert.FromBase64String(userInfo["Photo_profil"]);
                     using(var mem = new MemoryStream(imagesBytes))
                     {
-                        profilepicture.Image = Image.FromStream(mem); //Charge l'image depuis byte[] vers la PictureBox
+                        profilepicture.Image = Image.FromStream(mem);
                     }
                 }
                 catch
                 {
-                    profilepicture.Image = null;    //Si pas d'image ou corrompue
+                    profilepicture.Image = null;
                 }
             }
 
             layout.Controls.Add(profilepicture);
             layout.Controls.Add(Chg_Photo);
             layout.Controls.Add(BtnSave, 0, layout.RowCount-1);
-            layout.Controls.Add(BtnCancel, 1, layout.RowCount-1);     //On mets RowCount car on s'embete pas de calculer le nb de lignes après avoir ajouté tout les champs
+            layout.Controls.Add(BtnCancel, 1, layout.RowCount-1);
 
             this.Controls.Add(layout);
         }
@@ -124,7 +121,7 @@ namespace Liv_In_Paris
             layout.Controls.Add(lbl);
             layout.Controls.Add(txt);
 
-            return txt;     //On return le TextBox car il nous faudra accéder à son .Text pour les vérifications
+            return txt;
         }
 
         private ComboBox AjoutLabelEtComboBox(string label, string defaut, List<string> liste)
@@ -151,10 +148,9 @@ namespace Liv_In_Paris
 
         private List<string> ChargerListeMetro(string cheminFichier)
         {
-            // Enregistrer le fournisseur d'encodage pour éviter l'erreur IBM437
             System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
             
-            HashSet<string> stationSet= new HashSet<string>();   //Afin de ne pas avoir de doublons, on le convertira en List à la fin
+            HashSet<string> stationSet= new HashSet<string>();
 
             try
             {
@@ -187,7 +183,7 @@ namespace Liv_In_Paris
 
         private void BtnCancel_Click(object? sender, EventArgs e)
         {
-            Profil Profil_User = new Profil(userType, userInfo);    //On transmet les informations au Form Profil
+            Profil Profil_User = new Profil(userType, userInfo);
             Profil_User.Show();
 
             this.Hide();
@@ -196,7 +192,6 @@ namespace Liv_In_Paris
 
         private void BtnSave_Click(object? sender, EventArgs e)
         {
-            // On vérifie d'abord si les champs sont bien remplis selon le profil
             if(userType == "Particulier" || userType == "Cuisinier")
             {
                 if(T_Tel.Text.Length != 14)
@@ -248,14 +243,12 @@ namespace Liv_In_Paris
                 }
                 userInfo["Mdp"] = T_MDP.Text;
 
-                // Il ne peut pas y avoir d'erreur sur le métro
                 userInfo["Metro"] = C_Metro.Text;
 
-                // Verif SQL
                 UpdateDatabase();
 
             }
-            else    //Cas Entreprise
+            else
             {
                 if(T_NomEnt.Text.Length > 50 || T_NomEnt.Text == "")
                 {
@@ -313,10 +306,8 @@ namespace Liv_In_Paris
                 }
                 userInfo["Mdp"] = T_MDP.Text;
 
-                // Il ne peut pas y avoir d'erreur sur le métro
                 userInfo["Metro"] = C_Metro.Text;
 
-                // Verif SQL
                 UpdateDatabase();
             }
         }
@@ -336,7 +327,6 @@ namespace Liv_In_Paris
                     {
                         profilepicture.Image = Image.FromFile(PhotoPath);
 
-                        //Conversion de l'image en string adapté pour le dictionnaire userInfo
                         byte[] imageByte = File.ReadAllBytes(PhotoPath);
                         string base64image = Convert.ToBase64String(imageByte);
 
@@ -376,13 +366,12 @@ namespace Liv_In_Paris
 
                     bool hasBothProfiles = false;
 
-                    // On vérifie si l'utilisateur a deux profils
                     using(MySqlCommand cmdCheck = new MySqlCommand(queryCheckBothProfile, connection))
                     {
                         cmdCheck.Parameters.AddWithValue("@IdClient", userInfo["Id_client"]);
                         cmdCheck.Parameters.AddWithValue("@IdCuisinier", userInfo["Id_cuisinier"]);
                         hasBothProfiles = cmdCheck.ExecuteScalar() != null; 
-                        //Devient true si l'utilisateur a les deux profiles
+
                     }
 
                     switch(userType)
@@ -453,7 +442,7 @@ namespace Liv_In_Paris
                             cmdIdentite.Parameters.AddWithValue("@Ville", userInfo["Part_Ville"]);
                             cmdIdentite.Parameters.AddWithValue("@Metro", userInfo["Metro"]);
                         }
-                        else    //Cas Entreprise
+                        else
                         {
                             cmdIdentite.Parameters.AddWithValue("@NomEnt", userInfo["Ent_Nom"]);
                             cmdIdentite.Parameters.AddWithValue("@NomRef", userInfo["Ent_NomRef"]);
@@ -466,7 +455,7 @@ namespace Liv_In_Paris
                             cmdIdentite.Parameters.AddWithValue("@Metro", userInfo["Metro"]);
                         }
 
-                        IdentiteUpdated = cmdIdentite.ExecuteNonQuery() > 0;    //Si nb de lignes retournés > 0 --> Vrai
+                        IdentiteUpdated = cmdIdentite.ExecuteNonQuery() > 0;
                         cmdIdentite.Dispose();
                     }
                     
@@ -476,7 +465,7 @@ namespace Liv_In_Paris
                         {
                             cmdProfil.Parameters.AddWithValue("@Id", userInfo["Id_client"]);
                         }
-                        else    //Cas Cuisinier
+                        else
                         {
                             cmdProfil.Parameters.AddWithValue("@Id", userInfo["Id_cuisinier"]);
                         }
@@ -492,7 +481,7 @@ namespace Liv_In_Paris
                             cmdProfil.Parameters.AddWithValue("@Photo", DBNull.Value);
                         }
 
-                        ProfileUpdated = cmdProfil.ExecuteNonQuery() > 0;    //Si nb de lignes retournés > 0 --> Vrai
+                        ProfileUpdated = cmdProfil.ExecuteNonQuery() > 0;
                         cmdProfil.Dispose();
                     }
                     if(hasBothProfiles)
@@ -533,8 +522,8 @@ namespace Liv_In_Paris
                         if(BothProfileUpdated)
                         {
                             MessageBox.Show("Modification dans vos deux profils enregistrés avex succès");
-                            // Retour vers Profil Form
-                            Profil Profil_User = new Profil(userType, userInfo);    //On transmet les informations au Form Profil
+
+                            Profil Profil_User = new Profil(userType, userInfo);
                             Profil_User.Show();
 
                             this.Hide();
@@ -543,8 +532,8 @@ namespace Liv_In_Paris
                         else
                         {
                             MessageBox.Show("Modifications enregistrés avec succès.");
-                            // Retour vers Profil Form
-                            Profil Profil_User = new Profil(userType, userInfo);    //On transmet les informations au Form Profil
+                            
+                            Profil Profil_User = new Profil(userType, userInfo);
                             Profil_User.Show();
 
                             this.Hide();
