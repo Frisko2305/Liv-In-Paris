@@ -6,12 +6,12 @@ namespace Liv_In_Paris
     {
         #region Attribut
         
-        ComboBox DateP, TypePlat, Regime, NbPers;
-        Button Retour, ValideFiltre, PasserCommande;
+        ComboBox TypePlat, Regime, NbPers;
+        Button Retour, ValideFiltre, VoirPanier;
         TableLayoutPanel mainlayout;
         FlowLayoutPanel Platlayout;
         Dictionary<string, string> userInfo;
-        List<Dictionary<string, string>> ListePlat;
+        List<Dictionary<string, string>> ListePlatFiltré, ListePlatChoisi ;
 
         #endregion
 
@@ -23,9 +23,15 @@ namespace Liv_In_Paris
         {
             this.Text = "Choix du Plat";
             this.Size = new Size(750, 650);
-            this.StartPosition = FormStartPosition.CenterScreen; 
+            this.StartPosition = FormStartPosition.CenterScreen;
 
             this.userInfo = userInfo;
+
+            ListePlatChoisi = new List<Dictionary<string, string>>(); // Initialisation de la liste
+
+            TypePlat = new ComboBox { Text = "Type de plat" };
+            Regime = new ComboBox { Text = "Régime alimentaire" };
+            NbPers = new ComboBox { Text = "Nombre de personnes" };
 
             
             TypePlat = new ComboBox { Text = "Type de plat"};
@@ -56,12 +62,15 @@ namespace Liv_In_Paris
             RemplirComboBoxFiltre();
 
         
-            ValideFiltre = new Button { Text = "Valider les filtres"};
+            ValideFiltre = new Button { Text = "Valider les filtres", AutoSize = true};
             
             ValideFiltre.Click += ValideFiltre_Click;
 
-            Retour = new Button { Text = "Retour" };
+            Retour = new Button { Text = "Retour", AutoSize = true };
             Retour.Click += Retour_Click;
+
+            VoirPanier = new Button { Text = "Voir votre panier", AutoSize = true };
+            VoirPanier.Click += VoirPanier_Click;
 
             Platlayout = new FlowLayoutPanel
             {
@@ -94,6 +103,7 @@ namespace Liv_In_Paris
 
             mainlayout.Controls.Add(filterPanel);
             mainlayout.Controls.Add(buttonPanel);
+            mainlayout.Controls.Add(VoirPanier);
             mainlayout.Controls.Add(Platlayout);
 
             this.Controls.Add(mainlayout);
@@ -130,6 +140,21 @@ namespace Liv_In_Paris
 
             this.Hide();
             Form.FormClosed += (s,args) => this.Close();
+        }
+
+        private void VoirPanier_Click(object? sender, EventArgs e)
+        {
+            if (ListePlatChoisi.Count == null)
+            {
+                MessageBox.Show("Votre panier est vide.");
+                return;
+            }
+
+            Commande commandeForm = new Commande(ListePlatChoisi, userInfo);
+            commandeForm.Show();
+            this.Hide();
+
+            commandeForm.FormClosed += (s, args) => this.Show();
         }
 
         private void RemplirComboBoxFiltre()
@@ -179,7 +204,7 @@ namespace Liv_In_Paris
 
         private void ValideFiltre_Click(object? sender, EventArgs e)
         {
-            ListePlat = new List<Dictionary<string, string>>();
+            ListePlatFiltré = new List<Dictionary<string, string>>();
             try
             {
                 using(MySqlConnection connection = new MySqlConnection("SERVER=localhost;PORT=3306;" + "DATABASE= psi;" + "UID=root;PASSWORD=root"))
@@ -231,7 +256,7 @@ namespace Liv_In_Paris
                                     { "Prenom_cuisinier", reader[reader.GetName(10)].ToString() }
                                 };
 
-                                ListePlat.Add(plat);
+                                ListePlatFiltré.Add(plat);
                             }
                             reader.Close();
                         }
@@ -250,11 +275,10 @@ namespace Liv_In_Paris
 
         private void AjoutPlat()
         {
-            Platlayout.Controls.Clear(); 
+            Platlayout.Controls.Clear();
 
-            foreach (var plat in ListePlat)
+            foreach (var plat in ListePlatFiltré)
             {
-                
                 var platPanel = new Panel
                 {
                     Width = 700,
@@ -264,16 +288,14 @@ namespace Liv_In_Paris
                     Padding = new Padding(10)
                 };
 
-               
                 var tableLayout = new TableLayoutPanel
                 {
                     Dock = DockStyle.Fill,
                     ColumnCount = 2,
-                    RowCount = 4,
+                    RowCount = 5, // Ajout d'une ligne pour le bouton
                     AutoSize = true
-            };
+                };
 
-              
                 tableLayout.Controls.Add(new Label { Text = "Nom :", AutoSize = true, Font = new Font("Arial", 10, FontStyle.Bold) }, 0, 0);
                 tableLayout.Controls.Add(new Label { Text = plat["NomPlat"], AutoSize = true }, 1, 0);
 
@@ -286,12 +308,38 @@ namespace Liv_In_Paris
                 tableLayout.Controls.Add(new Label { Text = "Cuisinier :", AutoSize = true, Font = new Font("Arial", 10, FontStyle.Bold) }, 0, 3);
                 tableLayout.Controls.Add(new Label { Text = $"{plat["Prenom_cuisinier"]} {plat["Nom_cuisinier"]}", AutoSize = true }, 1, 3);
 
-                platPanel.Controls.Add(tableLayout);
+                var addButton = new Button
+                {
+                    Text = "Ajouter au panier",
+                    AutoSize = true,
+                    Tag = plat
+                };
 
+                addButton.Click += AjoutAuPanier;
+
+                tableLayout.Controls.Add(addButton, 1, 4); // Ajout du bouton dans la dernière ligne, deuxième colonne
+
+                platPanel.Controls.Add(tableLayout);
                 Platlayout.Controls.Add(platPanel);
             }
 
             Platlayout.Visible = true;
+        }
+
+        private void AjoutAuPanier(object? sender, EventArgs e)
+        {
+            if (sender is Button addButton && addButton.Tag is Dictionary<string, string> plat)
+            {
+                if (!ListePlatChoisi.Any(p => p["Id"] == plat["Id"] && p["Nom_cuisinier"] == plat["Nom_cuisinier"] && p["Prenom_cuisinier"] == plat["Prenom_cuisinier"]))
+                {
+                    ListePlatChoisi.Add(plat);
+                    MessageBox.Show($"Le plat '{plat["NomPlat"]}' de {plat["Prenom_cuisinier"]} {plat["Nom_cuisinier"]} a été ajouté au panier.");
+                }
+                else
+                {
+                    MessageBox.Show($"Le plat '{plat["NomPlat"]}' de {plat["Prenom_cuisinier"]} {plat["Nom_cuisinier"]} est déjà dans le panier.");
+                }
+            }
         }
     }
 }

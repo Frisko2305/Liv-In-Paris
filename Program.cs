@@ -198,7 +198,7 @@ namespace Liv_In_Paris
         /// </summary>
         /// <param name="graphe"></param>
         /// <returns></returns>
-        static int[,] FloydWarshall(Graphe<double> graphe)
+        public static int[,] FloydWarshall(Graphe<double> graphe)
         {
             int n = graphe.Noeuds_Pte.Count;
             int[,] distances = CreerMatriceAdjacence(n, graphe);
@@ -230,7 +230,7 @@ namespace Liv_In_Paris
         /// <param name="noeudDepart"></param>
         /// <param name="noeudDestination"></param>
         /// <param name="noeuds"></param>
-        static void FloydWarshallTest(Graphe<double> graphe, NoeudsStation<double> noeudDepart, NoeudsStation<double> noeudDestination, List<NoeudsStation<double>> noeuds)
+        public static void FloydWarshallTest(Graphe<double> graphe, NoeudsStation<double> noeudDepart, NoeudsStation<double> noeudDestination, List<NoeudsStation<double>> noeuds)
         {
             try
             {
